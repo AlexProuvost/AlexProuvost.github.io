@@ -45,30 +45,33 @@ export function Services() {
         {/* Trois offres côte à côte, faciles à comparer */}
         <ol className={styles.cards}>
           {items.map((item, i) => (
-            <li key={item.id} className={styles.card} data-reveal="up">
-              <div className={styles.cardHead}>
-                <span className={styles.n}>0{i + 1}</span>
-                <h3 className={`headline ${styles.cardTitle}`}>{keepHyphenated(item.title)}</h3>
-                <p className={styles.for}>
-                  {t('for')} : {item.for}
-                </p>
-              </div>
-              <p className={styles.cardText}>{item.text}</p>
-              <ul className={styles.includes} aria-label={t('includes')}>
-                {item.includes.map((inc) => (
-                  <li key={inc}>{inc}</li>
-                ))}
-              </ul>
-              <div className={styles.cardFoot}>
-                <p className={styles.meta}>
-                  <span className="label">{t('delay')}</span>
-                  <span>
-                    {item.delay} · {t('price')}
-                  </span>
-                </p>
-                <a href={`#${sectionIds.contact}`} className={styles.quote} data-quote={i} data-roll>
-                  {t('quote')} <span aria-hidden="true">→</span>
-                </a>
+            <li key={item.id} className={styles.cell} data-reveal="up">
+              {/* La carte s'incline dans sa cellule : la révélation (GSAP) anime la cellule, pas la carte */}
+              <div className={styles.card} data-tilt>
+                <div className={styles.cardHead}>
+                  <span className={styles.n}>0{i + 1}</span>
+                  <h3 className={`headline ${styles.cardTitle}`}>{keepHyphenated(item.title)}</h3>
+                  <p className={styles.for}>
+                    {t('for')} : {item.for}
+                  </p>
+                </div>
+                <p className={styles.cardText}>{item.text}</p>
+                <ul className={styles.includes} aria-label={t('includes')}>
+                  {item.includes.map((inc) => (
+                    <li key={inc}>{inc}</li>
+                  ))}
+                </ul>
+                <div className={styles.cardFoot}>
+                  <p className={styles.meta}>
+                    <span className="label">{t('delay')}</span>
+                    <span>
+                      {item.delay} · {t('price')}
+                    </span>
+                  </p>
+                  <a href={`#${sectionIds.contact}`} className={styles.quote} data-quote={i} data-roll>
+                    {t('quote')} <span aria-hidden="true">→</span>
+                  </a>
+                </div>
               </div>
             </li>
           ))}

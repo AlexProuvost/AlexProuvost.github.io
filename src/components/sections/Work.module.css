@@ -410,6 +410,7 @@
   background: var(--c-accent);
   color: var(--c-on-accent);
   box-shadow: none;
+  --c-ink-line: var(--c-on-accent);
 }
 
 .endLabel {

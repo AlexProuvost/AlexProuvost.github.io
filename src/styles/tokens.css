@@ -11,7 +11,7 @@
   --c-ink-3: #1e1c1a; /* surfaces au survol */
   --c-fg: #f0ebe2; /* texte */
   --c-fg-2: #c9c3b8; /* texte secondaire long (≈ 11:1 sur le fond) */
-  --c-muted: #8f897f; /* labels, méta (≈ 5.4:1 sur le fond) */
+  --c-muted: #a39d92; /* labels, méta (≈ 7:1 sur le fond) */
   --c-line: rgba(240, 235, 226, 0.12);
   --c-line-2: rgba(240, 235, 226, 0.22);
   --c-accent: #2e3bff; /* bleu signature (surfaces, grands éléments) */
@@ -36,8 +36,8 @@
   --fs-lead: clamp(1.25rem, 1.9vw, 1.875rem);
   --fs-body-l: clamp(1.0625rem, 1.15vw, 1.1875rem);
   --fs-body: 1rem;
-  --fs-small: 0.875rem;
-  --fs-label: 0.75rem;
+  --fs-small: 0.9375rem;
+  --fs-label: 0.8125rem;
 
   /* Mise en page */
   --gutter: clamp(20px, 4vw, 64px);

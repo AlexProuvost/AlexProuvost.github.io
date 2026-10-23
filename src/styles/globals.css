@@ -137,6 +137,30 @@ button {
   letter-spacing: -0.01em;
 }
 
+/* Trait d'encre sous le mot clé, tracé de gauche à droite quand le titre arrive (interactions/inkLines.ts) */
+.headline em {
+  padding-inline: 0.04em;
+  margin-inline: -0.04em;
+  background-image: linear-gradient(var(--c-ink-line, var(--c-accent)), var(--c-ink-line, var(--c-accent)));
+  background-repeat: no-repeat;
+  background-position: 0 94%;
+  background-size: 0% max(4px, 0.075em);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-size 1.3s var(--ease-out-expo);
+}
+
+.headline[data-ink] em {
+  background-size: 100% max(4px, 0.075em);
+}
+
+@media (hover: hover) {
+  .headline[data-ink] em:hover {
+    background-size: 100% max(8px, 0.16em);
+    transition-duration: 0.6s;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -253,6 +277,7 @@ html.gl-over [data-gl-canvas] {
   background: var(--c-accent);
   --bg: var(--c-accent);
   --fg: var(--c-on-accent);
+  --c-ink-line: var(--c-on-accent);
   --c-fg: var(--c-on-accent);
   --c-fg-2: rgba(244, 241, 234, 0.86);
   --c-muted: rgba(244, 241, 234, 0.72);
