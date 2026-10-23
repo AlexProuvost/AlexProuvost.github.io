@@ -75,6 +75,8 @@ export function CaseStudy({ project, next, locale }: Props) {
 
   return (
     <article className={styles.case} style={style}>
+      {/* Barre de lecture : avance avec la page (interactions/readProgress.ts) */}
+      <span className={styles.readBar} data-read-progress aria-hidden="true" />
       {/* Couverture plein écran : même cadrage que l'image ouverte depuis l'index des projets */}
       <header className={styles.cover} data-section="case" data-section-label={t('caseLabel')}>
         <div className={styles.coverMedia} data-case-cover>

@@ -56,9 +56,11 @@ export function About() {
           </dl>
         </div>
 
-        <div className={styles.tools} data-reveal="up">
-          <p className="label">{t('toolsLabel')}</p>
-          <ul className={styles.toolList}>
+        <div className={styles.tools}>
+          <p className="label" data-reveal="up">
+            {t('toolsLabel')}
+          </p>
+          <ul className={styles.toolList} data-reveal="stagger">
             {tools.map((tool) => (
               <li key={tool}>{tool}</li>
             ))}

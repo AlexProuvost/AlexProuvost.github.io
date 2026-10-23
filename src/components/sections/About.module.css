@@ -40,6 +40,7 @@
 }
 
 .fact {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
   align-items: baseline;
@@ -48,9 +49,26 @@
   border-bottom: var(--hairline);
 }
 
+/* Survol : un trait bleu file sous la ligne, la valeur glisse vers la droite */
+.fact::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--c-accent-2);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.8s var(--ease-out-expo);
+}
+
 .n {
   margin-right: 10px;
   opacity: 0.6;
+  transition:
+    opacity 0.4s var(--ease-out),
+    color 0.4s var(--ease-out);
 }
 
 .fact dd {
@@ -58,6 +76,20 @@
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.15;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+@media (hover: hover) {
+  .fact:hover::after {
+    transform: scaleX(1);
+  }
+  .fact:hover dd {
+    transform: translateX(10px);
+  }
+  .fact:hover .n {
+    opacity: 1;
+    color: var(--c-accent-2);
+  }
 }
 
 @media (max-width: 900px) {

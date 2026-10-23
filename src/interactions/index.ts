@@ -11,6 +11,7 @@ import { initTextFx } from './textFx';
 import { initPreloader } from './preloader';
 import { initTilt } from './tilt';
 import { initInkLines } from './inkLines';
+import { initReadProgress } from './readProgress';
 
 /** Détails d'interface : curseur, menu, barre du bas, horloges, boutons magnétiques, bascule des visuels. */
 export function initInterface(): () => void {
@@ -28,6 +29,7 @@ export function initInterface(): () => void {
     initTextFx(),
     initTilt(),
     initInkLines(),
+    initReadProgress(),
   ];
   return () => cleanups.forEach((fn) => fn());
 }

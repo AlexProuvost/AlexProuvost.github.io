@@ -101,7 +101,7 @@ export function Approach() {
           <span className={styles.timelineLine} aria-hidden="true" data-timeline-line />
           <ol className={styles.timeline}>
             {steps.map((step, i) => (
-              <li key={step.title} className={styles.phase} data-reveal="up">
+              <li key={step.title} className={styles.phase} data-reveal="up" data-phase>
                 <span className={styles.phaseDot} aria-hidden="true" />
                 <p className={styles.phaseN}>0{i + 1}</p>
                 <h4 className={styles.phaseTitle}>{step.title}</h4>
