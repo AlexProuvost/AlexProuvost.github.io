@@ -1,4 +1,4 @@
-/* Formulaire en lettre à trous, sur le fond sombre : texte crème, bleu signature pour les choix et l'action */
+/* Formulaire simple sur le fond sombre : trois questions sur des filets, un grand bouton rond bleu */
 .card {
   --c-error: #ff8f80; /* corail lisible sur le fond sombre (≈ 8:1) */
   --cream: var(--c-fg);
@@ -9,7 +9,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: clamp(32px, 4vw, 56px);
+  gap: clamp(28px, 3.5vw, 48px);
 }
 
 .form[hidden] {
@@ -24,491 +24,149 @@
   opacity: 0;
 }
 
-/* ── En-tête façon email ── */
-.meta {
-  display: flex;
-  flex-direction: column;
+/* ── Les questions ── */
+.questions {
   border-top: var(--hairline);
-  font-family: var(--ff-mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.02em;
 }
 
-.meta > div {
+.field {
   display: grid;
-  grid-template-columns: 6em minmax(0, 1fr);
-  gap: 16px;
-  padding: 12px 0;
+  grid-template-columns: clamp(48px, 6vw, 96px) minmax(0, 1fr);
+  align-items: baseline;
+  padding: clamp(26px, 3.2vw, 44px) 0;
   border-bottom: var(--hairline);
 }
 
-.meta dt {
+/* Numéro : discret, il passe en bleu quand on remplit la question */
+.num {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
   color: var(--c-muted);
+  transition: color 0.4s var(--ease-out);
 }
 
-.meta dd {
-  margin: 0;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--fg);
+.field:focus-within .num,
+.field[data-state='valid'] .num {
+  color: var(--c-accent-2);
 }
 
-/* ── La lettre ── */
-.letter {
+.body {
   display: flex;
   flex-direction: column;
-  gap: 0.55em;
-  max-width: 28em;
-  font-size: clamp(1.2rem, 2.2vw, 2.25rem);
-  font-weight: 400;
-  line-height: 1.55;
-  letter-spacing: -0.035em;
-  color: var(--c-fg-2);
-  text-wrap: pretty;
+  gap: 14px;
+  min-width: 0;
 }
 
-.hello {
-  margin-bottom: 0.2em;
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-size: 1.25em;
-  letter-spacing: -0.02em;
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.q {
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
   color: var(--fg);
 }
 
-/* Un blanc dans la phrase */
-.blank {
+.control {
   position: relative;
-  display: inline-block;
-  max-width: 100%;
-  vertical-align: baseline;
 }
 
-.blank input,
-.blank select,
-.blank textarea {
-  display: inline-block;
-  max-width: 100%;
-  margin: 0;
-  padding: 0 0.1em 0.04em;
+.control input,
+.control textarea {
+  display: block;
+  width: 100%;
+  padding: 4px 40px 14px 0;
   border: 0;
   border-radius: 0;
   background: transparent;
   color: var(--cream);
   font: inherit;
-  font-weight: 500;
-  letter-spacing: inherit;
-  line-height: 1.2;
-  vertical-align: baseline;
+  font-size: clamp(1.3rem, 2.2vw, 2.1rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
   outline: none;
   caret-color: var(--c-accent-2);
   appearance: none;
-  field-sizing: content;
 }
 
-.blank input {
-  min-width: 3ch;
+.control textarea {
+  min-height: 2.6em;
+  max-height: 520px;
+  padding-right: 0;
+  resize: none;
+  line-height: 1.4;
 }
 
-.blank input::placeholder,
-.blank textarea::placeholder {
-  color: rgba(244, 241, 234, 0.32);
+.control input::placeholder,
+.control textarea::placeholder {
+  color: rgba(244, 241, 234, 0.3);
   font-family: var(--ff-serif);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: -0.01em;
 }
 
-.blank input:-webkit-autofill {
+.control input:-webkit-autofill {
   -webkit-text-fill-color: var(--cream);
   box-shadow: 0 0 0 1000px var(--c-ink) inset;
   transition: background-color 9999s;
 }
 
-/* ── Les choix ──
-   Sans JS : le select natif, en italique serif bleu. Avec JS ([data-picks]) : un mot-bouton surligné à l'encre
-   qui ouvre un cartouche sur mesure (interactions/picks.ts). */
-.pick .native {
-  padding-right: 0.3em;
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  color: var(--c-accent-2);
-  cursor: pointer;
-}
-
-.native option {
-  background: var(--c-ink-2);
-  color: var(--fg);
-  font-family: var(--ff-sans);
-  font-style: normal;
-  font-size: 1rem;
-}
-
-.pickBtn {
-  display: none;
-}
-
-.form[data-picks] .pick .native {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  pointer-events: none;
-}
-
-.form[data-picks] .pickBtn {
-  position: relative;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.22em;
-  margin: 0;
-  padding: 0 0.12em 0.04em;
-  border: 0;
-  border-radius: 0.18em;
-  background: linear-gradient(var(--c-accent), var(--c-accent)) 0 88% / 0% 0.42em no-repeat;
-  color: var(--c-accent-2);
-  font: inherit;
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-  text-align: left;
-  cursor: pointer;
-  transition:
-    background-size 0.6s var(--ease-out-expo),
-    color 0.35s var(--ease-out);
-}
-
-/* Le mot qui roule au changement */
-.pickMask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  padding: 0 0.04em 0.06em;
-  margin-bottom: -0.06em;
-}
-
-.pickCurrent {
-  display: inline-block;
-}
-
-/* Petit disque avec chevron, après le mot */
-.chevron {
-  position: relative;
-  align-self: center;
-  flex: none;
-  width: 0.62em;
-  height: 0.62em;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.5px currentColor;
-  transition:
-    transform 0.6s var(--ease-out-expo),
-    background-color 0.35s var(--ease-out),
-    box-shadow 0.35s var(--ease-out);
-}
-
-.chevron::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  width: 0.17em;
-  height: 0.17em;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.form[data-picks] .pick[data-open] .pickBtn,
-.form[data-picks] .pickBtn:focus-visible {
-  background-size: 100% 0.42em;
-  color: var(--cream);
-}
-
-.pick[data-open] .chevron {
-  transform: rotate(180deg);
-  background: var(--c-accent);
-  box-shadow: none;
-}
-
-@media (hover: hover) {
-  .form[data-picks] .pickBtn:hover {
-    background-size: 100% 0.42em;
-    color: var(--cream);
-  }
-  .pickBtn:hover .chevron {
-    background: var(--c-accent);
-    box-shadow: none;
-  }
-}
-
-.pickBtn:focus-visible {
-  outline: 1px dashed var(--c-accent-2);
-  outline-offset: 4px;
-}
-
-/* Au choix : l'encre gonfle sous le mot puis retombe */
-.pick[data-flash] .pickBtn {
-  animation: pickFlash 0.9s var(--ease-out-expo);
-}
-
-@keyframes pickFlash {
-  0% {
-    background-size: 100% 0.42em;
-  }
-  35% {
-    background-size: 100% 1.15em;
-    color: var(--cream);
-  }
-  100% {
-    background-size: 0% 0.42em;
-  }
-}
-
-/* Le cartouche */
-.menu {
-  position: absolute;
-  left: -0.1em;
-  top: calc(100% + 10px);
-  z-index: 30;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: max-content;
-  min-width: min(17.5rem, calc(100vw - 32px));
-  max-width: calc(100vw - 24px);
-  padding: 10px;
-  border-radius: 18px;
-  background: var(--c-ink-2);
-  box-shadow:
-    inset 0 0 0 1px var(--c-line-2),
-    0 30px 80px -20px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(0, 0, 0, 0.4);
-  transform: translateX(var(--shift, 0px));
-  font-size: clamp(1.4rem, 2.3vw, 2.1rem);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--fg);
-  text-align: left;
-  outline: none;
-  cursor: default;
-}
-
-.menu[hidden] {
-  display: none;
-}
-
-/* Les lignes gardent une transformation de leur arrivée : celle du menu ouvert passe devant les suivantes */
-.line:has([data-open]) {
-  position: relative;
-  z-index: 5;
-}
-
-.menuLabel {
-  padding: 6px 12px 10px;
-  font-style: normal;
-}
-
-.option {
-  position: relative;
-  display: grid;
-  grid-template-columns: 2.4em minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 4px;
-  padding: 12px 14px 13px 12px;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  isolation: isolate;
-}
-
-/* L'encre bleue qui remplit l'option depuis la gauche */
-.option::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--c-accent);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  transition: transform 0.55s var(--ease-out-expo);
-}
-
-.option[data-active]::before {
-  transform: scaleX(1);
-}
-
-.optionIndex {
-  font-family: var(--ff-mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.02em;
-  color: var(--c-muted);
-  transition: color 0.3s var(--ease-out);
-}
-
-.optionText {
-  font-family: var(--ff-serif);
-  font-style: italic;
-  white-space: nowrap;
-  transition: transform 0.55s var(--ease-out-expo);
-}
-
-.option[data-active] .optionText {
-  transform: translateX(6px);
-}
-
-.option[data-active] .optionIndex {
-  color: var(--c-on-accent);
-}
-
-.optionDot {
-  width: 8px;
-  height: 8px;
-  margin-left: 16px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1px var(--c-line-2);
-  transition:
-    background-color 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
-}
-
-.option[aria-selected='true'] .optionDot {
-  background: var(--c-accent-2);
-  box-shadow: none;
-}
-
-.option[aria-selected='true'][data-active] .optionDot {
-  background: var(--c-on-accent);
-}
-
-.option[aria-selected='true'] .optionIndex {
-  color: var(--c-accent-2);
-}
-
-.option[aria-selected='true'][data-active] .optionIndex {
-  color: var(--c-on-accent);
-}
-
-@media (max-width: 700px) {
-  .optionText {
-    white-space: normal;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pick[data-flash] .pickBtn {
-    animation: none;
-  }
-}
-
-/* Le message : un paragraphe entier sous sa phrase d'amorce */
-.paragraph {
-  display: block;
-  margin-top: 0.15em;
-}
-
-.paragraph textarea {
-  display: block;
-  width: 100%;
-  min-height: 2.6em;
-  max-height: 560px;
-  padding: 0 0 0.2em;
-  resize: none;
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
-  field-sizing: fixed;
-}
-
-.paragraph textarea:not(:placeholder-shown) {
-  font-family: var(--ff-sans);
-  font-style: normal;
-  font-size: 0.72em;
-  letter-spacing: -0.02em;
-  line-height: 1.45;
-}
-
-.paragraphFoot {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-top: 10px;
-  line-height: 1.4;
-}
-
-/* Le trait sous le blanc : se trace à l'arrivée ; au focus, une ligne pleine le recouvre depuis la gauche */
+/* Sous le champ : invisible au repos (le séparateur de la question suffit) ; au focus, un trait bleu
+   le parcourt de gauche à droite */
 .rule {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0.08em;
+  bottom: 0;
   height: 1px;
-  background: rgba(244, 241, 234, 0.3);
   transform-origin: 0 50%;
   pointer-events: none;
-}
-
-.paragraph .rule {
-  position: relative;
-  display: block;
-  bottom: auto;
 }
 
 .rule::after {
   content: '';
   position: absolute;
   inset: -0.5px 0;
-  background: var(--cream);
+  background: var(--c-accent-2);
   transform: scaleX(0);
   transform-origin: 0 50%;
   transition:
-    transform 0.7s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo),
     background-color 0.3s var(--ease-out);
 }
 
-.blank:focus-within .rule::after,
-.blank[data-state='valid'] .rule::after {
+.field:focus-within .rule::after,
+.field[data-state='valid'] .rule::after,
+.field[data-state='invalid'] .rule::after {
   transform: scaleX(1);
 }
 
-.pick .rule {
-  background: rgba(163, 171, 255, 0.35);
-}
-
-.pick:focus-within .rule::after,
-.blank[data-state='valid']:not(:focus-within) .rule::after {
-  background: var(--c-accent-2);
-}
-
-.blank[data-state='invalid'] .rule::after {
-  transform: scaleX(1);
+.field[data-state='invalid'] .rule::after {
   background: var(--c-error);
 }
 
-.blank[data-state='invalid'] input::placeholder,
-.blank[data-state='invalid'] textarea::placeholder {
-  color: rgba(255, 143, 128, 0.6);
+.field[data-state='invalid'] .num,
+.field[data-state='invalid'] .q {
+  color: var(--c-error);
 }
 
-/* La petite coche des blancs valides, en exposant */
+/* La coche des champs valides */
 .check {
   position: absolute;
-  right: -0.55em;
-  top: -0.1em;
+  right: 0;
+  top: 50%;
   display: grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
+  width: 26px;
+  height: 26px;
+  margin-top: -18px;
   border-radius: 50%;
   background: var(--c-accent);
   opacity: 0;
@@ -520,11 +178,9 @@
 }
 
 .check svg {
-  width: 11px;
-  height: 11px;
   fill: none;
   stroke: var(--c-on-accent);
-  stroke-width: 2.2;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 14;
@@ -532,59 +188,40 @@
   transition: stroke-dashoffset 0.5s 0.15s var(--ease-out);
 }
 
-.blank[data-state='valid']:not(:focus-within) .check {
+.field[data-state='valid'] .check {
   opacity: 1;
   transform: scale(1);
 }
 
-.blank[data-state='valid']:not(:focus-within) .check svg {
+.field[data-state='valid'] .check svg {
   stroke-dashoffset: 0;
 }
 
-/* Erreur : une étiquette corail qui pend sous le blanc */
+/* Le message n'a pas de coche (le compteur suffit) */
+.field[data-field='message'] .check {
+  display: none;
+}
+
+/* Erreur : se déplie sous le champ */
 .error {
-  position: absolute;
-  left: 0;
-  top: calc(100% - 0.05em);
-  z-index: 2;
-  width: max-content;
-  max-width: min(78vw, 34ch);
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: var(--c-ink);
-  box-shadow: inset 0 0 0 1px rgba(255, 143, 128, 0.4);
-  font-family: var(--ff-sans);
+  display: grid;
+  grid-template-rows: 0fr;
   font-size: var(--fs-small);
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0;
   line-height: 1.4;
   color: var(--c-error);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-6px);
-  transition:
-    opacity 0.3s var(--ease-out),
-    transform 0.5s var(--ease-out-expo),
-    visibility 0.3s;
-  pointer-events: none;
+  transition: grid-template-rows 0.45s var(--ease-out-expo);
 }
 
-.paragraphFoot .error {
-  position: static;
-  max-width: none;
-  padding: 0;
-  box-shadow: none;
-  background: none;
+.error > :global(span) {
+  overflow: hidden;
+  min-height: 0;
 }
 
-.blank[data-state='invalid'] .error {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
+.field[data-state='invalid'] .error {
+  grid-template-rows: 1fr;
 }
 
-.blank[data-shake] {
+.field[data-shake] .control {
   animation: shake 0.45s var(--ease-out);
 }
 
@@ -608,39 +245,14 @@
 }
 
 .counter {
-  margin-left: auto;
   font-family: var(--ff-mono);
   font-size: var(--fs-label);
-  font-style: normal;
-  letter-spacing: 0;
   color: var(--c-muted);
   font-variant-numeric: tabular-nums;
 }
 
 .counter[data-ok] {
-  color: var(--fg);
-}
-
-/* Signature : se remplit avec le nom tapé plus haut */
-.sign {
-  display: flex;
-  flex-direction: column;
-  margin-top: 0.4em;
-}
-
-.signature {
-  font-family: var(--ff-serif);
-  font-style: italic;
-  font-size: 1.6em;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--fg);
-  overflow-wrap: anywhere;
-  transition: color 0.4s var(--ease-out);
-}
-
-.signature[data-empty] {
-  color: rgba(244, 241, 234, 0.2);
+  color: var(--c-accent-2);
 }
 
 /* ── Envoi ── */
@@ -659,20 +271,22 @@
 
 .footer {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 24px clamp(24px, 4vw, 56px);
-  padding-top: clamp(8px, 1.5vw, 20px);
+  justify-content: space-between;
+  gap: 32px;
+  padding-left: clamp(48px, 6vw, 96px);
 }
 
-/* Gros bouton bleu signature */
+/* Le grand bouton rond, bleu signature, magnétique (interactions/magnetic.ts) */
 .submit {
-  display: inline-flex;
-  align-items: center;
-  min-height: clamp(56px, 4.6vw, 72px);
-  padding: 0 clamp(28px, 3vw, 44px);
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: clamp(132px, 11vw, 176px);
+  aspect-ratio: 1;
   border: 0;
-  border-radius: 999px;
+  border-radius: 50%;
   background: var(--c-accent);
   color: var(--c-on-accent);
   font: inherit;
@@ -680,34 +294,31 @@
   font-weight: 500;
   letter-spacing: -0.02em;
   cursor: pointer;
-  transition: background-color 0.4s var(--ease-out);
+  transition:
+    background-color 0.4s var(--ease-out),
+    scale 0.6s var(--ease-out-expo);
 }
 
 .submit:hover {
   background: #4653ff;
+  scale: 1.05;
 }
 
 .submitInner {
-  position: relative;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
 }
 
 .submitArrow {
-  display: inline-grid;
-  place-items: center;
-  width: 1.8em;
-  height: 1.8em;
-  border-radius: 50%;
-  background: var(--c-on-accent);
-  color: var(--c-accent);
-  font-size: 0.8em;
+  font-size: 1.2em;
+  line-height: 1;
   transition: transform 0.6s var(--ease-out-expo);
 }
 
 .submit:hover .submitArrow {
-  transform: translateX(4px) rotate(-45deg);
+  transform: translateX(6px) rotate(-45deg);
 }
 
 .submitBusy,
@@ -716,8 +327,8 @@
 }
 
 .spinner {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   border: 2px solid rgba(244, 241, 234, 0.3);
   border-top-color: var(--c-on-accent);
@@ -748,8 +359,14 @@
 .footerSide {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
+}
+
+.privacy {
+  max-width: 40ch;
+  font-size: var(--fs-small);
+  color: var(--c-muted);
 }
 
 .draft {
@@ -795,12 +412,6 @@
   cursor: pointer;
 }
 
-.privacy {
-  max-width: 46ch;
-  font-size: 0.8125rem;
-  color: var(--c-muted);
-}
-
 .failure {
   display: flex;
   flex-direction: column;
@@ -835,7 +446,7 @@
   color: var(--c-fg-2);
 }
 
-/* La goutte d'encre (envoi) */
+/* L'onde d'encre (envoi) */
 .drop {
   position: absolute;
   left: 0;
@@ -879,7 +490,7 @@
 .successTitle {
   font-family: var(--ff-serif);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   font-size: clamp(3.5rem, 11vw, 12rem);
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -912,6 +523,10 @@
   max-width: 720px;
   padding-top: 20px;
   border-top: 1px solid var(--c-line-2);
+}
+
+.recap[hidden] {
+  display: none;
 }
 
 .recap :global(.label) {
@@ -958,20 +573,19 @@
 }
 
 @media (max-width: 700px) {
-  .letter {
-    line-height: 1.75;
+  .field {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
   }
   .footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .submit {
-    justify-content: center;
+    padding-left: 0;
+    flex-direction: column-reverse;
+    align-items: flex-start;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blank[data-shake] {
+  .field[data-shake] .control {
     animation: none;
   }
 }

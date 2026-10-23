@@ -1,20 +1,17 @@
 import { gsap, ScrollTrigger } from '@/motion/gsap';
 import { getLenis } from '@/motion/loop';
-import { initPicks } from './picks';
 
 /**
- * Formulaire de contact en lettre à trous (components/sections/contact/ContactForm.tsx).
- *  - Arrivée : les lignes montent l'une après l'autre et les traits des blancs se tracent de gauche à droite.
- *  - Les blancs s'élargissent avec ce qu'on tape (CSS field-sizing, sinon mesuré ici) ; l'objet de l'email
- *    et la signature se remplissent en direct.
+ * Formulaire de contact (components/sections/contact/ContactForm.tsx) : nom, email, projet.
+ *  - Arrivée : les questions montent l'une après l'autre et leurs filets se tracent de gauche à droite.
  *  - Validation en direct : la coche apparaît dès qu'un champ est bon ; une erreur ne s'affiche qu'en quittant
  *    le champ (ou à l'envoi), puis disparaît dès qu'elle est corrigée.
  *  - Brouillon : ce qui est tapé est gardé dans le navigateur (localStorage) et retrouvé au retour.
- *  - Envoi en arrière-plan (fetch → FormSubmit). Réussi : une goutte d'encre crème part du bouton, le formulaire
- *    s'efface et « Merci {prénom}. » s'écrit en grand, avec le récapitulatif. Raté : erreur avec « Réessayer ».
+ *  - Envoi en arrière-plan (fetch → FormSubmit). Réussi : une onde part du bouton, le formulaire s'efface
+ *    et « Merci {prénom}. » s'écrit en grand. Raté : erreur avec « Réessayer ».
  *  - Bouton « Copier » de l'email (en-tête de la section).
- * Boutons « Demander un devis » des offres ([data-quote="i"]) : présélectionnent le type de projet
- * puis défilent jusqu'au formulaire.
+ * Boutons « Demander un devis » des offres ([data-quote="i"]) : remplissent le type de projet (champ caché,
+ * repris dans l'objet de l'email et le récapitulatif) puis défilent jusqu'au formulaire.
  */
 
 type Copy = {
@@ -25,36 +22,22 @@ type Copy = {
   subject: string;
   successTitle: string;
   successText: string;
-  labels: Record<'company' | 'website' | 'type' | 'budget' | 'deadline', string>;
+  typeLabel: string;
+  types: string[];
 };
 
-type FieldName = 'name' | 'email' | 'company' | 'website' | 'message';
+type FieldName = 'name' | 'email' | 'message';
 type Control = HTMLInputElement | HTMLTextAreaElement;
 
-const DRAFT_KEY = 'alex-contact-draft-v1';
+const DRAFT_KEY = 'alex-contact-draft-v2';
 const DRAFT_MAX_AGE = 30 * 24 * 3600 * 1000;
-const TEXT_FIELDS: FieldName[] = ['name', 'email', 'company', 'website', 'message'];
-const CHOICES = ['type', 'budget', 'deadline'] as const;
+const TEXT_FIELDS: FieldName[] = ['name', 'email', 'message'];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@.]{2,}$/;
 
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 const fill = (tpl: string, vars: Record<string, string>) => tpl.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
-
-/** « www.site.be » → « https://www.site.be » ; null si ce n'est pas une adresse plausible */
-function normalizeUrl(raw: string): string | null {
-  const v = raw.trim();
-  if (!v) return '';
-  if (/\s/.test(v)) return null;
-  try {
-    const url = new URL(/^https?:\/\//i.test(v) ? v : `https://${v}`);
-    if (!/^[^.]+(\.[^.]+)*\.[a-z]{2,}$/i.test(url.hostname)) return null;
-    return url.href.replace(/\/$/, '');
-  } catch {
-    return null;
-  }
-}
 
 const storage = {
   get(): Record<string, string> | null {
@@ -112,6 +95,7 @@ export function initContactForm(): () => void {
   const draftNote = form.querySelector<HTMLElement>('[data-draft]');
   const draftText = form.querySelector<HTMLElement>('[data-draft-text]');
   const subject = form.querySelector<HTMLInputElement>('[data-subject]');
+  const typeInput = form.querySelector<HTMLInputElement>('[data-type]');
   const submitBtn = form.querySelector<HTMLElement>('[data-submit]');
   const success = card.querySelector<HTMLElement>('[data-form-success]');
   const drop = card.querySelector<HTMLElement>('[data-form-drop]');
@@ -132,13 +116,9 @@ export function initContactForm(): () => void {
       case 'email':
         if (!v) return copy.errors.email;
         return EMAIL_RE.test(v) ? '' : copy.errors.emailFormat;
-      case 'website':
-        return normalizeUrl(v) === null ? copy.errors.website : '';
       case 'message':
         if (!v) return copy.errors.message;
         return v.length >= msgMin ? '' : fill(copy.errors.messageShort, { min: String(msgMin) });
-      default:
-        return '';
     }
   };
 
@@ -192,45 +172,11 @@ export function initContactForm(): () => void {
     window.clearTimeout(noteTimer);
     if (!persist) noteTimer = window.setTimeout(() => draftNote.removeAttribute('data-show'), 2600);
   };
-  const select = (name: (typeof CHOICES)[number]) => form.elements.namedItem(name) as HTMLSelectElement | null;
   const readValues = () => {
     const d: Record<string, string> = {};
     TEXT_FIELDS.forEach((n) => (d[n] = control(n)?.value ?? ''));
-    CHOICES.forEach((n) => (d[n] = select(n)?.value ?? ''));
+    d.type = typeInput?.value ?? '';
     return d;
-  };
-
-  /* ── La lettre : largeur des blancs, objet et signature en direct ── */
-  const fieldSizing = typeof CSS !== 'undefined' && CSS.supports('field-sizing', 'content');
-  const measure = document.createElement('canvas').getContext('2d');
-  const autosize = () => {
-    if (fieldSizing || !measure) return;
-    form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-autosize]').forEach((el) => {
-      const text =
-        el instanceof HTMLSelectElement ? (el.selectedOptions[0]?.text ?? '') : el.value || el.placeholder || ' ';
-      const cs = getComputedStyle(el);
-      // Le texte indicatif est en italique serif (voir ContactForm.module.css)
-      const ph = el instanceof HTMLInputElement && !el.value;
-      measure.font = ph
-        ? `italic 400 ${cs.fontSize} ${cs.getPropertyValue('--ff-serif')}`
-        : `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-      const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-      el.style.width = `${Math.ceil(measure.measureText(text).width + pad + 4)}px`;
-    });
-  };
-  const picks = initPicks(form, reduced);
-  const letterSubject = form.querySelector<HTMLElement>('[data-letter-subject]');
-  const signature = form.querySelector<HTMLElement>('[data-signature]');
-  const refreshLetter = () => {
-    picks.sync();
-    const name = control('name')?.value.trim() ?? '';
-    if (letterSubject)
-      letterSubject.textContent = fill(copy.subject, { type: select('type')?.value ?? '', name: name || '…' });
-    if (signature) {
-      signature.textContent = name || (signature.dataset.placeholder ?? '');
-      signature.toggleAttribute('data-empty', !name);
-    }
-    autosize();
   };
   const saveDraft = () => {
     window.clearTimeout(saveTimer);
@@ -255,7 +201,6 @@ export function initContactForm(): () => void {
     form.reset();
     resetStates();
     updateMessage();
-    refreshLetter();
     draftNote?.removeAttribute('data-show');
   };
   const restoreDraft = () => {
@@ -265,10 +210,7 @@ export function initContactForm(): () => void {
       const el = control(n);
       if (el && typeof d[n] === 'string') el.value = d[n];
     });
-    CHOICES.forEach((n) => {
-      const el = select(n);
-      if (el && [...el.options].some((o) => o.value === d[n])) el.value = d[n];
-    });
+    if (typeInput && copy.types.includes(d.type)) typeInput.value = d.type;
     // Seules les coches s'affichent au retour, pas les erreurs
     TEXT_FIELDS.forEach((n) => {
       if (control(n)?.value.trim() && !errorFor(n)) setState(n, 'valid');
@@ -316,18 +258,10 @@ export function initContactForm(): () => void {
         '\u0000',
         `<strong>${escapeHtml(d.email.trim())}</strong>`,
       );
+    // Récapitulatif : seulement s'il y a quelque chose à rappeler (le type de projet choisi depuis une offre)
     if (recap) {
-      const rows: [string, string][] = [
-        [copy.labels.type, d.type],
-        [copy.labels.budget, d.budget],
-        [copy.labels.deadline, d.deadline],
-        [copy.labels.company, d.company.trim()],
-        [copy.labels.website, d.website],
-      ];
-      recap.innerHTML = rows
-        .filter(([, v]) => v)
-        .map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`)
-        .join('');
+      recap.innerHTML = d.type ? `<dt>${escapeHtml(copy.typeLabel)}</dt><dd>${escapeHtml(d.type)}</dd>` : '';
+      if (recap.parentElement) recap.parentElement.hidden = !d.type;
     }
 
     const swap = () => {
@@ -337,7 +271,6 @@ export function initContactForm(): () => void {
       form.reset();
       resetStates();
       updateMessage();
-      refreshLetter();
     };
     const reveal = () => {
       success.focus({ preventScroll: true });
@@ -346,7 +279,7 @@ export function initContactForm(): () => void {
         .timeline()
         .from(success.querySelector('[data-success-line]'), { yPercent: 110, duration: 1.3, ease: 'expo.out' }, 0)
         .from(
-          success.querySelectorAll('[data-success-item]'),
+          success.querySelectorAll('[data-success-item]:not([hidden])'),
           { y: 30, autoAlpha: 0, duration: 1, stagger: 0.08, ease: 'expo.out', clearProps: 'all' },
           0.2,
         );
@@ -359,7 +292,7 @@ export function initContactForm(): () => void {
       return;
     }
 
-    // Goutte d'encre crème depuis le bouton, puis le formulaire s'efface par blocs
+    // Onde d'encre depuis le bouton, puis le formulaire s'efface par blocs
     const tl = gsap.timeline();
     if (drop && submitBtn) {
       const cr = card.getBoundingClientRect();
@@ -430,17 +363,17 @@ export function initContactForm(): () => void {
     }
 
     const d = readValues();
-    d.website = normalizeUrl(d.website) ?? '';
-    if (subject) subject.value = fill(copy.subject, { type: d.type, name: d.name.trim() });
+    // Objet : « Nouveau projet · type · nom », sans le type s'il n'a pas été choisi
+    if (subject)
+      subject.value = fill(copy.subject, { type: d.type, name: d.name.trim() })
+        .replace(/ · +· /, ' · ')
+        .trim();
 
     const payload: Record<string, string> = {};
     new FormData(form).forEach((v, k) => {
       if (typeof v === 'string' && k !== '_honey') payload[k] = v.trim();
     });
-    payload.website = d.website;
-    (['company', 'website'] as const).forEach((k) => {
-      if (!payload[k]) delete payload[k];
-    });
+    if (!payload.type) delete payload.type;
 
     form.dataset.state = 'sending';
     if (failure) failure.hidden = true;
@@ -478,7 +411,6 @@ export function initContactForm(): () => void {
     const name = (e.target as HTMLElement).getAttribute('name') as FieldName | null;
     if (name && TEXT_FIELDS.includes(name)) check(name, 'live');
     if (name === 'message') updateMessage();
-    else refreshLetter();
     saveDraft();
   };
   const onBlur = (e: FocusEvent) => {
@@ -497,20 +429,19 @@ export function initContactForm(): () => void {
     } else if (target.closest('[data-form-again]')) showForm();
   };
 
-  // Offres → formulaire, type de projet présélectionné
+  // Offres → formulaire, type de projet rempli
   const onQuote = (e: Event) => {
     const link = (e.target as HTMLElement).closest<HTMLElement>('[data-quote]');
     if (!link) return;
     e.preventDefault();
     if (form.hidden) showForm();
-    const option = form.querySelector<HTMLOptionElement>(`[data-type-index="${link.dataset.quote}"]`);
-    if (option) option.selected = true;
-    refreshLetter();
+    const type = copy.types[Number(link.dataset.quote)];
+    if (typeInput && type) typeInput.value = type;
     saveDraft();
     scrollToEl(form, 140, 1.6, () => control('name')?.focus({ preventScroll: true }));
   };
 
-  /* ── Arrivée : les champs montent, leurs traits se tracent ── */
+  /* ── Arrivée : les questions montent, leurs filets se tracent ── */
   let enter: ScrollTrigger | null = null;
   if (!reduced) {
     const items = form.querySelectorAll('[data-form-in]');
@@ -519,8 +450,8 @@ export function initContactForm(): () => void {
     gsap.set(rules, { scaleX: 0 });
     const tl = gsap
       .timeline({ paused: true })
-      .to(items, { y: 0, autoAlpha: 1, duration: 1.1, stagger: 0.07, ease: 'expo.out' }, 0)
-      .to(rules, { scaleX: 1, duration: 1.4, stagger: 0.08, ease: 'expo.inOut' }, 0.15);
+      .to(items, { y: 0, autoAlpha: 1, duration: 1.1, stagger: 0.09, ease: 'expo.out' }, 0)
+      .to(rules, { scaleX: 1, duration: 1.4, stagger: 0.1, ease: 'expo.inOut' }, 0.15);
     enter = ScrollTrigger.create({ trigger: form, start: 'top 85%', once: true, onEnter: () => tl.play() });
   }
 
@@ -562,29 +493,21 @@ export function initContactForm(): () => void {
 
   restoreDraft();
   updateMessage();
-  refreshLetter();
-  // Les largeurs mesurées dépendent des polices et de la taille du texte (clamp)
-  document.fonts?.ready.then(autosize);
-  window.addEventListener('resize', autosize);
 
   form.addEventListener('submit', onSubmit);
   form.addEventListener('input', onInput);
-  form.addEventListener('change', onInput);
   form.addEventListener('focusout', onBlur);
   form.addEventListener('animationend', onAnimEnd);
   card.addEventListener('click', onClick);
   document.addEventListener('click', onQuote);
   return () => {
     enter?.kill();
-    picks.destroy();
     copyBtn?.removeEventListener('click', onCopy);
-    window.removeEventListener('resize', autosize);
     window.clearTimeout(copyTimer);
     window.clearTimeout(saveTimer);
     window.clearTimeout(noteTimer);
     form.removeEventListener('submit', onSubmit);
     form.removeEventListener('input', onInput);
-    form.removeEventListener('change', onInput);
     form.removeEventListener('focusout', onBlur);
     form.removeEventListener('animationend', onAnimEnd);
     card.removeEventListener('click', onClick);

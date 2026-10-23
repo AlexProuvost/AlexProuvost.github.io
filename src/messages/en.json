@@ -331,25 +331,18 @@
     "label": "Contact",
     "titleA": "Got a project in mind?",
     "titleB": "Let's talk.",
-    "lead": "Fill in the blanks, like a letter. I'll reply within 24 hours with the next steps and, if you'd like, a free quote.",
+    "lead": "Three questions, and I'll reply within 24 hours with the next steps and, if you'd like, a free quote.",
     "emailLabel": "Send an email",
     "cta": "Send an email",
     "elsewhere": "Elsewhere",
     "promise": "Reply within 24 hours",
     "form": {
-      "name": "Your name",
-      "namePh": "First and last name",
-      "email": "Your email",
+      "name": "What's your name?",
+      "namePh": "First Last",
+      "email": "Your email?",
       "emailPh": "you@example.com",
-      "company": "Company",
-      "companyPh": "Your business name",
-      "website": "Current website",
-      "websitePh": "www.yoursite.com",
-      "optional": "optional",
       "type": "Project type",
-      "budget": "Budget",
-      "deadline": "When for?",
-      "message": "Your project in a few lines",
+      "message": "Tell me about your project",
       "messagePh": "Your business, what you'd like, a website you love…",
       "types": [
         "Showcase site",
@@ -358,24 +351,10 @@
         "Redesign of an existing site",
         "Other"
       ],
-      "budgets": [
-        "To be defined",
-        "Under €1,000",
-        "€1,000 – 2,500",
-        "€2,500 – 5,000",
-        "Over €5,000"
-      ],
-      "deadlines": [
-        "No rush",
-        "Within 3 months",
-        "Within a month",
-        "As soon as possible"
-      ],
       "errors": {
         "name": "Add your name so I know who to reply to.",
         "email": "Add your email.",
         "emailFormat": "This email looks incomplete (e.g. you@example.com).",
-        "website": "This doesn't look like a website address (e.g. www.yoursite.com).",
         "message": "Tell me a little more about your project.",
         "messageShort": "A few more words: at least {min} characters.",
         "summary": "Please check the fields marked in red."
@@ -384,7 +363,7 @@
       "draftSaved": "Draft saved",
       "draftRestored": "Draft restored",
       "draftClear": "Clear",
-      "send": "Send the letter",
+      "send": "Send",
       "sending": "Sending…",
       "subject": "New project · {type} · {name}",
       "successLabel": "Message sent",
@@ -396,47 +375,7 @@
       "retry": "Try again",
       "errorOr": "or write to me directly",
       "or": "or write to me directly",
-      "privacy": "Your details are only used to reply to you. Nothing is sold or shared.",
-      "letter": {
-        "meta": {
-          "to": "To",
-          "toValue": "Alex",
-          "subject": "Subject"
-        },
-        "hello": "Hi Alex,",
-        "lines": [
-          "My name is {name}, from {company}.",
-          "I'd like {type}, with a budget {budget}, ideally {deadline}.",
-          "Right now, my website is {website}.",
-          "In a few words: {message}",
-          "You can reach me at {email}."
-        ],
-        "companyPh": "your business",
-        "websitePh": "none yet",
-        "messagePh": "my business, what I’d like, a website I love…",
-        "types": [
-          "a showcase website",
-          "a web app",
-          "an online shop",
-          "a redesign of my site",
-          "something else"
-        ],
-        "budgets": [
-          "still to be defined",
-          "under €1,000",
-          "between €1,000 and €2,500",
-          "between €2,500 and €5,000",
-          "over €5,000"
-        ],
-        "deadlines": [
-          "with no rush",
-          "within 3 months",
-          "within a month",
-          "as soon as possible"
-        ],
-        "bye": "Talk soon,",
-        "signPh": "your name"
-      }
+      "privacy": "Your details are only used to reply to you. Nothing is sold or shared."
     },
     "available": "Available for new projects",
     "local": "In Tournai, it's",

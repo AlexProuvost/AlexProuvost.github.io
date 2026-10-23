@@ -331,25 +331,18 @@
     "label": "Contact",
     "titleA": "Un projet en tête ?",
     "titleB": "Parlons-en.",
-    "lead": "Remplissez les blancs, comme une lettre. Je vous réponds sous 24 h avec les prochaines étapes et, si vous le souhaitez, un devis gratuit.",
+    "lead": "Trois questions, et je vous réponds sous 24 h avec les prochaines étapes et, si vous le souhaitez, un devis gratuit.",
     "emailLabel": "Écrire un email",
     "cta": "Écrire un email",
     "elsewhere": "Ailleurs",
     "promise": "Réponse sous 24 h",
     "form": {
-      "name": "Votre nom",
-      "namePh": "Prénom et nom",
-      "email": "Votre email",
+      "name": "Comment vous appelez-vous ?",
+      "namePh": "Prénom Nom",
+      "email": "Votre email ?",
       "emailPh": "vous@exemple.be",
-      "company": "Entreprise",
-      "companyPh": "Le nom de votre activité",
-      "website": "Site actuel",
-      "websitePh": "www.votresite.be",
-      "optional": "facultatif",
       "type": "Type de projet",
-      "budget": "Budget envisagé",
-      "deadline": "Pour quand ?",
-      "message": "Votre projet en quelques lignes",
+      "message": "Parlez-moi de votre projet",
       "messagePh": "Votre activité, ce que vous aimeriez, un site que vous aimez…",
       "types": [
         "Site vitrine",
@@ -358,24 +351,10 @@
         "Refonte d'un site existant",
         "Autre"
       ],
-      "budgets": [
-        "À définir",
-        "Moins de 1 000 €",
-        "1 000 – 2 500 €",
-        "2 500 – 5 000 €",
-        "Plus de 5 000 €"
-      ],
-      "deadlines": [
-        "Pas pressé",
-        "D'ici 3 mois",
-        "D'ici 1 mois",
-        "Dès que possible"
-      ],
       "errors": {
         "name": "Indiquez votre nom pour que je sache à qui répondre.",
         "email": "Indiquez votre email.",
         "emailFormat": "Cet email semble incomplet (ex. : vous@exemple.be).",
-        "website": "Cette adresse ne ressemble pas à un site (ex. : www.votresite.be).",
         "message": "Dites-m'en un peu plus sur votre projet.",
         "messageShort": "Encore quelques mots : au moins {min} caractères.",
         "summary": "Vérifiez les champs indiqués en rouge."
@@ -384,7 +363,7 @@
       "draftSaved": "Brouillon enregistré",
       "draftRestored": "Brouillon retrouvé",
       "draftClear": "Effacer",
-      "send": "Envoyer la lettre",
+      "send": "Envoyer",
       "sending": "Envoi en cours…",
       "subject": "Nouveau projet · {type} · {name}",
       "successLabel": "Message envoyé",
@@ -396,47 +375,7 @@
       "retry": "Réessayer",
       "errorOr": "ou écrivez-moi directement",
       "or": "ou écrivez-moi directement",
-      "privacy": "Vos informations servent uniquement à vous répondre. Rien n'est revendu ni partagé.",
-      "letter": {
-        "meta": {
-          "to": "À",
-          "toValue": "Alex",
-          "subject": "Objet"
-        },
-        "hello": "Bonjour Alex,",
-        "lines": [
-          "Je m'appelle {name}, de {company}.",
-          "J'aimerais {type}, avec un budget {budget}, idéalement {deadline}.",
-          "Aujourd'hui, mon site, c'est {website}.",
-          "En quelques mots : {message}",
-          "Vous pouvez me répondre à {email}."
-        ],
-        "companyPh": "votre activité",
-        "websitePh": "aucun pour l’instant",
-        "messagePh": "mon activité, ce que j’aimerais, un site que j’aime…",
-        "types": [
-          "un site vitrine",
-          "une application web",
-          "une boutique en ligne",
-          "refaire mon site",
-          "autre chose"
-        ],
-        "budgets": [
-          "encore à définir",
-          "de moins de 1 000 €",
-          "entre 1 000 et 2 500 €",
-          "entre 2 500 et 5 000 €",
-          "de plus de 5 000 €"
-        ],
-        "deadlines": [
-          "sans urgence",
-          "d'ici 3 mois",
-          "d'ici 1 mois",
-          "dès que possible"
-        ],
-        "bye": "À très vite,",
-        "signPh": "votre nom"
-      }
+      "privacy": "Vos informations servent uniquement à vous répondre. Rien n'est revendu ni partagé."
     },
     "available": "Disponible pour de nouveaux projets",
     "local": "À Tournai, il est",
