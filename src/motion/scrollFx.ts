@@ -6,6 +6,8 @@ import { motion } from './store';
  *
  *   data-parallax="0.3"     parallaxe verticale (négatif = monte plus vite)
  *   data-skew               les grands titres se penchent selon la vitesse du scroll
+ *   data-drift="5"          les grands titres glissent à l'horizontale pendant qu'ils traversent l'écran
+ *                           (de -5 à +5 % de la largeur, alignés au milieu ; négatif = sens inverse)
  *   data-hero-out           ouverture : le contenu s'éloigne en profondeur quand on quitte le hero
  *   data-case-cover         étude de cas : la couverture descend moins vite et zoome, le titre part plus vite
  *   data-nav                se cache en descendant, revient en remontant
@@ -25,6 +27,20 @@ export function buildScrollFx(): () => void {
         yPercent: p * 50,
         ease: 'none',
         scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
+      },
+    );
+  });
+
+  /* Grands titres qui glissent : deux lignes voisines partent en sens opposés, avec un léger retard (scrub) */
+  gsap.utils.toArray<HTMLElement>('[data-drift]').forEach((el) => {
+    const d = Number(el.dataset.drift) || 0;
+    gsap.fromTo(
+      el,
+      { x: () => (-d * window.innerWidth) / 100 },
+      {
+        x: () => (d * window.innerWidth) / 100,
+        ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 0.8, invalidateOnRefresh: true },
       },
     );
   });

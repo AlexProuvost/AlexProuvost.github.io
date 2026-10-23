@@ -28,7 +28,7 @@ export function Services() {
         <SectionLabel index="04">{t('label')}</SectionLabel>
 
         <header className={styles.header}>
-          <h2 className={`headline ${styles.title}`} data-split="title" data-skew>
+          <h2 className={`headline ${styles.title}`} data-split="title" data-skew data-drift="-4">
             {t.rich('title', rich)}
           </h2>
           <div className={styles.headSide}>

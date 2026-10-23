@@ -3,6 +3,7 @@ import { gsap, ScrollTrigger } from '@/motion/gsap';
 import { ExplodedStack } from './ExplodedStack';
 import { HeroFluid } from './HeroFluid';
 import { InkWave } from './InkWave';
+import { InkThread } from './Thread';
 import { siteFont } from './materials';
 import type { GLLayer, Viewport } from './types';
 
@@ -54,6 +55,7 @@ export function mountGL({ renderer, scene, camera, render }: MountOptions): () =
     if (disposed) return;
     layers.push(
       new InkWave(),
+      new InkThread(),
       new HeroFluid(renderer),
       new ExplodedStack(camera, renderer.capabilities.getMaxAnisotropy()),
     );

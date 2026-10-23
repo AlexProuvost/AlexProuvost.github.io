@@ -23,7 +23,7 @@ export function About() {
       <div className="container">
         <SectionLabel index="05">{t('label')}</SectionLabel>
 
-        <p className={`headline ${styles.statement}`} data-split="light">
+        <p className={`headline ${styles.statement}`} data-split="light" data-thread="about">
           {t.rich('statement', rich)}
         </p>
 

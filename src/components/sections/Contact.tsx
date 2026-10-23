@@ -14,19 +14,16 @@ export function Contact() {
   const tc = useTranslations('cursor');
 
   return (
-    <section
-      id={sectionIds.contact}
-      className={styles.section}
-      data-section="contact"
-      data-section-label={t('label')}
-    >
+    <section id={sectionIds.contact} className={styles.section} data-section="contact" data-section-label={t('label')}>
       <div className="container">
         <SectionLabel index="06">{t('label')}</SectionLabel>
 
         <header className={styles.head}>
           <h2 className={`headline ${styles.title}`}>
-            <span data-split="title">{t('titleA')}</span>
-            <span className={styles.titleB} data-split="title">
+            <span data-split="title" data-drift="5">
+              {t('titleA')}
+            </span>
+            <span className={styles.titleB} data-split="title" data-drift="-5">
               <em>{t('titleB')}</em>
             </span>
           </h2>

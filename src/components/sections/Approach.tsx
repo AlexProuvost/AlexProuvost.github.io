@@ -33,12 +33,12 @@ export function Approach() {
       data-section="approach"
       data-section-label={t('label')}
     >
-      <div className={`container ${styles.intro}`}>
+      <div className={`container ${styles.intro}`} data-thread="approach">
         <SectionLabel index="02">{t('label')}</SectionLabel>
-        <h2 className={`headline ${styles.title}`} data-split="ink" data-skew>
+        <h2 className={`headline ${styles.title}`} data-split="ink" data-skew data-drift="4">
           {t.rich('title', rich)}
         </h2>
-        <p className={styles.lead} data-split="lines">
+        <p className={styles.lead} data-split="lines" data-drift="-2.5">
           {t('lead')}
         </p>
       </div>
@@ -96,7 +96,7 @@ export function Approach() {
           chaque étape vient se poser sur la précédente, qui recule et s'assombrit ;
           son grand numéro se remplit d'encre à l'arrivée. Sans animation : les cartes, simplement empilées. */}
       <div className={`container ${styles.process}`}>
-        <h3 className={`headline ${styles.processTitle}`} data-split="title">
+        <h3 className={`headline ${styles.processTitle}`} data-split="title" data-drift="4">
           {t('detailTitle')}
         </h3>
         <ol className={styles.deck} data-deck>
