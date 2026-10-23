@@ -18,7 +18,8 @@
     "home": "Accueil",
     "follow": "Me suivre",
     "write": "M'écrire",
-    "available": "Disponible pour de nouveaux projets"
+    "available": "Disponible pour de nouveaux projets",
+    "talk": "Parlons-en"
   },
   "hero": {
     "label": "Ouverture",
@@ -38,8 +39,14 @@
         "text": "Vos objectifs, votre public, vos contraintes. Le vrai besoin, pas seulement la demande.",
         "notes": [],
         "duration": "1 à 2 jours",
-        "get": ["Un résumé clair de votre besoin", "Un devis gratuit et détaillé"],
-        "need": ["Me parler de vos objectifs et de votre public", "Me montrer des sites que vous aimez"]
+        "get": [
+          "Un résumé clair de votre besoin",
+          "Un devis gratuit et détaillé"
+        ],
+        "need": [
+          "Me parler de vos objectifs et de votre public",
+          "Me montrer des sites que vous aimez"
+        ]
       },
       {
         "title": "Structurer",
@@ -47,8 +54,14 @@
         "text": "Une grille, une hiérarchie, un parcours clair. Le wireframe pose les bases avant le style.",
         "notes": [],
         "duration": "3 à 5 jours",
-        "get": ["Le plan du site, page par page", "Les maquettes des pages clés"],
-        "need": ["Vos textes et photos (ou je vous aide)", "Vos retours sur les maquettes"]
+        "get": [
+          "Le plan du site, page par page",
+          "Les maquettes des pages clés"
+        ],
+        "need": [
+          "Vos textes et photos (ou je vous aide)",
+          "Vos retours sur les maquettes"
+        ]
       },
       {
         "title": "Donner vie",
@@ -56,17 +69,32 @@
         "text": "Typographie, couleurs, images, animations. Le code transforme la maquette en interface vivante.",
         "notes": [],
         "duration": "1 à 3 semaines",
-        "get": ["Le site en cours, en ligne sur une adresse de test", "Un point d'avancement chaque semaine"],
-        "need": ["Vos retours au fil de l'eau"]
+        "get": [
+          "Le site en cours, en ligne sur une adresse de test",
+          "Un point d'avancement chaque semaine"
+        ],
+        "need": [
+          "Vos retours au fil de l'eau"
+        ]
       },
       {
         "title": "Livrer",
         "layer": "En ligne",
         "text": "Un site rapide, soigné et responsive, livré à l'heure — à un tarif juste.",
-        "notes": ["Rapide", "Responsive", "Bilingue", "Référencé"],
+        "notes": [
+          "Rapide",
+          "Responsive",
+          "Bilingue",
+          "Référencé"
+        ],
         "duration": "1 à 2 jours",
-        "get": ["Le site en ligne, rapide et référencé", "Une prise en main pour être autonome"],
-        "need": ["Votre nom de domaine (ou je m'en occupe)"]
+        "get": [
+          "Le site en ligne, rapide et référencé",
+          "Une prise en main pour être autonome"
+        ],
+        "need": [
+          "Votre nom de domaine (ou je m'en occupe)"
+        ]
       }
     ],
     "detailTitle": "Le déroulé, en détail",
@@ -190,7 +218,11 @@
           "Mise en ligne et prise en main"
         ],
         "delay": "2 à 4 semaines",
-        "tags": ["Design sur mesure", "Animations", "SEO"]
+        "tags": [
+          "Design sur mesure",
+          "Animations",
+          "SEO"
+        ]
       },
       {
         "id": "app",
@@ -204,7 +236,11 @@
           "Livraison par étapes"
         ],
         "delay": "Selon le projet",
-        "tags": ["Plateformes", "Tableaux de bord", "Mobile"]
+        "tags": [
+          "Plateformes",
+          "Tableaux de bord",
+          "Mobile"
+        ]
       },
       {
         "id": "shop",
@@ -218,7 +254,11 @@
           "Formation à l'utilisation"
         ],
         "delay": "4 à 8 semaines",
-        "tags": ["Catalogue", "Paiement", "Gestion"]
+        "tags": [
+          "Catalogue",
+          "Paiement",
+          "Gestion"
+        ]
       }
     ],
     "for": "Pour",
@@ -276,7 +316,16 @@
     "toolsLabel": "Mes outils",
     "toolsHint": "Attrapez-les, lancez-les.",
     "toolsHintTouch": "Touchez-les pour les faire sauter.",
-    "tools": ["React", "Next.js", "TypeScript", "GSAP", "Three.js · WebGL", "Flutter", "Dart", "HTML & CSS"]
+    "tools": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "GSAP",
+      "Three.js · WebGL",
+      "Flutter",
+      "Dart",
+      "HTML & CSS"
+    ]
   },
   "contact": {
     "label": "Contact",
@@ -302,9 +351,26 @@
       "deadline": "Pour quand ?",
       "message": "Votre projet en quelques lignes",
       "messagePh": "Votre activité, ce que vous aimeriez, un site que vous aimez…",
-      "types": ["Site vitrine", "Application web", "E-commerce", "Refonte d'un site existant", "Autre"],
-      "budgets": ["À définir", "Moins de 1 000 €", "1 000 – 2 500 €", "2 500 – 5 000 €", "Plus de 5 000 €"],
-      "deadlines": ["Pas pressé", "D'ici 3 mois", "D'ici 1 mois", "Dès que possible"],
+      "types": [
+        "Site vitrine",
+        "Application web",
+        "E-commerce",
+        "Refonte d'un site existant",
+        "Autre"
+      ],
+      "budgets": [
+        "À définir",
+        "Moins de 1 000 €",
+        "1 000 – 2 500 €",
+        "2 500 – 5 000 €",
+        "Plus de 5 000 €"
+      ],
+      "deadlines": [
+        "Pas pressé",
+        "D'ici 3 mois",
+        "D'ici 1 mois",
+        "Dès que possible"
+      ],
       "errors": {
         "name": "Indiquez votre nom pour que je sache à qui répondre.",
         "email": "Indiquez votre email.",
@@ -348,7 +414,13 @@
         "companyPh": "votre activité",
         "websitePh": "aucun pour l’instant",
         "messagePh": "mon activité, ce que j’aimerais, un site que j’aime…",
-        "types": ["un site vitrine", "une application web", "une boutique en ligne", "refaire mon site", "autre chose"],
+        "types": [
+          "un site vitrine",
+          "une application web",
+          "une boutique en ligne",
+          "refaire mon site",
+          "autre chose"
+        ],
         "budgets": [
           "encore à définir",
           "de moins de 1 000 €",
@@ -356,7 +428,12 @@
           "entre 2 500 et 5 000 €",
           "de plus de 5 000 €"
         ],
-        "deadlines": ["sans urgence", "d'ici 3 mois", "d'ici 1 mois", "dès que possible"],
+        "deadlines": [
+          "sans urgence",
+          "d'ici 3 mois",
+          "d'ici 1 mois",
+          "dès que possible"
+        ],
         "bye": "À très vite,",
         "signPh": "votre nom"
       }
@@ -386,7 +463,13 @@
     "write": "Écrire"
   },
   "stack": {
-    "layers": ["Brief", "Grille", "Wireframe", "Typographie", "Interface"]
+    "layers": [
+      "Brief",
+      "Grille",
+      "Wireframe",
+      "Typographie",
+      "Interface"
+    ]
   },
   "cases": {
     "nuance": {
@@ -428,8 +511,19 @@
     }
   },
   "marquee": {
-    "a": ["Sites vitrines", "Applications web", "E-commerce", "Animations", "Sur mesure"],
-    "b": ["Sur devis", "Réponse sous 24 h", "Français & anglais", "Tournai, Belgique"]
+    "a": [
+      "Sites vitrines",
+      "Applications web",
+      "E-commerce",
+      "Animations",
+      "Sur mesure"
+    ],
+    "b": [
+      "Sur devis",
+      "Réponse sous 24 h",
+      "Français & anglais",
+      "Tournai, Belgique"
+    ]
   },
   "rail": {
     "hint": "Faites défiler",

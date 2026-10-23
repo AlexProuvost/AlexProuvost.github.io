@@ -18,7 +18,8 @@
     "home": "Home",
     "follow": "Follow me",
     "write": "Write to me",
-    "available": "Available for new projects"
+    "available": "Available for new projects",
+    "talk": "Let's talk"
   },
   "hero": {
     "label": "Opening",
@@ -38,8 +39,14 @@
         "text": "Your goals, your audience, your constraints. The real need, not just the request.",
         "notes": [],
         "duration": "1 to 2 days",
-        "get": ["A clear summary of your needs", "A free, detailed quote"],
-        "need": ["Tell me about your goals and audience", "Show me websites you like"]
+        "get": [
+          "A clear summary of your needs",
+          "A free, detailed quote"
+        ],
+        "need": [
+          "Tell me about your goals and audience",
+          "Show me websites you like"
+        ]
       },
       {
         "title": "Structure",
@@ -47,8 +54,14 @@
         "text": "A grid, a hierarchy, a clear path. The wireframe lays the foundations before the style.",
         "notes": [],
         "duration": "3 to 5 days",
-        "get": ["The site map, page by page", "Mock-ups of the key pages"],
-        "need": ["Send your texts and photos (or I help)", "Give feedback on the mock-ups"]
+        "get": [
+          "The site map, page by page",
+          "Mock-ups of the key pages"
+        ],
+        "need": [
+          "Send your texts and photos (or I help)",
+          "Give feedback on the mock-ups"
+        ]
       },
       {
         "title": "Bring to life",
@@ -56,17 +69,32 @@
         "text": "Type, colour, images, motion. Code turns the mock-up into a living interface.",
         "notes": [],
         "duration": "1 to 3 weeks",
-        "get": ["The site in progress, online at a test address", "A weekly progress update"],
-        "need": ["Share feedback along the way"]
+        "get": [
+          "The site in progress, online at a test address",
+          "A weekly progress update"
+        ],
+        "need": [
+          "Share feedback along the way"
+        ]
       },
       {
         "title": "Ship",
         "layer": "Live",
         "text": "A fast, polished, responsive website, delivered on time — at a fair price.",
-        "notes": ["Fast", "Responsive", "Bilingual", "Searchable"],
+        "notes": [
+          "Fast",
+          "Responsive",
+          "Bilingual",
+          "Searchable"
+        ],
         "duration": "1 to 2 days",
-        "get": ["The live site, fast and indexed", "A hand-over session so you are independent"],
-        "need": ["Provide your domain name (or I handle it)"]
+        "get": [
+          "The live site, fast and indexed",
+          "A hand-over session so you are independent"
+        ],
+        "need": [
+          "Provide your domain name (or I handle it)"
+        ]
       }
     ],
     "detailTitle": "The process, in detail",
@@ -190,7 +218,11 @@
           "Launch and hand-over"
         ],
         "delay": "2 to 4 weeks",
-        "tags": ["Bespoke design", "Motion", "SEO"]
+        "tags": [
+          "Bespoke design",
+          "Motion",
+          "SEO"
+        ]
       },
       {
         "id": "app",
@@ -204,7 +236,11 @@
           "Delivered in stages"
         ],
         "delay": "Depends on the project",
-        "tags": ["Platforms", "Dashboards", "Mobile"]
+        "tags": [
+          "Platforms",
+          "Dashboards",
+          "Mobile"
+        ]
       },
       {
         "id": "shop",
@@ -218,7 +254,11 @@
           "Training to run it yourself"
         ],
         "delay": "4 to 8 weeks",
-        "tags": ["Catalogue", "Payments", "Management"]
+        "tags": [
+          "Catalogue",
+          "Payments",
+          "Management"
+        ]
       }
     ],
     "for": "For",
@@ -276,7 +316,16 @@
     "toolsLabel": "My tools",
     "toolsHint": "Grab one, throw it.",
     "toolsHintTouch": "Tap one to make it jump.",
-    "tools": ["React", "Next.js", "TypeScript", "GSAP", "Three.js · WebGL", "Flutter", "Dart", "HTML & CSS"]
+    "tools": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "GSAP",
+      "Three.js · WebGL",
+      "Flutter",
+      "Dart",
+      "HTML & CSS"
+    ]
   },
   "contact": {
     "label": "Contact",
@@ -302,9 +351,26 @@
       "deadline": "When for?",
       "message": "Your project in a few lines",
       "messagePh": "Your business, what you'd like, a website you love…",
-      "types": ["Showcase site", "Web application", "E-commerce", "Redesign of an existing site", "Other"],
-      "budgets": ["To be defined", "Under €1,000", "€1,000 – 2,500", "€2,500 – 5,000", "Over €5,000"],
-      "deadlines": ["No rush", "Within 3 months", "Within a month", "As soon as possible"],
+      "types": [
+        "Showcase site",
+        "Web application",
+        "E-commerce",
+        "Redesign of an existing site",
+        "Other"
+      ],
+      "budgets": [
+        "To be defined",
+        "Under €1,000",
+        "€1,000 – 2,500",
+        "€2,500 – 5,000",
+        "Over €5,000"
+      ],
+      "deadlines": [
+        "No rush",
+        "Within 3 months",
+        "Within a month",
+        "As soon as possible"
+      ],
       "errors": {
         "name": "Add your name so I know who to reply to.",
         "email": "Add your email.",
@@ -348,7 +414,13 @@
         "companyPh": "your business",
         "websitePh": "none yet",
         "messagePh": "my business, what I’d like, a website I love…",
-        "types": ["a showcase website", "a web app", "an online shop", "a redesign of my site", "something else"],
+        "types": [
+          "a showcase website",
+          "a web app",
+          "an online shop",
+          "a redesign of my site",
+          "something else"
+        ],
         "budgets": [
           "still to be defined",
           "under €1,000",
@@ -356,7 +428,12 @@
           "between €2,500 and €5,000",
           "over €5,000"
         ],
-        "deadlines": ["with no rush", "within 3 months", "within a month", "as soon as possible"],
+        "deadlines": [
+          "with no rush",
+          "within 3 months",
+          "within a month",
+          "as soon as possible"
+        ],
         "bye": "Talk soon,",
         "signPh": "your name"
       }
@@ -386,7 +463,13 @@
     "write": "Write"
   },
   "stack": {
-    "layers": ["Brief", "Grid", "Wireframe", "Typography", "Interface"]
+    "layers": [
+      "Brief",
+      "Grid",
+      "Wireframe",
+      "Typography",
+      "Interface"
+    ]
   },
   "cases": {
     "nuance": {
@@ -428,8 +511,19 @@
     }
   },
   "marquee": {
-    "a": ["Showcase sites", "Web apps", "E-commerce", "Motion", "Made to measure"],
-    "b": ["Custom quotes", "Reply within 24 h", "French & English", "Tournai, Belgium"]
+    "a": [
+      "Showcase sites",
+      "Web apps",
+      "E-commerce",
+      "Motion",
+      "Made to measure"
+    ],
+    "b": [
+      "Custom quotes",
+      "Reply within 24 h",
+      "French & English",
+      "Tournai, Belgium"
+    ]
   },
   "rail": {
     "hint": "Scroll down",
