@@ -12,11 +12,22 @@ import type { GLLayer, Viewport } from './types';
  * Sans WebGL : le fond CSS reste en place (bord droit).
  */
 
+// Débord maximal d'un bord liquide autour de sa position (houle 56 + inertie 110 + souris 54, arrondi)
+const REACH = 240;
+
+/* Le quad ne couvre que la bande où la section peut se dessiner (de son haut à son bas, ± REACH),
+   rognée à l'écran : on ne fait plus calculer les pixels hors de la section. */
 const vertex = /* glsl */ `
-  varying vec2 vUv;
+  uniform vec2 uRes;
+  uniform float uTop;
+  uniform float uBottom;
+  varying vec2 vPx;
   void main() {
-    vUv = uv;
-    gl_Position = vec4(position.xy * 2.0, 0.0, 1.0);
+    float y0 = clamp(uTop - ${REACH}.0, 0.0, uRes.y);
+    float y1 = clamp(uBottom + ${REACH}.0, 0.0, uRes.y);
+    float py = mix(y0, y1, 0.5 - position.y);
+    vPx = vec2((position.x + 0.5) * uRes.x, py);
+    gl_Position = vec4(position.x * 2.0, 1.0 - 2.0 * py / uRes.y, 0.0, 1.0);
   }
 `;
 
@@ -30,7 +41,7 @@ const fragment = /* glsl */ `
   uniform float uLift;
   uniform vec3 uColor;
   uniform vec3 uRim;
-  varying vec2 vUv;
+  varying vec2 vPx;
 
   float edge(float x, float base, float dir, float seed) {
     // Houle lente : trois longueurs d'onde, sans composante rapide (elle se lisait comme une vibration)
@@ -51,14 +62,20 @@ const fragment = /* glsl */ `
   }
 
   void main() {
-    vec2 p = vec2(vUv.x * uRes.x, (1.0 - vUv.y) * uRes.y);
+    vec2 p = vPx;
+    float shade = 0.04 * sin(p.x * 0.002 + p.y * 0.0015 + uTime * 0.3);
+    // Loin des deux bords : encre pleine, sans calculer la houle (la plupart des pixels d'une section)
+    if (p.y > uTop + ${REACH}.0 && p.y < uBottom - ${REACH}.0) {
+      gl_FragColor = vec4(uColor * (1.0 + shade), 1.0);
+      #include <colorspace_fragment>
+      return;
+    }
     float t = edge(p.x, uTop, 1.0, 0.0);
     float b = edge(p.x, uBottom, -1.0, 4.0);
     float inside = smoothstep(t - 1.0, t + 1.0, p.y) * (1.0 - smoothstep(b - 1.0, b + 1.0, p.y));
     if (inside <= 0.001) discard;
     // Liseré d'encre fraîche le long des bords + léger dégradé
     float rim = exp(-max(p.y - t, 0.0) / 22.0) + exp(-max(b - p.y, 0.0) / 22.0);
-    float shade = 0.04 * sin(p.x * 0.002 + p.y * 0.0015 + uTime * 0.3);
     vec3 col = uColor * (1.0 + shade) + uRim * rim * 0.45;
     gl_FragColor = vec4(col, inside);
     #include <colorspace_fragment>

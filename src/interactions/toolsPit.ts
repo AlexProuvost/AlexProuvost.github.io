@@ -14,6 +14,9 @@ type Item = { el: HTMLElement; body: MatterNS.Body; w: number; h: number };
 
 const STEP = 1000 / 60;
 const WALL = 200;
+/** Vitesses maximales (px et radians par pas de 1/60 s) : un lancer reste lisible, rien ne part en flèche */
+const MAX_SPEED = 13;
+const MAX_SPIN = 0.16;
 
 export function initToolsPit(): () => void {
   const pit = document.querySelector<HTMLElement>('[data-tools-pit]');
@@ -53,7 +56,7 @@ export function initToolsPit(): () => void {
         chamfer: { radius: h / 2 - 0.5 },
         restitution: 0.35,
         friction: 0.35,
-        frictionAir: 0.012,
+        frictionAir: 0.028,
         density: 0.0016,
         angle: (Math.random() - 0.5) * 0.6,
       });
@@ -63,6 +66,20 @@ export function initToolsPit(): () => void {
       engine.world,
       items.map((it) => it.body),
     );
+
+    // Bride les vitesses après chaque pas : on peut lancer fort, la pastille reste à une allure douce
+    Events.on(engine, 'afterUpdate', () => {
+      items.forEach(({ body }) => {
+        const speed = body.speed;
+        if (speed > MAX_SPEED) {
+          const k = MAX_SPEED / speed;
+          Body.setVelocity(body, { x: body.velocity.x * k, y: body.velocity.y * k });
+        }
+        if (Math.abs(body.angularVelocity) > MAX_SPIN) {
+          Body.setAngularVelocity(body, Math.sign(body.angularVelocity) * MAX_SPIN);
+        }
+      });
+    });
 
     const draw = () => {
       items.forEach(({ el, body, w, h }) => {
@@ -98,7 +115,8 @@ export function initToolsPit(): () => void {
       on(window, 'mouseup', m.mouseup);
       const grab = MouseConstraint.create(engine, {
         mouse,
-        constraint: { stiffness: 0.18, damping: 0.08, render: { visible: false } },
+        // Lien souple : la pastille suit la souris avec un peu de retard, le lancer est moins sec
+        constraint: { stiffness: 0.08, damping: 0.15, render: { visible: false } },
       });
       Composite.add(engine.world, grab);
       Events.on(grab, 'startdrag', () => {
@@ -121,8 +139,8 @@ export function initToolsPit(): () => void {
           p,
         ).forEach((b) => {
           Sleeping.set(b, false);
-          Body.setVelocity(b, { x: b.velocity.x + vx * 6, y: b.velocity.y + vy * 6 - 2 });
-          Body.setAngularVelocity(b, b.angularVelocity + vx * 0.02);
+          Body.setVelocity(b, { x: b.velocity.x + vx * 2.5, y: b.velocity.y + vy * 2.5 - 1.5 });
+          Body.setAngularVelocity(b, b.angularVelocity + vx * 0.01);
         });
       }) as EventListener);
     } else {
@@ -132,8 +150,8 @@ export function initToolsPit(): () => void {
         const it = items.find((i) => i.el === el);
         if (!it) return;
         Sleeping.set(it.body, false);
-        Body.setVelocity(it.body, { x: (Math.random() - 0.5) * 10, y: -16 - Math.random() * 6 });
-        Body.setAngularVelocity(it.body, (Math.random() - 0.5) * 0.4);
+        Body.setVelocity(it.body, { x: (Math.random() - 0.5) * 6, y: -11 - Math.random() * 3 });
+        Body.setAngularVelocity(it.body, (Math.random() - 0.5) * 0.2);
       }) as EventListener);
     }
 

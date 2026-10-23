@@ -31,7 +31,7 @@ export function inkFilter(el: HTMLElement) {
   filter.setAttribute('height', '140%');
   filter.setAttribute('color-interpolation-filters', 'sRGB');
   filter.innerHTML = `
-    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.035" numOctaves="2" seed="${count * 7}" result="noise" />
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.035" numOctaves="1" seed="${count * 7}" result="noise" />
     <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="disp" />
     <feGaussianBlur in="disp" stdDeviation="0" result="blur" />
     <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />`;
