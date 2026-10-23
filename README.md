@@ -46,7 +46,7 @@ Node 20 ou plus récent.
 
 - Next.js 16 (App Router, Turbopack) + TypeScript strict
 - next-intl — `/fr` (par défaut) et `/en`
-- Polices auto-hébergées via `next/font/local` : Archivo (display, largeur variable), Geist, Geist Mono, Instrument Serif italique
+- Polices auto-hébergées via `next/font/local` : Archivo (display, largeur variable), Geist, Geist Mono, Fraunces italique (accents du site), Instrument Serif italique (identité du projet Nuance végétale)
 - CSS Modules + tokens CSS (pas de framework CSS)
 - Leva — panneau de réglages **en développement uniquement** (absent du build de prod)
 - GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.26, une seule boucle requestAnimationFrame

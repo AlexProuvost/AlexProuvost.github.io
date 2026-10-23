@@ -248,7 +248,7 @@ export function plateDefs(lang: string): { plates: PlateDef[]; contact: Draw } {
         ctx.textAlign = 'right';
         text(ctx, 'Aa', w - m, 1080, `italic 400 260px ${serif}`, 'rgba(240, 235, 226, 0.4)');
         ctx.textAlign = 'left';
-        text(ctx, 'Geist · Instrument Serif', m, 1060, `500 52px ${mono}`, C.amber);
+        text(ctx, 'Geist · Fraunces', m, 1060, `500 52px ${mono}`, C.amber);
       },
     },
 

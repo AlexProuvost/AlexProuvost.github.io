@@ -5,7 +5,9 @@ import localFont from 'next/font/local';
  * - Archivo : display variable (largeur 62–125 %, graisse 100–900)
  * - Geist : texte
  * - Geist Mono : labels, numéros de pistes, code
- * - Instrument Serif italique : identité du projet Nuance végétale
+ * - Fraunces italique (variable : graisse, taille optique, « soft », « wonk ») : les mots mis en avant
+ *   et tous les accents serif du site. Licence OFL (fonts/Fraunces-OFL.txt).
+ * - Instrument Serif italique : identité du projet Nuance végétale (titre de sa carte et de son étude de cas)
  */
 export const archivo = localFont({
   src: '../fonts/archivo-wdth.woff2',
@@ -30,13 +32,21 @@ export const geistMono = localFont({
   display: 'swap',
 });
 
+export const fraunces = localFont({
+  src: '../fonts/fraunces-italic.woff2',
+  variable: '--font-serif',
+  weight: '100 900',
+  style: 'italic',
+  display: 'swap',
+});
+
 export const instrumentSerif = localFont({
   src: '../fonts/instrument-serif-italic.woff2',
-  variable: '--font-serif',
+  variable: '--font-nuance',
   weight: '400',
   style: 'italic',
   display: 'swap',
   preload: false,
 });
 
-export const fontVariables = [archivo, geist, geistMono, instrumentSerif].map((f) => f.variable).join(' ');
+export const fontVariables = [archivo, geist, geistMono, fraunces, instrumentSerif].map((f) => f.variable).join(' ');

@@ -25,7 +25,8 @@
   --ff-display: var(--font-archivo), 'Arial Black', sans-serif; /* uniquement le logotype ALEX */
   --ff-sans: var(--font-geist), system-ui, -apple-system, 'Segoe UI', sans-serif;
   --ff-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', monospace;
-  --ff-serif: var(--font-serif), Georgia, serif;
+  --ff-serif: var(--font-serif), Georgia, serif; /* Fraunces italique : les accents du site */
+  --ff-nuance: var(--font-nuance), Georgia, serif; /* Instrument Serif : identité du projet Nuance végétale */
 
   /* Échelle typographique fluide */
   --fs-mega: clamp(3.25rem, 10.4vw, 12.5rem); /* grands titres de section */

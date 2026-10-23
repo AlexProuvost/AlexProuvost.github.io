@@ -348,7 +348,7 @@
 }
 
 .serif {
-  font-family: var(--ff-serif);
+  font-family: var(--ff-nuance);
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.03em;
