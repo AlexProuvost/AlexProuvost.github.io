@@ -109,7 +109,9 @@ export function initSmoothScroll(): () => void {
     }
   };
 
-  gsap.ticker.add(tick);
+  // En tête du ticker : le scroll de la frame est posé avant que le WebGL et les effets ne lisent les positions
+  // (sinon les vagues d'encre dessinent avec une frame de retard sur le contenu et tremblent au scroll)
+  gsap.ticker.add(tick, false, true);
 
   return () => {
     gsap.ticker.remove(tick);

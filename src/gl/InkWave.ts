@@ -25,26 +25,28 @@ const fragment = /* glsl */ `
   uniform float uTop;
   uniform float uBottom;
   uniform float uTime;
-  uniform float uVel;
+  uniform float uSlosh;
   uniform vec2 uMouse;
+  uniform float uLift;
   uniform vec3 uColor;
   uniform vec3 uRim;
   varying vec2 vUv;
 
   float edge(float x, float base, float dir, float seed) {
+    // Houle lente : trois longueurs d'onde, sans composante rapide (elle se lisait comme une vibration)
     float n = sin(x * 0.0042 + uTime * 0.8 + seed) * 0.55
-            + sin(x * 0.0105 - uTime * 1.3 + seed * 2.0) * 0.3
-            + sin(x * 0.024 + uTime * 2.2 + seed * 3.0) * 0.15;
+            + sin(x * 0.0105 - uTime * 1.1 + seed * 2.0) * 0.3
+            + sin(x * 0.019 + uTime * 1.4 + seed * 3.0) * 0.15;
     // Plus de houle quand le bord passe au milieu de l'écran
     float mid = 1.0 - clamp(abs(base - uRes.y * 0.5) / (uRes.y * 0.75), 0.0, 1.0);
-    float amp = 8.0 + 64.0 * mid * mid;
-    // Inertie : le centre traîne derrière le scroll
+    float amp = 6.0 + 50.0 * mid * mid;
+    // Inertie : le centre traîne derrière le scroll (déplacement en px, calculé par un ressort côté JS)
     float cx = (x / uRes.x) * 2.0 - 1.0;
-    float slosh = (1.0 - cx * cx) * clamp(uVel, -70.0, 70.0) * 2.4;
-    // La souris attire la surface
+    float slosh = (1.0 - cx * cx) * uSlosh;
+    // La souris attire la surface ; uLift s'éteint en douceur quand elle quitte la fenêtre
     float dx = (x - uMouse.x) / 160.0;
     float dy = (uMouse.y - base) / 240.0;
-    float lift = exp(-dx * dx) * exp(-dy * dy) * 54.0;
+    float lift = exp(-dx * dx) * exp(-dy * dy) * 54.0 * uLift;
     return base + n * amp + slosh - lift * dir;
   }
 
@@ -69,9 +71,14 @@ export class InkWave implements GLLayer {
   readonly root = new THREE.Group();
   private readonly fields: Field[] = [];
   private vp: Viewport = { w: 1, h: 1, cameraZ: 1000 };
-  private time = 0;
+  /** Vitesse du scroll en px/s, lissée (indépendante de la fréquence d'écran) */
   private vel = 0;
-  private mouse = { x: -9999, y: -9999 };
+  private lastScroll: number | null = null;
+  /** Ressort de l'inertie : déplacement du centre (px) et sa vitesse */
+  private slosh = 0;
+  private sloshV = 0;
+  private mouse = { x: 0, y: 0 };
+  private lift = 0;
 
   constructor() {
     document.querySelectorAll<HTMLElement>('[data-theme="accent"]').forEach((el, i) => {
@@ -86,8 +93,9 @@ export class InkWave implements GLLayer {
           uTop: { value: 0 },
           uBottom: { value: 0 },
           uTime: { value: i * 10 },
-          uVel: { value: 0 },
-          uMouse: { value: new THREE.Vector2(-9999, -9999) },
+          uSlosh: { value: 0 },
+          uMouse: { value: new THREE.Vector2(0, 0) },
+          uLift: { value: 0 },
           uColor: { value: new THREE.Color('#2e3bff') },
           uRim: { value: new THREE.Color('#8d96ff') },
         },
@@ -106,18 +114,55 @@ export class InkWave implements GLLayer {
   }
 
   isActive() {
-    return this.fields.some(({ el }) => {
+    const active = this.fields.some(({ el }) => {
       const r = el.getBoundingClientRect();
       return r.bottom > -140 && r.top < this.vp.h + 140;
     });
+    // Hors écran, plus de mise à jour : au retour, l'écart de scroll accumulé ne doit pas compter comme une vitesse
+    if (!active) {
+      this.lastScroll = null;
+      this.vel = this.slosh = this.sloshV = 0;
+    }
+    return active;
+  }
+
+  /**
+   * Inertie du liquide. La vitesse vient du déplacement réel du scroll (px/s) et non de la vitesse « par frame »
+   * de Lenis, trop bruitée (elle dépend de la durée de chaque frame et donnait des tremblements). Un saut
+   * (ancre, retour sur la page, recalcul des épinglages) n'est pas une vitesse : il est ignoré. Le centre suit
+   * ensuite cette vitesse par un ressort amorti, qui ne peut ni trembler ni repartir tout seul.
+   */
+  private updateSlosh(dt: number) {
+    const scroll = motion.scroll;
+    const delta = this.lastScroll === null ? 0 : scroll - this.lastScroll;
+    this.lastScroll = scroll;
+    const jump = Math.abs(delta) > this.vp.h * 0.75;
+    const speed = jump || dt <= 0 ? this.vel : delta / dt;
+    this.vel = damp(this.vel, speed, 0.12, dt);
+    const target = Math.max(-110, Math.min(110, this.vel * 0.035));
+    // Ressort semi-implicite, en petits pas (stable même si une frame dure longtemps)
+    const k = 70;
+    const c = 2 * 0.8 * Math.sqrt(k);
+    const steps = Math.ceil(dt / (1 / 120));
+    const h = dt / steps;
+    for (let s = 0; s < steps; s++) {
+      this.sloshV += (k * (target - this.slosh) - c * this.sloshV) * h;
+      this.slosh += this.sloshV * h;
+    }
+    if (Math.abs(this.slosh) < 0.01 && Math.abs(this.sloshV) < 0.01) this.slosh = this.sloshV = 0;
   }
 
   update(dt: number) {
-    this.time += dt;
-    this.vel = damp(this.vel, motion.smoothVelocity, 0.08, dt);
+    this.updateSlosh(dt);
+    // La souris : la position la suit, l'intensité s'allume ou s'éteint (plus de bosse qui traverse l'écran
+    // quand elle quitte la fenêtre)
     const m = motion.mouse;
-    this.mouse.x = damp(this.mouse.x < -999 ? m.x : this.mouse.x, m.active ? m.x : -9999, 0.12, dt);
-    this.mouse.y = damp(this.mouse.y < -999 ? m.y : this.mouse.y, m.active ? m.y : -9999, 0.12, dt);
+    if (m.active) {
+      const snap = this.lift < 0.01;
+      this.mouse.x = snap ? m.x : damp(this.mouse.x, m.x, 0.12, dt);
+      this.mouse.y = snap ? m.y : damp(this.mouse.y, m.y, 0.12, dt);
+    }
+    this.lift = damp(this.lift, m.active ? 1 : 0, 0.06, dt);
     // Deux sections bleues qui se touchent (contact + pied de page) ne forment qu'une nappe d'encre :
     // la première s'étend jusqu'au bas de la suivante, qui n'est pas dessinée (pas de vague entre les deux).
     const rects = this.fields.map(({ el }) => el.getBoundingClientRect());
@@ -141,8 +186,9 @@ export class InkWave implements GLLayer {
       u.uTop.value = r.top;
       u.uBottom.value = bottom;
       u.uTime.value += dt;
-      u.uVel.value = this.vel;
+      u.uSlosh.value = this.slosh;
       u.uMouse.value.set(this.mouse.x, this.mouse.y);
+      u.uLift.value = this.lift;
     });
   }
 

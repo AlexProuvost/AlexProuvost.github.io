@@ -25,10 +25,14 @@ export function mountGL({ renderer, scene, camera, render }: MountOptions): () =
   let wasActive = true;
   const viewport: Viewport = { w: 1, h: 1, cameraZ: 1000 };
 
-  // Caméra « pixel » : à z = 0, 1 unité = 1 px d'écran
+  // Caméra « pixel » : à z = 0, 1 unité = 1 px d'écran.
+  // On mesure le canvas lui-même (100vw × 100vh), pas la fenêtre : sur mobile, innerHeight change quand la barre
+  // d'adresse apparaît ou disparaît alors que le canvas, lui, ne bouge pas ; l'écart décalait les vagues d'encre
+  // et la 3D, qui sautaient toutes seules pendant le scroll.
   const fit = () => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const box = renderer.domElement.getBoundingClientRect();
+    const w = box.width || window.innerWidth;
+    const h = box.height || window.innerHeight;
     camera.fov = 35;
     camera.aspect = w / h;
     camera.position.set(0, 0, h / 2 / Math.tan((camera.fov * Math.PI) / 360));
@@ -88,9 +92,11 @@ export function mountGL({ renderer, scene, camera, render }: MountOptions): () =
         any = true;
       }
     });
+    // La résolution change AVANT de dessiner : redimensionner le canvas l'efface, et le faire après le rendu
+    // laissait une frame vide à l'écran (vagues qui clignotent)
+    if (any) adapt(dt);
     // Une dernière frame quand tout sort de l'écran (pour l'effacer), puis plus rien
     if (any || wasActive) render(time * 1000);
-    if (any) adapt(dt);
     wasActive = any;
   };
   gsap.ticker.add(tick);
