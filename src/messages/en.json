@@ -1,0 +1,536 @@
+{
+  "meta": {
+    "title": "Alex — Creative web developer in Tournai",
+    "description": "Premium showcase websites, web apps and e-commerce. I understand what you actually need before writing code — premium quality at a fair price."
+  },
+  "nav": {
+    "label": "Main navigation",
+    "role": "Creative web developer — Tournai, BE",
+    "work": "Work",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "lang": "Language",
+    "switchTo": "View the site in {lang}",
+    "menu": "Menu",
+    "close": "Close",
+    "talk": "Let's talk",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu",
+    "home": "Home",
+    "follow": "Follow me",
+    "write": "Write to me",
+    "available": "Available for new projects"
+  },
+  "hero": {
+    "label": "Opening",
+    "name": "Alex — creative web developer in Tournai",
+    "role": "Creative web developer",
+    "place": "Tournai, Belgium",
+    "available": "Available — 2026 projects",
+    "lead": "I design and build websites <em>that stand out</em> — starting with what you actually need.",
+    "figure": "Fig. 01 — A web page, layer by layer",
+    "scroll": "Scroll"
+  },
+  "approach": {
+    "label": "Approach",
+    "title": "From idea <em>to website</em>.",
+    "lead": "Before writing a single line of code, I make sure I understand what you really need. Then I build — layer by layer.",
+    "step": "Step",
+    "steps": [
+      {
+        "title": "Understand",
+        "layer": "The brief",
+        "text": "Your goals, your audience, your constraints. The real need, not just the request.",
+        "notes": [],
+        "duration": "1 to 2 days",
+        "get": [
+          "A clear summary of your needs",
+          "A free, detailed quote"
+        ],
+        "need": [
+          "Tell me about your goals and audience",
+          "Show me websites you like"
+        ]
+      },
+      {
+        "title": "Structure",
+        "layer": "Grid and wireframe",
+        "text": "A grid, a hierarchy, a clear path. The wireframe lays the foundations before the style.",
+        "notes": [],
+        "duration": "3 to 5 days",
+        "get": [
+          "The site map, page by page",
+          "Mock-ups of the key pages"
+        ],
+        "need": [
+          "Send your texts and photos (or I help)",
+          "Give feedback on the mock-ups"
+        ]
+      },
+      {
+        "title": "Bring to life",
+        "layer": "Type, images, motion",
+        "text": "Type, colour, images, motion. Code turns the mock-up into a living interface.",
+        "notes": [],
+        "duration": "1 to 3 weeks",
+        "get": [
+          "The site in progress, online at a test address",
+          "A weekly progress update"
+        ],
+        "need": [
+          "Share feedback along the way"
+        ]
+      },
+      {
+        "title": "Ship",
+        "layer": "Live",
+        "text": "A fast, polished, responsive website, delivered on time — at a fair price.",
+        "notes": [
+          "Fast",
+          "Responsive",
+          "Bilingual",
+          "Searchable"
+        ],
+        "duration": "1 to 2 days",
+        "get": [
+          "The live site, fast and indexed",
+          "A hand-over session so you are independent"
+        ],
+        "need": [
+          "Provide your domain name (or I handle it)"
+        ]
+      }
+    ],
+    "detailTitle": "The process, in detail",
+    "detailNote": "Indicative durations for a showcase website: they are confirmed in the quote.",
+    "duration": "Duration",
+    "receive": "You get",
+    "need": "I need you to"
+  },
+  "work": {
+    "label": "Work",
+    "title": "Selected <em>work</em>.",
+    "note": "Two projects, two worlds: a tool for a dietetics student and a sports timing platform.",
+    "open": "View project",
+    "drag": "Drag",
+    "dragHint": "Scroll or drag",
+    "endLabel": "What next?",
+    "endTitle": "Your project <em>here</em>?",
+    "endCta": "Let's talk"
+  },
+  "project": {
+    "track": "Track",
+    "client": "For",
+    "role": "Role",
+    "stack": "Tech",
+    "feedback": "Feedback",
+    "features": "Features",
+    "visit": "Visit the site",
+    "soon": "Coming soon",
+    "case": "Read the case study",
+    "back": "All projects",
+    "next": "Next project",
+    "context": "Context",
+    "challenge": "The challenge",
+    "approach": "The approach",
+    "delivered": "Delivered",
+    "result": "Outcome",
+    "gallery": "Gallery",
+    "cta": "A similar project in mind?",
+    "ctaText": "Let's talk: free quote, reply within 24 hours.",
+    "caseLabel": "Case study",
+    "concept": "Concept project",
+    "conceptNote": "Fictional brand, designed to show a typical showcase website.",
+    "status": "Status",
+    "keyFigure": "Key figure",
+    "details": "Look closer",
+    "live": "Live"
+  },
+  "projects": {
+    "nuance": {
+      "title": "Nuance végétale",
+      "tagline": "Read the label of a plant-based meat alternative in 30 seconds.",
+      "description": "A free web tool that teaches you to decode the label of a plant-based meat alternative with 5 simple markers. Built for a dietetics student's final-year project at HEPH-Condorcet (Tournai).",
+      "client": "Dietetics student — final-year project, HEPH-Condorcet",
+      "role": "Full design and development",
+      "features": [
+        "Product scanner (Open Food Facts)",
+        "Marker-by-marker decoder",
+        "Interactive label",
+        "Downloadable PDF sheet"
+      ],
+      "feedback": "Very happy client",
+      "screens": [
+        "Nuance végétale home page: read your label in 30 seconds",
+        "The tool's stance: no ready-made score, just the right markers",
+        "Decoder result for a scanned product, marker by marker"
+      ],
+      "hotspots": [
+        "Scan a product: data comes from Open Food Facts",
+        "Interactive label: every marker explains itself",
+        "An editorial tone, no judgement",
+        "The decoder, marker by marker"
+      ],
+      "figure": "30 s",
+      "figureLabel": "to read a label",
+      "kind": "Web tool"
+    },
+    "hybrid": {
+      "title": "Hybrid Timing",
+      "tagline": "The international CrossFit calendar, timed and centralised.",
+      "description": "An all-in-one CrossFit platform: competition calendar and map, live tracking, organiser tools and a mobile app. Built during my internship.",
+      "client": "Internship — Hybrid Timing team",
+      "role": "Full development and technical choices",
+      "features": [
+        "Competition calendar and map",
+        "Live tracking and results",
+        "Organising, judging and check-in",
+        "Mobile app"
+      ],
+      "feedback": "Very happy team",
+      "screens": [
+        "Competition calendar with an interactive world map",
+        "Hybrid Timing home page: CrossFit competitions",
+        "Mobile app: competition list"
+      ],
+      "hotspots": [
+        "Interactive world map of competitions",
+        "Live filters: ongoing, open, coming soon",
+        "Key figures fed by the organisers",
+        "The app: live results in your pocket"
+      ],
+      "figure": "47",
+      "figureLabel": "competitions listed",
+      "kind": "Platform & app"
+    }
+  },
+  "services": {
+    "label": "Services",
+    "title": "What I <em>build</em>.",
+    "lead": "Every project is different. After a first chat to understand what you need, I send you a free, detailed quote.",
+    "items": [
+      {
+        "id": "vitrine",
+        "title": "Premium showcase sites",
+        "for": "Shops, freelancers, small businesses",
+        "text": "A website people remember — and that makes them want to get in touch.",
+        "includes": [
+          "Bespoke design that fits your brand",
+          "Polished motion",
+          "Fast and mobile-first",
+          "Search engine basics (SEO)",
+          "Launch and hand-over"
+        ],
+        "delay": "2 to 4 weeks",
+        "tags": [
+          "Bespoke design",
+          "Motion",
+          "SEO"
+        ]
+      },
+      {
+        "id": "app",
+        "title": "Web applications",
+        "for": "Startups, non-profits, teams",
+        "text": "Tools built around the people who use them, from dashboards to mobile apps.",
+        "includes": [
+          "Needs analysis and mock-ups",
+          "User accounts and dashboard",
+          "Mobile app if needed",
+          "Delivered in stages"
+        ],
+        "delay": "Depends on the project",
+        "tags": [
+          "Platforms",
+          "Dashboards",
+          "Mobile"
+        ]
+      },
+      {
+        "id": "shop",
+        "title": "E-commerce",
+        "for": "Shops and makers",
+        "text": "A clear, fast shop that makes people want to buy — and stays easy to run.",
+        "includes": [
+          "Catalogue and product pages",
+          "Secure online payments",
+          "Simple order management",
+          "Training to run it yourself"
+        ],
+        "delay": "4 to 8 weeks",
+        "tags": [
+          "Catalogue",
+          "Payments",
+          "Management"
+        ]
+      }
+    ],
+    "for": "For",
+    "includes": "Included",
+    "delay": "Typical timeline",
+    "price": "Custom quote",
+    "quote": "Request a quote",
+    "maintenance": "Maintenance and small updates after launch: quoted monthly or on demand.",
+    "promise": "Free quote · Reply within 24 hours"
+  },
+  "about": {
+    "label": "About",
+    "statement": "I don't make websites. I make <em>yours</em> — the one people remember, share, and that keeps working <em>while you sleep</em>.",
+    "text": "Punctual, serious, creative: premium quality at a fair price. Off screen: music.",
+    "facts": [
+      {
+        "k": "Based in",
+        "v": "Tournai, Belgium"
+      },
+      {
+        "k": "Studies",
+        "v": "Student at HELHa, Tournai"
+      },
+      {
+        "k": "Qualities",
+        "v": "Punctual · Reliable · Creative"
+      },
+      {
+        "k": "Off screen",
+        "v": "Music"
+      }
+    ],
+    "stats": [
+      {
+        "n": 2,
+        "suffix": "",
+        "label": "client projects, delivered or in progress"
+      },
+      {
+        "n": 24,
+        "suffix": " h",
+        "label": "at most to reply to you"
+      },
+      {
+        "n": 2,
+        "suffix": "",
+        "label": "languages: French and English"
+      },
+      {
+        "n": 100,
+        "suffix": " %",
+        "label": "custom-made, no templates"
+      }
+    ],
+    "toolsLabel": "My tools",
+    "tools": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "GSAP",
+      "Three.js · WebGL",
+      "Flutter",
+      "Dart",
+      "HTML & CSS"
+    ]
+  },
+  "contact": {
+    "label": "Contact",
+    "titleA": "Got a project in mind?",
+    "titleB": "Let's talk.",
+    "lead": "Fill in the blanks, like a letter. I'll reply within 24 hours with the next steps and, if you'd like, a free quote.",
+    "emailLabel": "Send an email",
+    "cta": "Send an email",
+    "elsewhere": "Elsewhere",
+    "promise": "Reply within 24 hours",
+    "form": {
+      "name": "Your name",
+      "namePh": "First and last name",
+      "email": "Your email",
+      "emailPh": "you@example.com",
+      "company": "Company",
+      "companyPh": "Your business name",
+      "website": "Current website",
+      "websitePh": "www.yoursite.com",
+      "optional": "optional",
+      "type": "Project type",
+      "budget": "Budget",
+      "deadline": "When for?",
+      "message": "Your project in a few lines",
+      "messagePh": "Your business, what you'd like, a website you love…",
+      "types": [
+        "Showcase site",
+        "Web application",
+        "E-commerce",
+        "Redesign of an existing site",
+        "Other"
+      ],
+      "budgets": [
+        "To be defined",
+        "Under €1,000",
+        "€1,000 – 2,500",
+        "€2,500 – 5,000",
+        "Over €5,000"
+      ],
+      "deadlines": [
+        "No rush",
+        "Within 3 months",
+        "Within a month",
+        "As soon as possible"
+      ],
+      "errors": {
+        "name": "Add your name so I know who to reply to.",
+        "email": "Add your email.",
+        "emailFormat": "This email looks incomplete (e.g. you@example.com).",
+        "website": "This doesn't look like a website address (e.g. www.yoursite.com).",
+        "message": "Tell me a little more about your project.",
+        "messageShort": "A few more words: at least {min} characters.",
+        "summary": "Please check the fields marked in red."
+      },
+      "counter": "{n} / {max}",
+      "draftSaved": "Draft saved",
+      "draftRestored": "Draft restored",
+      "draftClear": "Clear",
+      "send": "Send the letter",
+      "sending": "Sending…",
+      "subject": "New project · {type} · {name}",
+      "successLabel": "Message sent",
+      "successTitle": "Thank you, {name}.",
+      "successText": "Your request has arrived. I'll reply within 24 hours at {email}.",
+      "recap": "Summary",
+      "again": "Send another message",
+      "error": "Sending failed (connection or service unavailable). Your message has been kept.",
+      "retry": "Try again",
+      "errorOr": "or write to me directly",
+      "or": "or write to me directly",
+      "privacy": "Your details are only used to reply to you. Nothing is sold or shared.",
+      "letter": {
+        "meta": {
+          "to": "To",
+          "toValue": "Alex",
+          "subject": "Subject"
+        },
+        "hello": "Hi Alex,",
+        "lines": [
+          "My name is {name}, from {company}.",
+          "I'd like {type}, with a budget {budget}, ideally {deadline}.",
+          "Right now, my website is {website}.",
+          "In a few words: {message}",
+          "You can reach me at {email}."
+        ],
+        "companyPh": "your business",
+        "websitePh": "none yet",
+        "messagePh": "my business, what I’d like, a website I love…",
+        "types": [
+          "a showcase website",
+          "a web app",
+          "an online shop",
+          "a redesign of my site",
+          "something else"
+        ],
+        "budgets": [
+          "still to be defined",
+          "under €1,000",
+          "between €1,000 and €2,500",
+          "between €2,500 and €5,000",
+          "over €5,000"
+        ],
+        "deadlines": [
+          "with no rush",
+          "within 3 months",
+          "within a month",
+          "as soon as possible"
+        ],
+        "bye": "Talk soon,",
+        "signPh": "your name"
+      }
+    },
+    "available": "Available for new projects",
+    "local": "In Tournai, it's",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "direct": "Or directly"
+  },
+  "footer": {
+    "rights": "© 2026 Alex",
+    "made": "Designed and built in Tournai",
+    "local": "Local time",
+    "end": "Thanks for stopping by.",
+    "top": "Back to top"
+  },
+  "bar": {
+    "next": "Next",
+    "end": "End",
+    "top": "Back to top",
+    "city": "Tournai"
+  },
+  "cursor": {
+    "visit": "Visit",
+    "watch": "Watch",
+    "write": "Write"
+  },
+  "stack": {
+    "layers": [
+      "Brief",
+      "Grid",
+      "Wireframe",
+      "Typography",
+      "Interface"
+    ]
+  },
+  "cases": {
+    "nuance": {
+      "intro": "A free web tool that teaches you to read the label of a plant-based meat alternative in 30 seconds. Designed and built for a dietetics student's final-year project at HEPH-Condorcet.",
+      "context": "Plant-based alternatives are everywhere on the shelves, but their labels are hard to decode. The student wanted a simple tool to help beginners form their own opinion — no ready-made score, no judgement.",
+      "challenge": "Turn rigorous dietetics content into something anyone understands in seconds, on a phone, in the shop.",
+      "approach": [
+        "Understand the project and its nutrition markers with the student",
+        "Design a three-step journey: scan, read, decide",
+        "Create a soft, reassuring identity: cream, brown, sage",
+        "Build it in React with Open Food Facts data"
+      ],
+      "delivered": [
+        "Barcode product scanner (Open Food Facts)",
+        "Marker-by-marker decoder with explanations",
+        "Interactive label",
+        "Downloadable PDF sheet",
+        "Responsive, mobile-first website"
+      ],
+      "result": "A free tool, online, no account needed, supporting her final-year project. A very happy client."
+    },
+    "hybrid": {
+      "intro": "An all-in-one CrossFit platform: an international competition calendar, live tracking, organiser tools and a mobile app. Built during my internship.",
+      "context": "CrossFit competitions are often run with scattered tools: registrations here, results there, updates on social media. Hybrid Timing brings everything together.",
+      "challenge": "Design a rich platform (organising, judging, check-in, live results) that stays clear for athletes and organisers alike, on desktop and on mobile.",
+      "approach": [
+        "Map the needs of athletes, judges and organisers",
+        "Build a strong identity: black, yellow, sporty type",
+        "Build the web interface in React",
+        "Build the mobile app in Dart / Flutter"
+      ],
+      "delivered": [
+        "Competition calendar and world map",
+        "Live tracking and results",
+        "Organising, judging and check-in tools",
+        "Mobile app"
+      ],
+      "result": "A complete platform, launching soon. A very happy team."
+    }
+  },
+  "marquee": {
+    "a": [
+      "Showcase sites",
+      "Web apps",
+      "E-commerce",
+      "Motion",
+      "Made to measure"
+    ],
+    "b": [
+      "Custom quotes",
+      "Reply within 24 h",
+      "French & English",
+      "Tournai, Belgium"
+    ]
+  },
+  "rail": {
+    "hint": "Scroll down",
+    "label": "Page progress",
+    "goto": "Go to section"
+  }
+}

@@ -1,0 +1,13 @@
+.label {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+}
+
+.rule {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--c-line-2);
+}

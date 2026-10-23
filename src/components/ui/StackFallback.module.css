@@ -1,0 +1,99 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 2400px;
+}
+
+:global(.gl-on) .scene {
+  visibility: hidden;
+}
+
+.stack {
+  position: relative;
+  width: min(46%, 340px);
+  aspect-ratio: 1.6;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-38deg);
+}
+
+.plate {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--c-line-2);
+  border-radius: 6px;
+  transform: translateZ(calc((var(--i) - 2) * 40px));
+}
+
+.brief {
+  background: var(--c-ink-2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10%;
+  padding: 10%;
+}
+
+.brief i,
+.wire i {
+  display: block;
+  height: 6%;
+  border-radius: 99px;
+  background: var(--c-line-2);
+}
+
+.brief i:nth-child(2) {
+  width: 70%;
+}
+
+.brief i:nth-child(3) {
+  width: 45%;
+}
+
+.grid {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(124, 134, 255, 0.12) 0 calc(100% / 12 - 4px),
+    transparent calc(100% / 12 - 4px) calc(100% / 12)
+  );
+  border-color: rgba(124, 134, 255, 0.5);
+}
+
+.wire {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-content: end;
+  gap: 6%;
+  padding: 8%;
+}
+
+.wire i {
+  height: 30%;
+  min-height: 24px;
+  border-radius: 3px;
+  background: none;
+  border: 1px solid var(--c-line-2);
+}
+
+.type {
+  display: grid;
+  place-items: center;
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  color: var(--c-fg);
+}
+
+.surface {
+  background: #efe9df;
+  border-color: transparent;
+  overflow: hidden;
+}
+
+.surface i {
+  position: absolute;
+  inset: 12% 8% 34% 46%;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #8d96ff, #2e3bff 60%, #0b0f4a);
+}

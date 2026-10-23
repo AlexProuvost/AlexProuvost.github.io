@@ -1,0 +1,44 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+:global(.gl-on) .layer {
+  visibility: visible;
+}
+
+.tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--c-fg-2);
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Trait de rappel vers la plaque */
+.leader {
+  width: 36px;
+  height: 1px;
+  background: var(--c-line-2);
+}
+
+.n {
+  color: var(--c-muted);
+}
+
+@media (max-width: 900px) {
+  .layer {
+    display: none;
+  }
+}

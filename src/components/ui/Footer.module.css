@@ -1,0 +1,75 @@
+.footer {
+  position: relative;
+  overflow: clip;
+}
+
+.inner {
+  padding-block: clamp(96px, 10vw, 160px) 64px; /* dégage la barre du bas */
+  container-type: inline-size;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr auto;
+  align-items: end;
+  gap: 16px 24px;
+  padding-top: 18px;
+  border-top: var(--hairline);
+}
+
+.end {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: var(--fs-h3);
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  line-height: 1;
+}
+
+.clock {
+  margin-left: 6px;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.top {
+  justify-self: end;
+  color: var(--fg);
+}
+
+/* Le logotype, bord à bord, en bleu signature */
+.word {
+  margin-top: clamp(24px, 4vw, 64px);
+  line-height: 0;
+}
+
+.word span {
+  display: block;
+  font-family: var(--ff-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 29.2cqw;
+  line-height: 0.74;
+  letter-spacing: -0.055em;
+  margin-left: -0.02em;
+  white-space: nowrap;
+  color: var(--fg);
+  padding-top: 0.02em;
+}
+
+.rights {
+  margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+  .cols {
+    grid-template-columns: 1fr 1fr;
+  }
+  .end {
+    grid-column: 1 / -1;
+  }
+  .top {
+    justify-self: start;
+  }
+}

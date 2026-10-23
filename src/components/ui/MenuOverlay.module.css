@@ -1,0 +1,95 @@
+/* Panneau blanc cassé qui descend du haut ; le contenu monte ligne par ligne (interactions/menu.ts) */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: var(--c-fg);
+  color: var(--c-ink);
+  /* Position hors écran posée par GSAP (interactions/menu.ts) */
+  visibility: hidden;
+}
+
+.inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: calc(var(--nav-h) + clamp(24px, 6vh, 72px));
+  padding-bottom: clamp(24px, 4vh, 48px);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(12px, 2vw, 32px);
+  padding-block: 0.06em;
+  font-family: var(--ff-sans);
+  font-weight: 500;
+  font-size: clamp(2.5rem, min(10vh, 12.5vw), 8.5rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.n {
+  padding-top: 0.6em;
+  font-size: var(--fs-label);
+  color: #6d675e;
+}
+
+.mask {
+  display: block;
+  overflow: clip;
+  padding-block: 0.04em;
+}
+
+.word {
+  display: block;
+}
+
+.word {
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+/* Survol : le mot glisse légèrement ; ses lettres roulent (data-roll) */
+.link:hover .word {
+  transform: translateX(0.06em);
+}
+
+.link:hover .word :global(.roll-c) {
+  transform: translateY(-100%);
+}
+
+.foot {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(15, 14, 13, 0.2);
+}
+
+.foot .label {
+  color: #6d675e;
+  margin-bottom: 8px;
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+
+.clock {
+  font-family: var(--ff-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .foot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

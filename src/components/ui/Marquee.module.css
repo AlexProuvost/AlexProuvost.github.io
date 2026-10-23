@@ -1,0 +1,74 @@
+.marquee {
+  position: relative;
+  z-index: 2;
+  height: clamp(220px, 30vw, 460px);
+  display: grid;
+  place-items: center;
+  overflow: clip;
+  pointer-events: none;
+}
+
+.band {
+  grid-area: 1 / 1;
+  width: 110vw;
+  padding-block: clamp(10px, 1.2vw, 18px);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.bandA {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  transform: rotate(-4deg);
+  box-shadow: 0 30px 80px -30px rgba(46, 59, 255, 0.55);
+}
+
+.bandB {
+  background: var(--c-fg);
+  color: var(--c-ink);
+  transform: rotate(3deg);
+}
+
+.track {
+  display: inline-flex;
+  will-change: transform;
+}
+
+.row {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding-right: 0.35em;
+  font-family: var(--ff-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(2.25rem, 6.4vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.bandB .item {
+  font-family: var(--ff-serif);
+  font-stretch: normal;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  font-size: clamp(1.75rem, 4.6vw, 4.75rem);
+  letter-spacing: -0.02em;
+}
+
+.star {
+  width: 0.5em;
+  height: 0.5em;
+  flex: 0 0 auto;
+}
+
+.bandB .star {
+  color: var(--c-accent);
+}

@@ -1,0 +1,977 @@
+/* Formulaire en lettre à trous, sur le fond sombre : texte crème, bleu signature pour les choix et l'action */
+.card {
+  --c-error: #ff8f80; /* corail lisible sur le fond sombre (≈ 8:1) */
+  --cream: var(--c-fg);
+  position: relative;
+  margin-top: clamp(56px, 8vw, 120px);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4vw, 56px);
+}
+
+.form[hidden] {
+  display: none;
+}
+
+.honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* ── En-tête façon email ── */
+.meta {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--hairline);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.02em;
+}
+
+.meta > div {
+  display: grid;
+  grid-template-columns: 6em minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: var(--hairline);
+}
+
+.meta dt {
+  color: var(--c-muted);
+}
+
+.meta dd {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg);
+}
+
+/* ── La lettre ── */
+.letter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+  max-width: 24em;
+  font-size: clamp(1.5rem, 3.3vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.035em;
+  color: var(--c-fg-2);
+  text-wrap: pretty;
+}
+
+.hello {
+  margin-bottom: 0.2em;
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 1.25em;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+/* Un blanc dans la phrase */
+.blank {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: baseline;
+}
+
+.blank input,
+.blank select,
+.blank textarea {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 0.1em 0.04em;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--cream);
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: inherit;
+  line-height: 1.2;
+  vertical-align: baseline;
+  outline: none;
+  caret-color: var(--c-accent-2);
+  appearance: none;
+  field-sizing: content;
+}
+
+.blank input {
+  min-width: 3ch;
+}
+
+.blank input::placeholder,
+.blank textarea::placeholder {
+  color: rgba(244, 241, 234, 0.32);
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.blank input:-webkit-autofill {
+  -webkit-text-fill-color: var(--cream);
+  box-shadow: 0 0 0 1000px var(--c-ink) inset;
+  transition: background-color 9999s;
+}
+
+/* ── Les choix ──
+   Sans JS : le select natif, en italique serif bleu. Avec JS ([data-picks]) : un mot-bouton surligné à l'encre
+   qui ouvre un cartouche sur mesure (interactions/picks.ts). */
+.pick .native {
+  padding-right: 0.3em;
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--c-accent-2);
+  cursor: pointer;
+}
+
+.native option {
+  background: var(--c-ink-2);
+  color: var(--fg);
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.pickBtn {
+  display: none;
+}
+
+.form[data-picks] .pick .native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+
+.form[data-picks] .pickBtn {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.22em;
+  margin: 0;
+  padding: 0 0.12em 0.04em;
+  border: 0;
+  border-radius: 0.18em;
+  background: linear-gradient(var(--c-accent), var(--c-accent)) 0 88% / 0% 0.42em no-repeat;
+  color: var(--c-accent-2);
+  font: inherit;
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-size 0.6s var(--ease-out-expo),
+    color 0.35s var(--ease-out);
+}
+
+/* Le mot qui roule au changement */
+.pickMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding: 0 0.04em 0.06em;
+  margin-bottom: -0.06em;
+}
+
+.pickCurrent {
+  display: inline-block;
+}
+
+/* Petit disque avec chevron, après le mot */
+.chevron {
+  position: relative;
+  align-self: center;
+  flex: none;
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  transition:
+    transform 0.6s var(--ease-out-expo),
+    background-color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+
+.chevron::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 0.17em;
+  height: 0.17em;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.form[data-picks] .pick[data-open] .pickBtn,
+.form[data-picks] .pickBtn:focus-visible {
+  background-size: 100% 0.42em;
+  color: var(--cream);
+}
+
+.pick[data-open] .chevron {
+  transform: rotate(180deg);
+  background: var(--c-accent);
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .form[data-picks] .pickBtn:hover {
+    background-size: 100% 0.42em;
+    color: var(--cream);
+  }
+  .pickBtn:hover .chevron {
+    background: var(--c-accent);
+    box-shadow: none;
+  }
+}
+
+.pickBtn:focus-visible {
+  outline: 1px dashed var(--c-accent-2);
+  outline-offset: 4px;
+}
+
+/* Au choix : l'encre gonfle sous le mot puis retombe */
+.pick[data-flash] .pickBtn {
+  animation: pickFlash 0.9s var(--ease-out-expo);
+}
+
+@keyframes pickFlash {
+  0% {
+    background-size: 100% 0.42em;
+  }
+  35% {
+    background-size: 100% 1.15em;
+    color: var(--cream);
+  }
+  100% {
+    background-size: 0% 0.42em;
+  }
+}
+
+/* Le cartouche */
+.menu {
+  position: absolute;
+  left: -0.1em;
+  top: calc(100% + 10px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  min-width: min(17.5rem, calc(100vw - 32px));
+  max-width: calc(100vw - 24px);
+  padding: 10px;
+  border-radius: 18px;
+  background: var(--c-ink-2);
+  box-shadow:
+    inset 0 0 0 1px var(--c-line-2),
+    0 30px 80px -20px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  transform: translateX(var(--shift, 0px));
+  font-size: clamp(1.4rem, 2.3vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  text-align: left;
+  outline: none;
+  cursor: default;
+}
+
+.menu[hidden] {
+  display: none;
+}
+
+/* Les lignes gardent une transformation de leur arrivée : celle du menu ouvert passe devant les suivantes */
+.line:has([data-open]) {
+  position: relative;
+  z-index: 5;
+}
+
+.menuLabel {
+  padding: 6px 12px 10px;
+  font-style: normal;
+}
+
+.option {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.4em minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 14px 13px 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+/* L'encre bleue qui remplit l'option depuis la gauche */
+.option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--c-accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.55s var(--ease-out-expo);
+}
+
+.option[data-active]::before {
+  transform: scaleX(1);
+}
+
+.optionIndex {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.02em;
+  color: var(--c-muted);
+  transition: color 0.3s var(--ease-out);
+}
+
+.optionText {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  white-space: nowrap;
+  transition: transform 0.55s var(--ease-out-expo);
+}
+
+.option[data-active] .optionText {
+  transform: translateX(6px);
+}
+
+.option[data-active] .optionIndex {
+  color: var(--c-on-accent);
+}
+
+.optionDot {
+  width: 8px;
+  height: 8px;
+  margin-left: 16px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+  transition:
+    background-color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out);
+}
+
+.option[aria-selected='true'] .optionDot {
+  background: var(--c-accent-2);
+  box-shadow: none;
+}
+
+.option[aria-selected='true'][data-active] .optionDot {
+  background: var(--c-on-accent);
+}
+
+.option[aria-selected='true'] .optionIndex {
+  color: var(--c-accent-2);
+}
+
+.option[aria-selected='true'][data-active] .optionIndex {
+  color: var(--c-on-accent);
+}
+
+@media (max-width: 700px) {
+  .optionText {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pick[data-flash] .pickBtn {
+    animation: none;
+  }
+}
+
+/* Le message : un paragraphe entier sous sa phrase d'amorce */
+.paragraph {
+  display: block;
+  margin-top: 0.15em;
+}
+
+.paragraph textarea {
+  display: block;
+  width: 100%;
+  min-height: 2.6em;
+  max-height: 560px;
+  padding: 0 0 0.2em;
+  resize: none;
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  field-sizing: fixed;
+}
+
+.paragraph textarea:not(:placeholder-shown) {
+  font-family: var(--ff-sans);
+  font-style: normal;
+  font-size: 0.72em;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+}
+
+.paragraphFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* Le trait sous le blanc : se trace à l'arrivée ; au focus, une ligne pleine le recouvre depuis la gauche */
+.rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.08em;
+  height: 1px;
+  background: rgba(244, 241, 234, 0.3);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+.paragraph .rule {
+  position: relative;
+  display: block;
+  bottom: auto;
+}
+
+.rule::after {
+  content: '';
+  position: absolute;
+  inset: -0.5px 0;
+  background: var(--cream);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition:
+    transform 0.7s var(--ease-out-expo),
+    background-color 0.3s var(--ease-out);
+}
+
+.blank:focus-within .rule::after,
+.blank[data-state='valid'] .rule::after {
+  transform: scaleX(1);
+}
+
+.pick .rule {
+  background: rgba(163, 171, 255, 0.35);
+}
+
+.pick:focus-within .rule::after,
+.blank[data-state='valid']:not(:focus-within) .rule::after {
+  background: var(--c-accent-2);
+}
+
+.blank[data-state='invalid'] .rule::after {
+  transform: scaleX(1);
+  background: var(--c-error);
+}
+
+.blank[data-state='invalid'] input::placeholder,
+.blank[data-state='invalid'] textarea::placeholder {
+  color: rgba(255, 143, 128, 0.6);
+}
+
+/* La petite coche des blancs valides, en exposant */
+.check {
+  position: absolute;
+  right: -0.55em;
+  top: -0.1em;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity 0.3s var(--ease-out),
+    transform 0.6s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.check svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: var(--c-on-accent);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 14;
+  stroke-dashoffset: 14;
+  transition: stroke-dashoffset 0.5s 0.15s var(--ease-out);
+}
+
+.blank[data-state='valid']:not(:focus-within) .check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.blank[data-state='valid']:not(:focus-within) .check svg {
+  stroke-dashoffset: 0;
+}
+
+/* Erreur : une étiquette corail qui pend sous le blanc */
+.error {
+  position: absolute;
+  left: 0;
+  top: calc(100% - 0.05em);
+  z-index: 2;
+  width: max-content;
+  max-width: min(78vw, 34ch);
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--c-ink);
+  box-shadow: inset 0 0 0 1px rgba(255, 143, 128, 0.4);
+  font-family: var(--ff-sans);
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: var(--c-error);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.3s var(--ease-out),
+    transform 0.5s var(--ease-out-expo),
+    visibility 0.3s;
+  pointer-events: none;
+}
+
+.paragraphFoot .error {
+  position: static;
+  max-width: none;
+  padding: 0;
+  box-shadow: none;
+  background: none;
+}
+
+.blank[data-state='invalid'] .error {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.blank[data-shake] {
+  animation: shake 0.45s var(--ease-out);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+.counter {
+  margin-left: auto;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  font-style: normal;
+  letter-spacing: 0;
+  color: var(--c-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.counter[data-ok] {
+  color: var(--fg);
+}
+
+/* Signature : se remplit avec le nom tapé plus haut */
+.sign {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.4em;
+}
+
+.signature {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 1.6em;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+  transition: color 0.4s var(--ease-out);
+}
+
+.signature[data-empty] {
+  color: rgba(244, 241, 234, 0.2);
+}
+
+/* ── Envoi ── */
+.summary {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 143, 128, 0.12);
+  color: var(--c-error);
+  font-size: var(--fs-small);
+}
+
+.summary[hidden],
+.failure[hidden] {
+  display: none;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px clamp(24px, 4vw, 56px);
+  padding-top: clamp(8px, 1.5vw, 20px);
+}
+
+/* Gros bouton bleu signature */
+.submit {
+  display: inline-flex;
+  align-items: center;
+  min-height: clamp(64px, 6vw, 88px);
+  padding: 0 clamp(28px, 3vw, 44px);
+  border: 0;
+  border-radius: 999px;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font: inherit;
+  font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+.submit:hover {
+  background: #4653ff;
+}
+
+.submitInner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.submitArrow {
+  display: inline-grid;
+  place-items: center;
+  width: 1.8em;
+  height: 1.8em;
+  border-radius: 50%;
+  background: var(--c-on-accent);
+  color: var(--c-accent);
+  font-size: 0.8em;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.submit:hover .submitArrow {
+  transform: translateX(4px) rotate(-45deg);
+}
+
+.submitBusy,
+.spinner {
+  display: none;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(244, 241, 234, 0.3);
+  border-top-color: var(--c-on-accent);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.form[data-state='sending'] .submit {
+  cursor: progress;
+  pointer-events: none;
+}
+
+.form[data-state='sending'] .submitIdle,
+.form[data-state='sending'] .submitArrow {
+  display: none;
+}
+
+.form[data-state='sending'] .submitBusy,
+.form[data-state='sending'] .spinner {
+  display: inline-block;
+}
+
+.footerSide {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-muted);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.4s var(--ease-out);
+  pointer-events: none;
+}
+
+.draft[data-show] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.draftDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-accent-2);
+}
+
+.draftClear {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--fg);
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.privacy {
+  max-width: 46ch;
+  font-size: 0.8125rem;
+  color: var(--c-muted);
+}
+
+.failure {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: rgba(255, 143, 128, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 143, 128, 0.35);
+  font-size: var(--fs-small);
+}
+
+.failureActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
+
+.retry {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.failureOr {
+  color: var(--c-fg-2);
+}
+
+/* La goutte d'encre (envoi) */
+.drop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  border: 2px solid var(--c-accent-2);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Après l'envoi ── */
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  outline: none;
+}
+
+.success[hidden] {
+  display: none;
+}
+
+.successLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg);
+}
+
+.successDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3ddc84;
+}
+
+.successTitle {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(3.5rem, 11vw, 12rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.successMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+}
+
+.successMask > span {
+  display: inline-block;
+  overflow-wrap: anywhere;
+}
+
+.successText {
+  max-width: 44ch;
+  font-size: var(--fs-body-l);
+  color: var(--c-fg-2);
+}
+
+.successText strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.recap {
+  width: 100%;
+  max-width: 720px;
+  padding-top: 20px;
+  border-top: 1px solid var(--c-line-2);
+}
+
+.recap :global(.label) {
+  color: var(--c-muted);
+}
+
+.recap dl {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px 32px;
+  margin-top: 14px;
+}
+
+.recap dt {
+  color: var(--c-muted);
+}
+
+.recap dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.again {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+  color: var(--fg);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.4s var(--ease-out),
+    color 0.4s var(--ease-out);
+}
+
+.again:hover {
+  background: var(--cream);
+  color: var(--c-ink);
+}
+
+@media (max-width: 700px) {
+  .letter {
+    line-height: 1.75;
+  }
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .submit {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blank[data-shake] {
+    animation: none;
+  }
+}

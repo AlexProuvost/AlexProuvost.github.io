@@ -1,0 +1,536 @@
+{
+  "meta": {
+    "title": "Alex — Développeur web créatif à Tournai",
+    "description": "Sites vitrines premium, applications web et e-commerce. Je comprends votre besoin réel avant de coder — une qualité premium à un tarif juste."
+  },
+  "nav": {
+    "label": "Navigation principale",
+    "role": "Développeur web créatif — Tournai, BE",
+    "work": "Projets",
+    "services": "Services",
+    "about": "À propos",
+    "contact": "Contact",
+    "lang": "Langue",
+    "switchTo": "Voir le site en {lang}",
+    "menu": "Menu",
+    "close": "Fermer",
+    "talk": "Parlons-en",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "home": "Accueil",
+    "follow": "Me suivre",
+    "write": "M'écrire",
+    "available": "Disponible pour de nouveaux projets"
+  },
+  "hero": {
+    "label": "Ouverture",
+    "name": "Alex — développeur web créatif à Tournai",
+    "role": "Développeur web créatif",
+    "place": "Tournai, Belgique",
+    "available": "Disponible — projets 2026",
+    "lead": "Je conçois et développe des sites <em>qui sortent du lot</em> — en commençant par comprendre ce dont vous avez vraiment besoin.",
+    "figure": "Fig. 01 — Une page web, couche par couche",
+    "scroll": "Défiler"
+  },
+  "approach": {
+    "label": "Approche",
+    "title": "De l'idée <em>au site</em>.",
+    "lead": "Avant d'écrire une ligne de code, je comprends votre besoin réel. Ensuite, je construis — couche par couche.",
+    "step": "Étape",
+    "steps": [
+      {
+        "title": "Comprendre",
+        "layer": "Le brief",
+        "text": "Vos objectifs, votre public, vos contraintes. Le vrai besoin, pas seulement la demande.",
+        "notes": [],
+        "duration": "1 à 2 jours",
+        "get": [
+          "Un résumé clair de votre besoin",
+          "Un devis gratuit et détaillé"
+        ],
+        "need": [
+          "Me parler de vos objectifs et de votre public",
+          "Me montrer des sites que vous aimez"
+        ]
+      },
+      {
+        "title": "Structurer",
+        "layer": "Grille et wireframe",
+        "text": "Une grille, une hiérarchie, un parcours clair. Le wireframe pose les bases avant le style.",
+        "notes": [],
+        "duration": "3 à 5 jours",
+        "get": [
+          "Le plan du site, page par page",
+          "Les maquettes des pages clés"
+        ],
+        "need": [
+          "Vos textes et photos (ou je vous aide)",
+          "Vos retours sur les maquettes"
+        ]
+      },
+      {
+        "title": "Donner vie",
+        "layer": "Typographie, images, mouvement",
+        "text": "Typographie, couleurs, images, animations. Le code transforme la maquette en interface vivante.",
+        "notes": [],
+        "duration": "1 à 3 semaines",
+        "get": [
+          "Le site en cours, en ligne sur une adresse de test",
+          "Un point d'avancement chaque semaine"
+        ],
+        "need": [
+          "Vos retours au fil de l'eau"
+        ]
+      },
+      {
+        "title": "Livrer",
+        "layer": "En ligne",
+        "text": "Un site rapide, soigné et responsive, livré à l'heure — à un tarif juste.",
+        "notes": [
+          "Rapide",
+          "Responsive",
+          "Bilingue",
+          "Référencé"
+        ],
+        "duration": "1 à 2 jours",
+        "get": [
+          "Le site en ligne, rapide et référencé",
+          "Une prise en main pour être autonome"
+        ],
+        "need": [
+          "Votre nom de domaine (ou je m'en occupe)"
+        ]
+      }
+    ],
+    "detailTitle": "Le déroulé, en détail",
+    "detailNote": "Durées indicatives pour un site vitrine : elles sont précisées dans le devis.",
+    "duration": "Durée",
+    "receive": "Vous recevez",
+    "need": "J'ai besoin de vous pour"
+  },
+  "work": {
+    "label": "Projets",
+    "title": "Travaux <em>choisis</em>.",
+    "note": "Deux projets, deux univers : un outil pour une étudiante en diététique et une plateforme de chronométrage sportif.",
+    "open": "Voir le projet",
+    "drag": "Glisser",
+    "dragHint": "Faites défiler ou glissez",
+    "endLabel": "Et ensuite ?",
+    "endTitle": "Votre projet <em>ici</em> ?",
+    "endCta": "Parlons-en"
+  },
+  "project": {
+    "track": "Piste",
+    "client": "Pour",
+    "role": "Rôle",
+    "stack": "Technique",
+    "feedback": "Retour",
+    "features": "Fonctionnalités",
+    "visit": "Voir le site",
+    "soon": "Bientôt en ligne",
+    "case": "Voir l'étude de cas",
+    "back": "Tous les projets",
+    "next": "Projet suivant",
+    "context": "Contexte",
+    "challenge": "Le défi",
+    "approach": "La démarche",
+    "delivered": "Livré",
+    "result": "Résultat",
+    "gallery": "En images",
+    "cta": "Un projet du même genre ?",
+    "ctaText": "Parlons-en : devis gratuit, réponse sous 24 h.",
+    "caseLabel": "Étude de cas",
+    "concept": "Projet concept",
+    "conceptNote": "Marque fictive, conçue pour montrer un site vitrine type.",
+    "status": "Statut",
+    "keyFigure": "Chiffre clé",
+    "details": "À regarder",
+    "live": "En ligne"
+  },
+  "projects": {
+    "nuance": {
+      "title": "Nuance végétale",
+      "tagline": "Lire l'étiquette d'une alternative végétale à la viande en 30 secondes.",
+      "description": "Un outil web gratuit qui apprend à décoder l'étiquette d'une alternative végétale grâce à 5 repères. Réalisé pour une étudiante en diététique, dans le cadre de son TFE à la HEPH-Condorcet (Tournai).",
+      "client": "Étudiante en diététique — TFE, HEPH-Condorcet",
+      "role": "Design et développement complet",
+      "features": [
+        "Scanner de produits (Open Food Facts)",
+        "Décodeur repère par repère",
+        "Étiquette interactive",
+        "Fiche PDF à télécharger"
+      ],
+      "feedback": "Cliente très satisfaite",
+      "screens": [
+        "Accueil de Nuance végétale : « lis ton étiquette en 30 secondes »",
+        "Le parti pris de l'outil : pas de note toute faite, juste les bons repères",
+        "Résultat du décodeur pour un produit scanné, repère par repère"
+      ],
+      "hotspots": [
+        "Scanner un produit : les données arrivent d'Open Food Facts",
+        "Étiquette interactive : chaque repère s'explique",
+        "Un ton éditorial, sans jugement",
+        "Le décodeur, repère par repère"
+      ],
+      "figure": "30 s",
+      "figureLabel": "pour lire une étiquette",
+      "kind": "Outil web"
+    },
+    "hybrid": {
+      "title": "Hybrid Timing",
+      "tagline": "Le calendrier CrossFit international, chronométré et centralisé.",
+      "description": "Une plateforme tout-en-un pour le CrossFit : calendrier et carte des compétitions, suivi en direct, outils d'organisation et application mobile. Réalisée pendant mon stage.",
+      "client": "Stage — équipe Hybrid Timing",
+      "role": "Développement complet et choix techniques",
+      "features": [
+        "Calendrier et carte des compétitions",
+        "Suivi en direct et résultats",
+        "Organisation, jugement et check-in",
+        "Application mobile"
+      ],
+      "feedback": "Équipe très satisfaite",
+      "screens": [
+        "Calendrier des compétitions avec carte du monde interactive",
+        "Accueil d'Hybrid Timing : compétitions de CrossFit",
+        "Application mobile : liste des compétitions"
+      ],
+      "hotspots": [
+        "Carte du monde interactive des compétitions",
+        "Filtres en direct : en cours, ouvertes, bientôt",
+        "Chiffres clés alimentés par les organisateurs",
+        "L'application : le direct dans la poche"
+      ],
+      "figure": "47",
+      "figureLabel": "compétitions référencées",
+      "kind": "Plateforme & app"
+    }
+  },
+  "services": {
+    "label": "Services",
+    "title": "Ce que je <em>construis</em>.",
+    "lead": "Chaque projet est différent. Après un premier échange pour comprendre votre besoin, je vous envoie un devis gratuit et détaillé.",
+    "items": [
+      {
+        "id": "vitrine",
+        "title": "Sites vitrines premium",
+        "for": "Commerces, indépendants, PME",
+        "text": "Une vitrine qui marque les esprits et donne envie de vous contacter.",
+        "includes": [
+          "Design sur mesure, à votre image",
+          "Animations soignées",
+          "Optimisé mobile et rapide",
+          "Référencement de base (SEO)",
+          "Mise en ligne et prise en main"
+        ],
+        "delay": "2 à 4 semaines",
+        "tags": [
+          "Design sur mesure",
+          "Animations",
+          "SEO"
+        ]
+      },
+      {
+        "id": "app",
+        "title": "Applications web",
+        "for": "Startups, associations, équipes",
+        "text": "Des outils pensés pour ceux qui les utilisent, du tableau de bord à l'application mobile.",
+        "includes": [
+          "Analyse du besoin et maquettes",
+          "Comptes utilisateurs et tableau de bord",
+          "Application mobile si besoin",
+          "Livraison par étapes"
+        ],
+        "delay": "Selon le projet",
+        "tags": [
+          "Plateformes",
+          "Tableaux de bord",
+          "Mobile"
+        ]
+      },
+      {
+        "id": "shop",
+        "title": "E-commerce",
+        "for": "Boutiques et créateurs",
+        "text": "Une boutique claire et rapide, qui donne envie d'acheter et reste simple à gérer.",
+        "includes": [
+          "Catalogue et fiches produits",
+          "Paiement en ligne sécurisé",
+          "Gestion des commandes simple",
+          "Formation à l'utilisation"
+        ],
+        "delay": "4 à 8 semaines",
+        "tags": [
+          "Catalogue",
+          "Paiement",
+          "Gestion"
+        ]
+      }
+    ],
+    "for": "Pour",
+    "includes": "Inclus",
+    "delay": "Délai indicatif",
+    "price": "Sur devis",
+    "quote": "Demander un devis",
+    "maintenance": "Maintenance et petites évolutions après la mise en ligne : sur devis, au mois ou à la demande.",
+    "promise": "Devis gratuit · Réponse sous 24 h"
+  },
+  "about": {
+    "label": "À propos",
+    "statement": "Je ne fais pas des sites. Je fais <em>le vôtre</em> — celui qu'on retient, qu'on partage, et qui travaille <em>pendant que vous dormez</em>.",
+    "text": "Ponctuel, sérieux, créatif : une qualité premium à un tarif juste. Hors écran : la musique.",
+    "facts": [
+      {
+        "k": "Basé à",
+        "v": "Tournai, Belgique"
+      },
+      {
+        "k": "Formation",
+        "v": "Étudiant à la HELHa, Tournai"
+      },
+      {
+        "k": "Qualités",
+        "v": "Ponctuel · Sérieux · Créatif"
+      },
+      {
+        "k": "Hors écran",
+        "v": "La musique"
+      }
+    ],
+    "stats": [
+      {
+        "n": 2,
+        "suffix": "",
+        "label": "projets clients, livrés ou en cours"
+      },
+      {
+        "n": 24,
+        "suffix": " h",
+        "label": "au plus pour vous répondre"
+      },
+      {
+        "n": 2,
+        "suffix": "",
+        "label": "langues : français et anglais"
+      },
+      {
+        "n": 100,
+        "suffix": " %",
+        "label": "sur mesure, sans modèle tout fait"
+      }
+    ],
+    "toolsLabel": "Mes outils",
+    "tools": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "GSAP",
+      "Three.js · WebGL",
+      "Flutter",
+      "Dart",
+      "HTML & CSS"
+    ]
+  },
+  "contact": {
+    "label": "Contact",
+    "titleA": "Un projet en tête ?",
+    "titleB": "Parlons-en.",
+    "lead": "Remplissez les blancs, comme une lettre. Je vous réponds sous 24 h avec les prochaines étapes et, si vous le souhaitez, un devis gratuit.",
+    "emailLabel": "Écrire un email",
+    "cta": "Écrire un email",
+    "elsewhere": "Ailleurs",
+    "promise": "Réponse sous 24 h",
+    "form": {
+      "name": "Votre nom",
+      "namePh": "Prénom et nom",
+      "email": "Votre email",
+      "emailPh": "vous@exemple.be",
+      "company": "Entreprise",
+      "companyPh": "Le nom de votre activité",
+      "website": "Site actuel",
+      "websitePh": "www.votresite.be",
+      "optional": "facultatif",
+      "type": "Type de projet",
+      "budget": "Budget envisagé",
+      "deadline": "Pour quand ?",
+      "message": "Votre projet en quelques lignes",
+      "messagePh": "Votre activité, ce que vous aimeriez, un site que vous aimez…",
+      "types": [
+        "Site vitrine",
+        "Application web",
+        "E-commerce",
+        "Refonte d'un site existant",
+        "Autre"
+      ],
+      "budgets": [
+        "À définir",
+        "Moins de 1 000 €",
+        "1 000 – 2 500 €",
+        "2 500 – 5 000 €",
+        "Plus de 5 000 €"
+      ],
+      "deadlines": [
+        "Pas pressé",
+        "D'ici 3 mois",
+        "D'ici 1 mois",
+        "Dès que possible"
+      ],
+      "errors": {
+        "name": "Indiquez votre nom pour que je sache à qui répondre.",
+        "email": "Indiquez votre email.",
+        "emailFormat": "Cet email semble incomplet (ex. : vous@exemple.be).",
+        "website": "Cette adresse ne ressemble pas à un site (ex. : www.votresite.be).",
+        "message": "Dites-m'en un peu plus sur votre projet.",
+        "messageShort": "Encore quelques mots : au moins {min} caractères.",
+        "summary": "Vérifiez les champs indiqués en rouge."
+      },
+      "counter": "{n} / {max}",
+      "draftSaved": "Brouillon enregistré",
+      "draftRestored": "Brouillon retrouvé",
+      "draftClear": "Effacer",
+      "send": "Envoyer la lettre",
+      "sending": "Envoi en cours…",
+      "subject": "Nouveau projet · {type} · {name}",
+      "successLabel": "Message envoyé",
+      "successTitle": "Merci {name}.",
+      "successText": "Votre demande est bien arrivée. Je vous réponds sous 24 h à {email}.",
+      "recap": "Récapitulatif",
+      "again": "Envoyer un autre message",
+      "error": "L'envoi n'a pas abouti (connexion ou service indisponible). Votre message est conservé.",
+      "retry": "Réessayer",
+      "errorOr": "ou écrivez-moi directement",
+      "or": "ou écrivez-moi directement",
+      "privacy": "Vos informations servent uniquement à vous répondre. Rien n'est revendu ni partagé.",
+      "letter": {
+        "meta": {
+          "to": "À",
+          "toValue": "Alex",
+          "subject": "Objet"
+        },
+        "hello": "Bonjour Alex,",
+        "lines": [
+          "Je m'appelle {name}, de {company}.",
+          "J'aimerais {type}, avec un budget {budget}, idéalement {deadline}.",
+          "Aujourd'hui, mon site, c'est {website}.",
+          "En quelques mots : {message}",
+          "Vous pouvez me répondre à {email}."
+        ],
+        "companyPh": "votre activité",
+        "websitePh": "aucun pour l’instant",
+        "messagePh": "mon activité, ce que j’aimerais, un site que j’aime…",
+        "types": [
+          "un site vitrine",
+          "une application web",
+          "une boutique en ligne",
+          "refaire mon site",
+          "autre chose"
+        ],
+        "budgets": [
+          "encore à définir",
+          "de moins de 1 000 €",
+          "entre 1 000 et 2 500 €",
+          "entre 2 500 et 5 000 €",
+          "de plus de 5 000 €"
+        ],
+        "deadlines": [
+          "sans urgence",
+          "d'ici 3 mois",
+          "d'ici 1 mois",
+          "dès que possible"
+        ],
+        "bye": "À très vite,",
+        "signPh": "votre nom"
+      }
+    },
+    "available": "Disponible pour de nouveaux projets",
+    "local": "À Tournai, il est",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "direct": "Ou directement"
+  },
+  "footer": {
+    "rights": "© 2026 Alex",
+    "made": "Conçu et développé à Tournai",
+    "local": "Heure locale",
+    "end": "Merci d'être passé.",
+    "top": "Retour en haut"
+  },
+  "bar": {
+    "next": "Ensuite",
+    "end": "Fin",
+    "top": "Retour en haut",
+    "city": "Tournai"
+  },
+  "cursor": {
+    "visit": "Visiter",
+    "watch": "Voir",
+    "write": "Écrire"
+  },
+  "stack": {
+    "layers": [
+      "Brief",
+      "Grille",
+      "Wireframe",
+      "Typographie",
+      "Interface"
+    ]
+  },
+  "cases": {
+    "nuance": {
+      "intro": "Un outil web gratuit pour apprendre à lire, en 30 secondes, l'étiquette d'une alternative végétale à la viande. Conçu et développé pour le TFE d'une étudiante en diététique à la HEPH-Condorcet.",
+      "context": "Les alternatives végétales se multiplient en rayon, mais leurs étiquettes restent difficiles à décoder. L'étudiante voulait un outil simple pour aider les débutants à se faire leur propre avis, sans note toute faite ni jugement.",
+      "challenge": "Transformer un contenu de diététique rigoureux en une expérience que n'importe qui comprend en quelques secondes, sur téléphone, en magasin.",
+      "approach": [
+        "Comprendre le TFE et les repères nutritionnels avec l'étudiante",
+        "Imaginer un parcours en trois gestes : scanner, lire, décider",
+        "Créer une identité douce et rassurante : crème, brun, sauge",
+        "Développer en React avec les données d'Open Food Facts"
+      ],
+      "delivered": [
+        "Scanner de produits par code-barres (Open Food Facts)",
+        "Décodeur repère par repère, avec explications",
+        "Étiquette interactive",
+        "Fiche PDF à télécharger",
+        "Site responsive, pensé d'abord pour le mobile"
+      ],
+      "result": "Un outil en ligne, gratuit et sans compte, au service de son TFE. Une cliente très satisfaite."
+    },
+    "hybrid": {
+      "intro": "Une plateforme tout-en-un pour le CrossFit : calendrier international des compétitions, suivi en direct, outils pour les organisateurs et application mobile. Réalisée pendant mon stage.",
+      "context": "Les compétitions de CrossFit s'organisent souvent avec des outils éparpillés : inscriptions d'un côté, résultats de l'autre, communication sur les réseaux. Hybrid Timing veut tout réunir au même endroit.",
+      "challenge": "Concevoir une plateforme riche (organisation, jugement, check-in, résultats en direct) qui reste lisible pour les athlètes comme pour les organisateurs, sur ordinateur et sur téléphone.",
+      "approach": [
+        "Cartographier les besoins des athlètes, des juges et des organisateurs",
+        "Construire une identité forte : noir, jaune, typographie sportive",
+        "Développer l'interface web en React",
+        "Développer l'application mobile en Dart / Flutter"
+      ],
+      "delivered": [
+        "Calendrier et carte du monde des compétitions",
+        "Suivi en direct et résultats",
+        "Outils d'organisation, de jugement et de check-in",
+        "Application mobile"
+      ],
+      "result": "Une plateforme complète, bientôt en ligne. Une équipe très satisfaite du travail réalisé."
+    }
+  },
+  "marquee": {
+    "a": [
+      "Sites vitrines",
+      "Applications web",
+      "E-commerce",
+      "Animations",
+      "Sur mesure"
+    ],
+    "b": [
+      "Sur devis",
+      "Réponse sous 24 h",
+      "Français & anglais",
+      "Tournai, Belgique"
+    ]
+  },
+  "rail": {
+    "hint": "Faites défiler",
+    "label": "Avancement de la page",
+    "goto": "Aller à la section"
+  }
+}

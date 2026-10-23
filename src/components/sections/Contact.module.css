@@ -1,0 +1,178 @@
+/* Fond sombre : le bleu reste la surprise du pied de page */
+.section {
+  padding-block: clamp(80px, 10vw, 140px) clamp(96px, 12vw, 180px);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: 40px;
+  align-items: end;
+  margin-top: clamp(28px, 4vw, 56px);
+}
+
+.title {
+  grid-column: 1 / span 8;
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(3.25rem, 9vw, 11rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+}
+
+.titleB {
+  color: var(--c-fg);
+}
+
+.aside {
+  grid-column: 9 / span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding-bottom: 0.6em;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.available {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+/* Point vert qui « respire » */
+.pulse {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3ddc84;
+  flex: 0 0 auto;
+}
+
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #3ddc84;
+  animation: pulse 2s var(--ease-out) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+.local {
+  padding-left: 21px;
+  color: var(--c-muted);
+}
+
+.clock {
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.lead {
+  max-width: 36ch;
+  color: var(--c-fg-2);
+}
+
+.direct {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 22px;
+  border-top: 1px solid var(--c-line-2);
+}
+
+.directLabel {
+  color: var(--c-muted);
+}
+
+.emailRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.email {
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  word-break: break-word;
+}
+
+.copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+  color: var(--fg);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    background-color 0.4s var(--ease-out),
+    color 0.4s var(--ease-out),
+    box-shadow 0.4s var(--ease-out);
+}
+
+.copy:hover {
+  background: var(--c-fg);
+  color: var(--c-ink);
+  box-shadow: none;
+}
+
+.copy[data-done] {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  box-shadow: none;
+}
+
+.copyIcon {
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+}
+
+.link {
+  display: inline-flex;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+@media (max-width: 900px) {
+  .title,
+  .aside {
+    grid-column: 1 / -1;
+  }
+}

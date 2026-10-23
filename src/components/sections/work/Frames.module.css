@@ -1,0 +1,159 @@
+/* ── Téléphone ───────────────────────────────── */
+.phone {
+  position: relative;
+  aspect-ratio: 393 / 850;
+  box-sizing: content-box;
+  padding: 2.4%;
+  border-radius: 15% / 7%;
+  /* Titane : liseré clair, puis le noir du verre */
+  background: linear-gradient(155deg, #3a3633, #141312 45%, #1c1a18);
+  box-shadow:
+    inset 0 0 0 1.5px #6b6661,
+    inset 0 0 0 3px #1a1918,
+    inset 0 0 0 4px rgba(255, 255, 255, 0.06),
+    0 60px 100px -40px rgba(0, 0, 0, 0.55),
+    0 30px 50px -30px rgba(0, 0, 0, 0.4);
+}
+
+.phoneScreen {
+  position: relative;
+  height: 100%;
+  border-radius: 12.4% / 5.8%;
+  overflow: hidden;
+  background: #000;
+  /* WebKit : coins arrondis respectés pendant les transforms */
+  isolation: isolate;
+}
+
+.phoneScreen img[hidden],
+.browserScreen img[hidden] {
+  display: none;
+}
+
+.phoneScreen img,
+.browserScreen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+/* Dynamic Island */
+.camera {
+  position: absolute;
+  z-index: 3;
+  top: 1.6%;
+  left: 50%;
+  width: 28%;
+  height: 3.9%;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #000;
+}
+
+/* Boutons latéraux (volume à gauche, alimentation à droite), en titane */
+.phone::before,
+.phone::after {
+  content: '';
+  position: absolute;
+  width: 1.6%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #5a5652, #2c2a28);
+}
+
+.phone::before {
+  left: -1.2%;
+  top: 22%;
+  height: 16%;
+  box-shadow: 0 -150% 0 0 transparent;
+}
+
+.phone::after {
+  right: -1.2%;
+  top: 26%;
+  height: 12%;
+}
+
+/* ── Navigateur ──────────────────────────────── */
+.browser {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1c1c1e;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 70px 120px -50px rgba(0, 0, 0, 0.75),
+    0 30px 60px -30px rgba(0, 0, 0, 0.5);
+  isolation: isolate;
+}
+
+.chrome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: clamp(26px, 2.4vw, 36px);
+  padding-inline: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lights {
+  display: flex;
+  gap: 6px;
+}
+
+.lights i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.address {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+.browserScreen {
+  position: relative;
+  aspect-ratio: 1900 / 1000;
+  overflow: hidden;
+  background: #111;
+}
+
+/* Repères de coins (invisibles) */
+.corner {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.corner[data-corner='0'] {
+  top: 0;
+  left: 0;
+}
+
+.corner[data-corner='1'] {
+  top: 0;
+  right: 0;
+}
+
+.corner[data-corner='2'] {
+  bottom: 0;
+  left: 0;
+}
+
+.corner[data-corner='3'] {
+  bottom: 0;
+  right: 0;
+}

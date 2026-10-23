@@ -1,0 +1,347 @@
+@import './tokens.css';
+@import '../motion/motion.css';
+
+/* ── Reset minimal ───────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--ff-sans);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 500;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Le canvas WebGL est derrière (z-index 0) : le contenu passe toujours devant */
+main,
+body > footer {
+  position: relative;
+  z-index: 1;
+}
+
+main {
+  overflow-x: clip;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* ── Utilitaires partagés ────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Grille 12 colonnes : les sections s'y alignent */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+}
+
+/* Petits repères en mono : discrets, jamais criards */
+.label {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--c-muted);
+}
+
+/* Titres éditoriaux : Geist 500, serrés, en casse de phrase */
+.headline {
+  font-family: var(--ff-sans);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+/* Mot en italique serif à l'intérieur d'un titre */
+.headline em,
+.serif {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Lien souligné : au survol, le trait file vers la droite puis revient depuis la gauche */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 100% 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 0.1em;
+}
+
+.link-underline:hover,
+a:hover .link-underline {
+  animation: underline-swap 1s var(--ease-in-out);
+}
+
+@keyframes underline-swap {
+  0% {
+    background-size: 100% 1px;
+    background-position: 100% 100%;
+  }
+  45% {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+  46% {
+    background-size: 0% 1px;
+    background-position: 0% 100%;
+  }
+  100% {
+    background-size: 100% 1px;
+    background-position: 0% 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-underline:hover,
+  a:hover .link-underline {
+    animation: none;
+  }
+}
+
+/* Pastille / bouton plein */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: var(--c-fg);
+  color: var(--c-ink);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+.pill:hover {
+  background: #fff;
+}
+
+/* Variante contour */
+.pill-ghost {
+  background: transparent;
+  color: var(--fg);
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+}
+
+.pill-ghost:hover {
+  background: var(--c-ink-3);
+}
+
+/* Variante bleue (appel principal) */
+.pill-accent {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+.pill-accent:hover {
+  background: #4653ff;
+}
+
+/* Petit point bleu (statut « disponible », éléments actifs) */
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  flex: 0 0 auto;
+}
+
+/* Canvas de l'aperçu autonome (même règle que gl/Stage.module.css) */
+html.gl-front [data-gl-canvas],
+html.gl-over [data-gl-canvas] {
+  z-index: 2 !important;
+}
+
+/* Section en bleu signature : les couleurs secondaires suivent */
+[data-theme='accent'] {
+  position: relative;
+  background: var(--c-accent);
+  --bg: var(--c-accent);
+  --fg: var(--c-on-accent);
+  --c-fg: var(--c-on-accent);
+  --c-fg-2: rgba(244, 241, 234, 0.86);
+  --c-muted: rgba(244, 241, 234, 0.72);
+  --c-line: rgba(244, 241, 234, 0.22);
+  --c-line-2: rgba(244, 241, 234, 0.4);
+  --c-ink-2: #2632e6;
+  --c-ink-3: #4450ff;
+  color: var(--fg);
+}
+
+[data-theme='accent'] .dot {
+  background: var(--c-on-accent);
+}
+
+/* Avec WebGL, le fond bleu est peint par la vague d'encre (gl/InkWave.ts) */
+html.gl-ink [data-theme='accent'] {
+  background: transparent;
+}
+
+/* ── Transitions de pages (interactions/transitions.ts) ── */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.page-curtain svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.page-curtain-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--ff-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: -0.03em;
+  color: var(--c-on-accent);
+  opacity: 0;
+}
+
+/* Avant que le script ne prenne la main : écran couvert (même couleur que le rideau) */
+html.pt-in body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #2e3bff;
+}
+
+/* ── Lettres qui roulent au survol (interactions/textFx.ts, data-roll) ── */
+.roll {
+  display: inline-block;
+}
+
+.roll-vis {
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.2;
+}
+
+.roll-c {
+  position: relative;
+  display: inline-block;
+  white-space: pre;
+  transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+  transition-delay: calc(var(--i, 0) * 16ms);
+}
+
+.roll-c::after {
+  content: attr(data-c);
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+
+@media (hover: hover) {
+  [data-roll]:hover .roll-c,
+  a:hover > [data-roll] .roll-c,
+  a:hover [data-magnetic-inner][data-roll] .roll-c {
+    transform: translateY(-100%);
+  }
+}

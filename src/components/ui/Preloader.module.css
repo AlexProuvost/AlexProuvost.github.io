@@ -1,0 +1,60 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  will-change: transform;
+}
+
+:global(html.pl-on) .preloader {
+  display: flex;
+}
+
+.word {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.dot {
+  width: 0.22em;
+  height: 0.22em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.count {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 32px;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+.count::after {
+  content: ' %';
+}
+
+/* Bord courbe sous l'écran : bombé au départ, il se tend pendant que l'écran se lève */
+.curve {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 18vh;
+  fill: var(--c-accent);
+}
+
+/* Garde-fou : si le script ne démarre pas, l'écran ne reste pas affiché */
+:global(html.pl-on.js-timeout:not(.pl-running)) .preloader {
+  display: none;
+}

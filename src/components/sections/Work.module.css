@@ -1,0 +1,490 @@
+.section {
+  position: relative;
+  padding-block: var(--section-pad) clamp(40px, 6vw, 96px);
+}
+
+/* ── La scène : colonne fixe à gauche, cartes à droite ──
+ * Par défaut (mobile, sans JS, animations réduites) : titre au-dessus, carrousel qu'on fait défiler au doigt.
+ * html.film-on (grand écran, motion/filmFx.ts) : la scène s'épingle sur un écran et les cartes glissent au scroll. */
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vw, 56px);
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-inline: var(--gutter);
+}
+
+.title {
+  font-size: clamp(3.25rem, 7.4vw, 8.5rem);
+  line-height: 0.9;
+}
+
+.note {
+  max-width: 34ch;
+  color: var(--c-fg-2);
+}
+
+/* Compteur + barre + invitation */
+.progress {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px 18px;
+}
+
+.counter {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.counterMask {
+  display: inline-block;
+  height: 1.05em;
+  overflow: hidden;
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: clamp(2.5rem, 3.6vw, 3.75rem);
+  line-height: 1.05;
+  color: var(--c-accent-2);
+}
+
+.counterReel {
+  display: flex;
+  flex-direction: column;
+}
+
+.counterOf {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  color: var(--c-muted);
+}
+
+.progressBar {
+  display: block;
+  height: 1px;
+  max-width: 220px;
+  background: var(--c-line-2);
+  overflow: hidden;
+}
+
+.progressBar span {
+  display: block;
+  height: 100%;
+  background: var(--c-fg);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+.hint {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--c-fg-2);
+}
+
+.hintArrow {
+  display: inline-block;
+  animation: nudge 1.8s var(--ease-in-out) infinite;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+/* ── Le rail des cartes ── */
+.rail {
+  position: relative;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.track {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(20px, 2.6vw, 44px);
+  width: max-content;
+  margin: 0;
+  padding: 0 var(--gutter) 8px;
+  list-style: none;
+}
+
+.card {
+  --w: clamp(290px, 82vw, 560px);
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--w);
+  scroll-snap-align: start;
+}
+
+/* ── La capture ── */
+.shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 5 / 4;
+  border-radius: 18px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 90% at 78% 12%, color-mix(in srgb, var(--glow) 26%, transparent), transparent 62%),
+    var(--tint);
+  box-shadow: inset 0 0 0 1px rgba(240, 235, 226, 0.06);
+  will-change: clip-path;
+}
+
+/* Variantes (repères pour les survols) */
+.shotPhones,
+.shotDesktop {
+  cursor: pointer;
+}
+
+/* Trois écrans de téléphone, à plat, en léger décalé */
+.phones {
+  position: absolute;
+  inset: 0;
+}
+
+/* Un emplacement (positionné en CSS) et son écran (déplacé par la parallaxe) */
+.slot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 80%;
+  aspect-ratio: 393 / 850;
+  transition:
+    translate 0.9s var(--ease-out-expo),
+    rotate 0.9s var(--ease-out-expo);
+}
+
+.screen {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: clamp(10px, 1.3vw, 18px);
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    0 28px 60px -22px rgba(30, 20, 12, 0.55),
+    0 8px 18px -8px rgba(30, 20, 12, 0.3);
+  will-change: transform;
+}
+
+.screen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.phones .slot:nth-child(1) {
+  translate: calc(-50% - 106%) calc(-50% + 5%);
+}
+
+.phones .slot:nth-child(2) {
+  z-index: 2;
+  translate: -50% calc(-50% - 3%);
+}
+
+.phones .slot:nth-child(3) {
+  translate: calc(-50% + 106%) calc(-50% + 8%);
+}
+
+@media (hover: hover) {
+  .shot:hover .phones .slot:nth-child(1) {
+    translate: calc(-50% - 112%) calc(-50% + 2%);
+    rotate: -3deg;
+  }
+  .shot:hover .phones .slot:nth-child(2) {
+    translate: -50% calc(-50% - 6%);
+  }
+  .shot:hover .phones .slot:nth-child(3) {
+    translate: calc(-50% + 112%) calc(-50% + 5%);
+    rotate: 3deg;
+  }
+}
+
+/* Navigateur + téléphone */
+.browserSlot {
+  position: absolute;
+  left: 7%;
+  top: 13%;
+  width: 82%;
+  transition: translate 0.9s var(--ease-out-expo);
+}
+
+.browser {
+  position: relative;
+  display: block;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #232323;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 34px 70px -26px rgba(0, 0, 0, 0.7);
+  will-change: transform;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: clamp(18px, 1.7vw, 26px);
+  padding: 0 10px;
+  background: #2c2c2c;
+}
+
+.bar i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.url {
+  flex: 0 1 auto;
+  margin: 0 auto;
+  padding: 2px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--ff-mono);
+  font-size: 0.5625rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewport {
+  position: relative;
+  display: block;
+  aspect-ratio: 1900 / 1000;
+}
+
+.viewport img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+/* Au survol, la seconde page du site apparaît en fondu */
+.viewport .alt {
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+.side {
+  left: auto;
+  right: 6%;
+  top: auto;
+  bottom: -9%;
+  height: 66%;
+  z-index: 2;
+}
+
+@media (hover: hover) {
+  .shot:hover .viewport .alt {
+    opacity: 1;
+  }
+  .shotDesktop:hover .browserSlot {
+    translate: -2% -2%;
+  }
+  .shotDesktop:hover .side {
+    translate: 0 -5%;
+  }
+}
+
+/* ── Sous la capture ── */
+.info {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 4px 18px;
+  padding-top: 20px;
+}
+
+.num {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  color: var(--c-muted);
+  padding-top: 0.7em;
+}
+
+.infoMain {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: clamp(1.75rem, 2.6vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.serif {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-muted);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+}
+
+.tagline {
+  max-width: 38ch;
+  margin-top: 4px;
+  color: var(--c-fg-2);
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+  transition:
+    background-color 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out),
+    color 0.5s var(--ease-out),
+    transform 0.7s var(--ease-out-expo);
+}
+
+@media (hover: hover) {
+  .card:hover .arrow {
+    background: var(--c-accent);
+    box-shadow: none;
+    color: var(--c-on-accent);
+    transform: rotate(45deg);
+  }
+}
+
+/* ── Dernière carte ── */
+.endShot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(24px, 2.8vw, 44px);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  box-shadow: none;
+}
+
+.endLabel {
+  color: rgba(244, 241, 234, 0.75);
+}
+
+.endTitle {
+  font-size: clamp(2.75rem, 4.6vw, 5.5rem);
+  line-height: 0.92;
+}
+
+.endCta {
+  align-self: flex-start;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.endShot:hover .endCta {
+  transform: translateX(6px);
+}
+
+/* ── Grand écran, avec JS : épinglé ── */
+:global(html.film-on) .section {
+  padding-bottom: 0;
+}
+
+:global(html.film-on) .stage {
+  display: grid;
+  grid-template-columns: minmax(300px, 30%) minmax(0, 1fr);
+  align-items: stretch;
+  height: 100svh;
+  gap: 0;
+  overflow: hidden;
+}
+
+:global(html.film-on) .aside {
+  justify-content: center;
+  gap: 26px;
+  padding-right: 32px;
+  padding-top: calc(var(--nav-h) * 0.5);
+}
+
+:global(html.film-on) .title {
+  font-size: clamp(3rem, 5.6vw, 7rem);
+}
+
+:global(html.film-on) .rail {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  scroll-snap-type: none;
+  /* les cartes disparaissent en fondu le long de la colonne de gauche */
+  mask-image: linear-gradient(90deg, transparent 0, #000 64px);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 64px);
+  padding-top: calc(var(--nav-h) * 0.5);
+}
+
+:global(html.film-on) .track {
+  padding-inline: 64px 12vw;
+  will-change: transform;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+:global(html.film-dragging) .track {
+  cursor: grabbing;
+}
+
+:global(html.film-on) .card {
+  /* assez grand, mais toujours entier en hauteur (laisse ~300 px pour le texte dessous) */
+  --w: min(40vw, 700px, calc((100svh - 330px) * 1.25));
+}
+
+@media (max-width: 899px) {
+  .progress {
+    display: none;
+  }
+}

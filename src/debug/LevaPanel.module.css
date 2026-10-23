@@ -1,0 +1,15 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
+.cols {
+  height: 100%;
+}
+
+.col {
+  background: rgba(255, 60, 60, 0.08);
+  border-inline: 1px solid rgba(255, 60, 60, 0.18);
+}

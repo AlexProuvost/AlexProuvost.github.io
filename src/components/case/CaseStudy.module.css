@@ -1,0 +1,345 @@
+/* ── Couverture plein écran ── */
+.cover {
+  position: relative;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--p-bg);
+  color: var(--p-fg);
+}
+
+.coverMedia {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.coverMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fondu vers la couleur du projet, sous le titre */
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--p-bg) 0%,
+    color-mix(in srgb, var(--p-bg) 70%, transparent) 18%,
+    transparent 46%
+  );
+  pointer-events: none;
+}
+
+.coverText {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: calc(var(--nav-h) + 24px);
+  padding-bottom: clamp(56px, 7vh, 88px);
+}
+
+.back {
+  align-self: flex-start;
+  display: inline-flex;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-bg) 80%, transparent);
+  color: var(--p-fg);
+  backdrop-filter: blur(8px);
+}
+
+.coverBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  color: var(--p-muted);
+}
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--p-line);
+  color: var(--p-fg);
+}
+
+.title {
+  font-size: clamp(3.25rem, 12vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+}
+
+.serif {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+.introRow {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: 40px;
+  padding-block: clamp(64px, 9vw, 140px) clamp(24px, 3vw, 48px);
+}
+
+.intro {
+  grid-column: 1 / span 7;
+  font-size: clamp(1.5rem, 2.6vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.facts {
+  grid-column: 9 / span 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 24px;
+  align-content: start;
+}
+
+.facts dt {
+  margin-bottom: 4px;
+}
+
+.facts dd {
+  font-size: var(--fs-small);
+}
+
+/* ── Le récit ── */
+.story {
+  padding-block: clamp(80px, 10vw, 160px) clamp(40px, 6vw, 80px);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  padding: clamp(28px, 3.4vw, 48px) 0;
+  border-top: var(--hairline);
+}
+
+.rowLabel {
+  grid-column: 1 / span 3;
+  font-weight: 400;
+  padding-top: 0.4em;
+}
+
+.rowBody {
+  grid-column: 4 / span 8;
+  font-size: var(--fs-body-l);
+  color: var(--c-fg-2);
+  max-width: 44em;
+}
+
+.big {
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
+}
+
+.steps li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--c-line);
+}
+
+.delivered {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.delivered li {
+  padding: 8px 16px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+  font-size: var(--fs-small);
+  color: var(--fg);
+}
+
+/* ── Galerie ── */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4vw, 64px);
+  padding-bottom: clamp(80px, 10vw, 160px);
+}
+
+.galleryLabel {
+  padding-top: 14px;
+  border-top: var(--hairline);
+  font-weight: 400;
+}
+
+.galleryWide {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+}
+
+.galleryPhones {
+  display: flex;
+  justify-content: center;
+  gap: clamp(16px, 4vw, 64px);
+  flex-wrap: wrap;
+}
+
+.galleryPhone {
+  width: clamp(180px, 22vw, 300px);
+}
+
+/* ── La suite ── */
+.end {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: 64px;
+  padding-bottom: clamp(80px, 10vw, 160px);
+}
+
+.next {
+  grid-column: 1 / -1;
+  position: relative;
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nextMedia {
+  display: block;
+  aspect-ratio: 2.2;
+  overflow: hidden;
+}
+
+.nextMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out-expo);
+}
+
+.next:hover .nextMedia img {
+  transform: scale(1.05);
+}
+
+.nextText {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 3vw, 44px);
+  background: linear-gradient(to top, rgba(10, 10, 12, 0.75), transparent);
+  color: #f4f1ea;
+}
+
+.nextText :global(.label) {
+  color: rgba(244, 241, 234, 0.75);
+}
+
+.nextTitle {
+  font-size: var(--fs-h1);
+  line-height: 0.95;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+.next:hover .nextTitle {
+  transform: translateX(0.06em);
+}
+
+.cta {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 14px 32px;
+  padding: clamp(28px, 4vw, 64px);
+  border-radius: var(--radius);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+.cta :global(.pill) {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.ctaTitle {
+  font-size: var(--fs-h2);
+  line-height: 1;
+}
+
+.ctaText {
+  color: rgba(244, 241, 234, 0.82);
+}
+
+@media (max-width: 900px) {
+  .intro,
+  .facts,
+  .rowLabel,
+  .rowBody,
+  .next,
+  .cta {
+    grid-template-columns: 1fr;
+  }
+  .cta :global(.pill) {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+  .rowLabel {
+    margin-bottom: 14px;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+  }
+  /* Mobile : la couverture garde son cadrage (pas de recadrage en hauteur), le titre passe dessous */
+  .cover {
+    height: auto;
+    min-height: 0;
+    padding-top: var(--nav-h);
+  }
+  .cover::after {
+    display: none;
+  }
+  .coverMedia {
+    position: relative;
+    aspect-ratio: 1.25;
+  }
+  .coverText {
+    height: auto;
+    gap: 28px;
+    padding-top: 20px;
+    padding-bottom: 32px;
+  }
+  .nextMedia {
+    aspect-ratio: 1.3;
+  }
+}

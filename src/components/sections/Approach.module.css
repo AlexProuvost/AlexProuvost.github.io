@@ -1,0 +1,356 @@
+.section {
+  position: relative;
+  padding-top: var(--section-pad);
+}
+
+/* ── Intro ── */
+.intro {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  row-gap: clamp(28px, 4vw, 56px);
+  align-items: end;
+}
+
+.intro > :nth-child(2) {
+  margin-top: clamp(0px, 2vw, 24px);
+}
+
+.intro > :first-child {
+  grid-column: 1 / -1;
+}
+
+.title {
+  grid-column: 1 / span 7;
+  font-size: var(--fs-mega);
+  line-height: 0.95;
+}
+
+/* Sous le titre, à gauche : la droite reste libre pour la page éclatée qui arrive */
+.lead {
+  grid-column: 1 / span 4;
+  font-size: var(--fs-body-l);
+  color: var(--c-fg-2);
+  max-width: 34ch;
+}
+
+/* ── Scène épinglée ── */
+.stage {
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  margin-top: clamp(40px, 8vh, 120px);
+}
+
+.stageInner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  height: 100%;
+  padding-block: calc(var(--nav-h) + 8px) 72px;
+}
+
+.steps {
+  grid-column: 1 / span 5;
+  position: relative;
+  display: flex;
+  align-self: center;
+  gap: clamp(20px, 2.4vw, 36px);
+}
+
+/* Fil de progression vertical */
+.progress {
+  position: relative;
+  flex: 0 0 1px;
+  background: var(--c-line);
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-fg);
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vh, 48px);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 0.6vh, 8px);
+}
+
+.stepTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  font-weight: 500;
+}
+
+.stepN {
+  min-width: 2ch;
+}
+
+.stepName {
+  font-size: clamp(2rem, 4.4vw, 4.5rem);
+  line-height: 1.04;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+/* Avec les animations : l'étape active est pleine, les autres estompées */
+:global(.motion-ready) [data-approach-step]:not([data-active='true']) .stepName {
+  opacity: 0.2;
+}
+
+.details {
+  display: grid;
+  padding-left: calc(2ch + 16px);
+  max-width: calc(40ch + 2ch + 16px);
+}
+
+.detail {
+  grid-area: 1 / 1;
+}
+
+/* Sans animation : les textes s'enchaînent */
+:global(html:not(.motion-ready)) .details {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+:global(.motion-ready) .detail {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s var(--ease-out),
+    transform 0.7s var(--ease-out-expo);
+}
+
+:global(.motion-ready) .detail[data-active='true'] {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
+}
+
+.layer {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: var(--fg);
+}
+
+.stepText {
+  color: var(--c-fg-2);
+  font-size: var(--fs-body-l);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.chips li {
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+  font-size: var(--fs-small);
+}
+
+.visual {
+  grid-column: 6 / span 7;
+  position: relative;
+}
+
+.anchor {
+  position: absolute;
+  inset: 0;
+}
+
+@media (max-width: 900px) {
+  .title,
+  .lead {
+    grid-column: 1 / -1;
+  }
+  .stageInner {
+    grid-template-rows: minmax(0, 1fr) auto;
+    row-gap: 16px;
+    padding-bottom: 64px;
+  }
+  .visual {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .steps {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: end;
+  }
+  .stepName {
+    font-size: clamp(1.5rem, 7vw, 2.25rem);
+  }
+  .details {
+    min-height: 7.5em;
+  }
+  .chips {
+    margin-top: 10px;
+  }
+}
+
+/* Sans pin (animations réduites) : la scène reprend une hauteur naturelle */
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    height: auto;
+    min-height: 100svh;
+  }
+  .details {
+    display: flex !important;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .detail {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ── Le déroulé, en détail ── */
+.process {
+  padding-top: clamp(96px, 12vw, 200px);
+}
+
+.processTitle {
+  font-size: var(--fs-h1);
+  line-height: 0.95;
+  max-width: 12ch;
+}
+
+.timelineWrap {
+  position: relative;
+  margin-top: clamp(40px, 5vw, 80px);
+  padding-top: 34px;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--col-gap);
+}
+
+/* La ligne du temps se trace au scroll (motion/textReveals.ts) */
+.timelineLine {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--c-line-2);
+  transform-origin: 0 50%;
+}
+
+.phase {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 12px;
+}
+
+.phaseDot {
+  position: absolute;
+  top: -34px;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  box-shadow: 0 0 0 5px var(--bg);
+}
+
+.phaseN {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: 2.25rem;
+  line-height: 1;
+  color: var(--c-accent-2);
+}
+
+.phaseTitle {
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.phaseDuration {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--c-line-2);
+  font-size: var(--fs-small);
+}
+
+.phaseK {
+  margin-top: 12px;
+}
+
+.phaseList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: var(--fs-small);
+  color: var(--c-fg-2);
+}
+
+.phaseList li {
+  display: flex;
+  gap: 10px;
+}
+
+.phaseList li::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 12px;
+  height: 1px;
+  margin-top: 0.75em;
+  background: var(--c-accent-2);
+}
+
+.phaseNeed li::before {
+  background: var(--c-muted);
+}
+
+.processNote {
+  margin-top: clamp(32px, 4vw, 56px);
+}
+
+@media (max-width: 1100px) {
+  .timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 56px;
+  }
+  .timelineLine {
+    display: none;
+  }
+  .phaseDot {
+    top: -24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .timeline {
+    grid-template-columns: 1fr;
+  }
+}

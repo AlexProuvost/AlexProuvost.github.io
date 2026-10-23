@@ -1,0 +1,46 @@
+/* ── Styles liés au mouvement ─────────────────────────────────── */
+
+/* Lenis : hauteur naturelle du document, pas de smooth natif en concurrence */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/*
+ * Anti-flash : tant que les animations n'ont pas démarré, l'ouverture reste invisible.
+ * Sécurité : si le JS n'a pas pris la main au bout de 4 s, tout redevient visible.
+ */
+.js:not(.motion-ready):not(.js-timeout) [data-hero-hide],
+.js:not(.motion-ready):not(.js-timeout) [data-intro],
+.js:not(.motion-ready):not(.js-timeout) [data-nav] {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js:not(.motion-ready):not(.js-timeout) [data-hero-hide],
+  .js:not(.motion-ready):not(.js-timeout) [data-intro],
+  .js:not(.motion-ready):not(.js-timeout) [data-nav] {
+    visibility: visible;
+  }
+}
+
+/*
+ * Masques de lignes créés par SplitText : zone visible agrandie (marges négatives = mise en page inchangée)
+ * pour ne couper ni les accents des capitales (É), ni l'italique, ni les jambages.
+ */
+.split-line-mask {
+  padding: 0.34em 0.15em 0.2em;
+  margin: -0.34em -0.15em -0.2em;
+}

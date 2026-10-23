@@ -1,0 +1,142 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--nav-h) + clamp(16px, 3vh, 40px));
+  /* dégage la barre du bas */
+  padding-bottom: 64px;
+}
+
+/* ── Haut : intro à gauche, figure 3D à droite ── */
+.top {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--col-gap);
+  min-height: 0;
+}
+
+.intro {
+  grid-column: 1 / span 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+  padding-bottom: clamp(24px, 4vh, 56px);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.available {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg);
+}
+
+.lead {
+  font-size: clamp(1.75rem, min(3.05vw, 5.2svh), 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  max-width: 15em;
+}
+
+.lead em {
+  color: var(--c-fg);
+}
+
+.figure {
+  grid-column: 6 / span 7;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* L'emplacement de la pile 3D : le canvas WebGL (fixe, derrière) y cale la scène */
+.anchor {
+  position: relative;
+  flex: 1;
+  min-height: 320px;
+}
+
+.caption {
+  align-self: flex-end;
+  padding-bottom: 12px;
+}
+
+/* ── Bas : le logotype ── */
+.foot {
+  /* cqw = % de la largeur intérieure */
+  container-type: inline-size;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+}
+
+.rule {
+  display: block;
+  height: 1px;
+  background: var(--c-line-2);
+  transform-origin: 0 50%;
+}
+
+.word {
+  display: block;
+  margin-top: clamp(10px, 1.4vw, 20px);
+  /* masque de l'ouverture : le mot monte d'un bloc */
+  overflow: clip;
+  overflow-clip-margin: 0.02em;
+  line-height: 0;
+}
+
+.wordInner {
+  display: block;
+  font-family: var(--ff-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  text-transform: uppercase;
+  /* L'encre de « ALEX » (graisse 800) mesure ≈ 3,42 em : 100cqw / 3,42 ≈ 29,2cqw → bord à bord */
+  /* … et jamais plus haut que l'espace disponible (écrans peu hauts : 1280 × 720, 1366 × 768) */
+  font-size: min(29.2cqw, 34svh);
+  line-height: 0.74;
+  letter-spacing: -0.055em;
+  margin-left: -0.02em;
+  white-space: nowrap;
+  padding-top: 0.02em;
+}
+
+@media (max-width: 900px) {
+  .intro {
+    grid-column: 1 / -1;
+    gap: 28px;
+  }
+  .figure {
+    grid-column: 1 / -1;
+  }
+  .anchor {
+    flex: 0 0 auto;
+    height: min(46svh, 82vw);
+    min-height: 0;
+  }
+  .row > :nth-child(2) {
+    display: none;
+  }
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* WebGL actif : ALEX est dessiné par le liquide (gl/HeroFluid.ts) ; le <h1> reste pour le référencement */
+:global(.gl-hero) .wordInner {
+  visibility: hidden;
+}

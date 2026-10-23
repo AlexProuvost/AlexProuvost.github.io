@@ -1,0 +1,21 @@
+/* Derrière le contenu (main et footer sont en z-index 1) : le texte passe toujours devant la 3D */
+.canvas {
+  position: fixed !important;
+  inset: 0;
+  z-index: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none;
+}
+
+/* Fin du site (contact) : les sections opaques couvrent le fond, la carte 3D passe donc devant (zone vide réservée) */
+:global(html.gl-front) .canvas,
+:global(html.gl-over) .canvas {
+  z-index: 2;
+}
+
+/* R3F pose ses propres styles sur le canvas : on force l'absence d'interaction (le site reste cliquable dessous) */
+.canvas,
+.canvas * {
+  pointer-events: none !important;
+}

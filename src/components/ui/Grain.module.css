@@ -1,0 +1,15 @@
+.frame {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.grain {
+  position: absolute;
+  inset: -192px;
+  background-image: url('/grain.png');
+  background-size: 192px 192px;
+  opacity: var(--grain-opacity);
+}

@@ -1,0 +1,244 @@
+/* Rail de défilement, bord droit, toujours lisible (mélange « difference » sur les fonds clairs ou bleus) */
+.rail {
+  position: fixed;
+  top: 50%;
+  right: clamp(12px, 1.5vw, 26px);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: #f0ebe2;
+  mix-blend-mode: difference;
+  font-family: var(--ff-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.pct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.pctUnit {
+  opacity: 0.55;
+}
+
+/* Le trait */
+.line {
+  position: relative;
+  width: 1px;
+  height: clamp(150px, 32vh, 300px);
+  background: rgba(240, 235, 226, 0.22);
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+}
+
+/* Le point qui descend, en boucle, tant qu'on n'a pas commencé à défiler */
+.runner {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.rail[data-hint] .runner {
+  opacity: 1;
+  animation: run 2.2s var(--ease-in-out) infinite;
+}
+
+@keyframes run {
+  0% {
+    transform: translateY(0) scale(0.4);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(clamp(150px, 32vh, 300px) - 7px)) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* Un repère par section */
+.ticks {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ticks li {
+  position: absolute;
+  left: 50%;
+  width: 22px;
+  height: 14px;
+  margin: -7px 0 0 -11px;
+}
+
+.ticks button {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.ticks button::before {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  transition:
+    width 0.5s var(--ease-out-expo),
+    opacity 0.3s var(--ease-out);
+}
+
+.ticks button:hover::before,
+.ticks button[aria-current='true']::before {
+  width: 15px;
+  opacity: 1;
+}
+
+.ticks button:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Le texte vertical : « Faites défiler », puis la section en cours */
+.label {
+  position: relative;
+  display: grid;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  min-height: 9em;
+}
+
+.labelHint,
+.labelNow {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.45s var(--ease-out),
+    transform 0.6s var(--ease-out-expo);
+}
+
+.labelHint {
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+}
+
+.labelNow > span {
+  display: inline-block;
+}
+
+/* La flèche, sous le texte : rebondit tant qu'on n'a pas défilé */
+.arrow {
+  font-size: 0.875rem;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.rail[data-hint] .arrow {
+  opacity: 1;
+  animation: bounce 1.4s var(--ease-in-out) infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.rail[data-hint] .labelNow,
+.rail:not([data-hint]) .labelHint {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.rail[data-hint] .pct {
+  opacity: 0;
+}
+
+@media (max-width: 899px) {
+  .rail {
+    right: 6px;
+    gap: 10px;
+    font-size: 0.625rem;
+  }
+  .line {
+    height: 22vh;
+  }
+  @keyframes run {
+    0% {
+      transform: translateY(0) scale(0.4);
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(calc(22vh - 7px)) scale(0.6);
+      opacity: 0;
+    }
+  }
+  .pct,
+  .labelNow {
+    display: none;
+  }
+  .rail:not([data-hint]) .label {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail[data-hint] .arrow {
+    animation: none;
+  }
+  .rail[data-hint] .runner {
+    animation: none;
+    top: 40%;
+  }
+}
