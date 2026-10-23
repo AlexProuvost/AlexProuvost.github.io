@@ -48,6 +48,7 @@ export function Approach() {
           <div className={styles.steps}>
             <div className={styles.progress} aria-hidden="true">
               <span className={styles.progressFill} data-approach-progress />
+              <span className={styles.progressKnob} data-approach-knob />
             </div>
 
             <div className={styles.column}>
@@ -58,6 +59,10 @@ export function Approach() {
                       <span className={`label ${styles.stepN}`}>0{i + 1}</span>
                       <span className={`headline ${styles.stepName}`}>{step.title}</span>
                     </h3>
+                    {/* Avancement dans l'étape : se remplit au fil du scroll */}
+                    <span className={styles.stepBar} aria-hidden="true">
+                      <span data-approach-bar />
+                    </span>
                   </li>
                 ))}
               </ol>
@@ -70,7 +75,9 @@ export function Approach() {
                       <span className="dot" aria-hidden="true" />
                       {step.layer}
                     </p>
-                    <p className={styles.stepText}>{step.text}</p>
+                    <p className={styles.stepText} data-approach-text>
+                      {step.text}
+                    </p>
                     {step.notes.length > 0 && (
                       <ul className={styles.chips}>
                         {step.notes.map((n) => (
@@ -85,6 +92,16 @@ export function Approach() {
           </div>
 
           <div className={styles.visual}>
+            {/* Le grand numéro de l'étape : se remplit d'encre au fil de l'étape, puis glisse vers le suivant */}
+            <div className={styles.bigStep} aria-hidden="true">
+              <div className={styles.bigStrip} data-approach-strip>
+                {steps.map((step, i) => (
+                  <span key={step.title} className={styles.bigN} data-approach-n>
+                    0{i + 1}
+                  </span>
+                ))}
+              </div>
+            </div>
             <div className={styles.anchor} data-stack-anchor="approach">
               <StackFallback />
             </div>

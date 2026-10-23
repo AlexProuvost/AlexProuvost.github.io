@@ -105,8 +105,20 @@ export class ExplodedStack implements GLLayer {
 
     const labels = document.querySelectorAll<HTMLElement>('[data-stack-label]');
     const { plates, contact } = plateDefs(document.documentElement.lang);
+    // Résolution des textures selon l'écran : les plaques s'affichent bien plus petites que 1920 × 1200.
+    // Sur un écran courant on dessine à 60 % (≈ 2,5× moins de mémoire graphique, envoi plus rapide) ;
+    // pleine résolution seulement sur les grands écrans haute densité. Le dessin, lui, ne change pas.
+    const res = Math.min(1, Math.max(0.6, (window.innerWidth * Math.min(window.devicePixelRatio, 1.5)) / 2400));
     const makeTex = (draw: Parameters<typeof canvasTexture>[2]) => {
-      const tex = canvasTexture(TEX_W, TEX_H, draw, maxAniso);
+      const tex = canvasTexture(
+        Math.round(TEX_W * res),
+        Math.round(TEX_H * res),
+        (ctx) => {
+          ctx.scale(res, res);
+          draw(ctx, TEX_W, TEX_H);
+        },
+        maxAniso,
+      );
       // UV des formes = coordonnées brutes (-PW/2…PW/2) → ramenées à 0…1
       tex.repeat.set(1 / PW, 1 / PH);
       tex.offset.set(0.5, 0.5);
@@ -234,9 +246,13 @@ export class ExplodedStack implements GLLayer {
     const room = lerp(this.isMobile() ? 1 : lerp(0.94, 0.8, inContact ? 0 : l.travel), 0.98, assemble);
     const scale = this.fit(l.w, l.h, tilt, rotZ, Math.max(spread, 0.02), room);
 
+    // Dans la scène de la méthode, la pile pivote lentement tout au long du scroll (on sent qu'on avance,
+    // même entre deux étapes). Pas prise en compte dans le cadrage : la taille ne pompe pas.
+    const orbit = inContact ? 0 : l.travel * (1 - assemble) * (clamp01(stackState.approach) - 0.5) * 26;
+
     this.root.position.set(l.cx - this.vp.w / 2, this.vp.h / 2 - l.cy, 0);
     this.root.scale.setScalar(scale);
-    this.axo.rotation.set(-deg(tilt), 0, deg(rotZ));
+    this.axo.rotation.set(-deg(tilt + orbit * 0.25), 0, deg(rotZ + orbit));
 
     // Souris : légère bascule de toute la pile (moins forte dans la scène épinglée)
     const m = deg(P.mouse) * (motion.mouse.active ? 1 : 0) * (1 - 0.5 * l.travel);

@@ -68,9 +68,96 @@
 .progressFill {
   position: absolute;
   inset: 0;
-  background: var(--c-fg);
+  background: var(--c-accent-2);
   transform-origin: 50% 0;
   transform: scaleY(0);
+}
+
+/* Le curseur qui descend le long du fil (motion/approachFx.ts) */
+.progressKnob {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  box-shadow:
+    0 0 0 4px var(--bg),
+    0 0 18px 2px rgba(46, 59, 255, 0.7);
+  will-change: transform;
+}
+
+/* Sous chaque titre d'étape : la barre d'avancement de l'étape */
+.stepBar {
+  display: block;
+  height: 2px;
+  margin: 6px 0 4px calc(2ch + 16px);
+  max-width: 14rem;
+  background: var(--c-line);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.stepBar > span {
+  display: block;
+  height: 100%;
+  background: var(--c-accent-2);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+:global(.motion-ready) [data-approach-step][data-active='true'] .stepBar {
+  opacity: 1;
+}
+
+/* Le grand numéro : contour, rempli d'encre au fil de l'étape (--fill), dans un masque qui fait défiler 01 → 04 */
+.bigStep {
+  position: absolute;
+  left: clamp(-40px, -2vw, 0px);
+  top: 50%;
+  height: 1em;
+  overflow: hidden;
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: clamp(8rem, 16vw, 16rem);
+  line-height: 1;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.bigStrip {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.bigN {
+  --fill: 0;
+  display: block;
+  height: 1em;
+  padding-right: 0.08em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-line-2);
+  background: linear-gradient(90deg, rgba(163, 171, 255, 0.55) 50%, transparent 50%) no-repeat;
+  background-size: 200% 100%;
+  background-position: calc((1 - var(--fill)) * 100%) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Sans animation : pas de grand numéro (les étapes sont toutes affichées) */
+:global(html:not(.motion-ready)) .bigStep {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bigStep,
+  .progressKnob {
+    display: none;
+  }
 }
 
 .column {
@@ -152,6 +239,11 @@
   font-size: var(--fs-body-l);
 }
 
+/* Mots découpés (motion/approachFx.ts) : ils s'allument en douceur */
+.stepText > * {
+  transition: opacity 0.35s var(--ease-out);
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -180,6 +272,10 @@
   .title,
   .lead {
     grid-column: 1 / -1;
+  }
+  /* Petit écran : la 3D occupe le haut de la scène, pas de place pour le grand numéro */
+  .bigStep {
+    display: none;
   }
   .stageInner {
     grid-template-rows: minmax(0, 1fr) auto;
