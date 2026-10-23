@@ -53,6 +53,31 @@ export function buildDeck(): () => void {
       scrollTrigger: { trigger: card, start: 'top 70%', once: true },
     });
 
+    // Le visuel de l'étape : il se dévoile de gauche à droite en pivotant pour se mettre face à l'écran,
+    // pendant que le dessin dézoome dans son cadre
+    const visual = card.querySelector<HTMLElement>('[data-deck-visual]');
+    if (visual) {
+      gsap.set(visual, { transformPerspective: 1200 });
+      gsap.fromTo(
+        visual,
+        { clipPath: 'inset(0% 100% 0% 0% round 18px)', rotationY: -22, xPercent: 8 },
+        {
+          clipPath: 'inset(0% 0% 0% 0% round 18px)',
+          rotationY: 0,
+          xPercent: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: card, start: 'top 85%', end: 'top 25%', scrub: 0.6 },
+        },
+      );
+      const plate = visual.querySelector('canvas');
+      if (plate)
+        gsap.fromTo(
+          plate,
+          { scale: 1.2 },
+          { scale: 1, ease: 'none', scrollTrigger: { trigger: card, start: 'top bottom', end: 'top 20%', scrub: 0.6 } },
+        );
+    }
+
     // Recouverte par la suivante : recul et ombre
     const next = cards[i + 1];
     if (!stacked || !next) return;

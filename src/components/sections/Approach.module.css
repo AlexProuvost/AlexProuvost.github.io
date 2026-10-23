@@ -116,13 +116,14 @@
 /* Le grand numéro : contour, rempli d'encre au fil de l'étape (--fill), dans un masque qui fait défiler 01 → 04 */
 .bigStep {
   position: absolute;
-  left: clamp(-40px, -2vw, 0px);
+  /* Dans l'espace libre entre la liste des étapes et la page éclatée (sans la recouvrir) */
+  left: clamp(-130px, -6.5vw, -40px);
   top: 50%;
   height: 1em;
   overflow: hidden;
   font-family: var(--ff-serif);
   font-style: italic;
-  font-size: clamp(8rem, 16vw, 16rem);
+  font-size: clamp(7rem, 13.5vw, 14rem);
   line-height: 1;
   transform: translateY(-50%);
   pointer-events: none;
@@ -397,15 +398,35 @@
 .cardBody {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  align-items: end;
-  gap: var(--col-gap);
+  align-items: center;
+  gap: clamp(24px, 4vw, 72px);
 }
 
-/* Le grand numéro : contour, puis rempli d'encre de gauche à droite (--fill, 0 → 1) */
-.bigN {
+/* Le visuel de l'étape : la couche de la page éclatée, en carte inclinée qui se redresse à l'arrivée */
+.cardVisual {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: calc(var(--radius) * 1.1);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.28);
+  box-shadow:
+    inset 0 0 0 1px var(--c-line),
+    0 40px 80px -40px rgba(0, 0, 0, 0.8);
+  transform-origin: 0% 50%;
+  will-change: transform;
+}
+
+.plate {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Le grand numéro de la carte : contour, puis rempli d'encre de gauche à droite (--fill, 0 → 1) */
+.deckN {
   font-family: var(--ff-serif);
   font-style: italic;
-  font-size: clamp(7rem, 17vw, 17rem);
+  font-size: clamp(4.5rem, 8vw, 8.5rem);
   line-height: 0.8;
   letter-spacing: -0.04em;
   color: transparent;
@@ -495,8 +516,8 @@
     grid-template-columns: 1fr;
     align-items: start;
   }
-  .bigN {
-    font-size: clamp(5rem, 26vw, 9rem);
+  .deckN {
+    font-size: clamp(4rem, 20vw, 7rem);
   }
 }
 

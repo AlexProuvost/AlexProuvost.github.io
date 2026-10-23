@@ -13,6 +13,7 @@ import { initTilt } from './tilt';
 import { initInkLines } from './inkLines';
 import { initReadProgress } from './readProgress';
 import { initToolsPit } from './toolsPit';
+import { initDeckVisuals } from './deckVisuals';
 
 /** Détails d'interface : curseur, menu, barre du bas, horloges, boutons magnétiques, bascule des visuels. */
 export function initInterface(): () => void {
@@ -32,6 +33,7 @@ export function initInterface(): () => void {
     initInkLines(),
     initReadProgress(),
     initToolsPit(),
+    initDeckVisuals(),
   ];
   return () => cleanups.forEach((fn) => fn());
 }

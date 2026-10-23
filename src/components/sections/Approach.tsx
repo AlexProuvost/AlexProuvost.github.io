@@ -15,6 +15,9 @@ type Step = {
   need: string[];
 };
 
+/** Couches de la page éclatée montrées dans les cartes du déroulé (gl/plates.ts), plusieurs = superposées */
+const DECK_PLATES = ['brief', 'grid wire', 'type', 'surface'];
+
 /**
  * 02 — « De l'idée au site ».
  * Une intro, puis une scène épinglée (motion/approachFx.ts) : à gauche, les quatre étapes de la méthode ;
@@ -135,10 +138,10 @@ export function Approach() {
                   </p>
                 </div>
                 <div className={styles.cardBody}>
-                  <p className={styles.bigN} aria-hidden="true" data-deck-n>
-                    0{i + 1}
-                  </p>
                   <div className={styles.cardMain}>
+                    <p className={styles.deckN} aria-hidden="true" data-deck-n>
+                      0{i + 1}
+                    </p>
                     <h4 className={`headline ${styles.cardTitle}`} data-deck-item>
                       {step.title}
                     </h4>
@@ -160,6 +163,11 @@ export function Approach() {
                         </ul>
                       </div>
                     </div>
+                  </div>
+                  {/* Le visuel de l'étape : la couche correspondante de la page éclatée, dessinée en 2D
+                      (mêmes dessins que la 3D, interactions/deckVisuals.ts) */}
+                  <div className={styles.cardVisual} data-deck-visual aria-hidden="true">
+                    <canvas className={styles.plate} data-plate={DECK_PLATES[i] ?? 'surface'} />
                   </div>
                 </div>
                 <span className={styles.cardShade} aria-hidden="true" data-deck-shade />

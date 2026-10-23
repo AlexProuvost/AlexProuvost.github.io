@@ -42,6 +42,7 @@ export function buildApproach(): () => void {
   const knob = section.querySelector<HTMLElement>('[data-approach-knob]');
   const track = knob?.parentElement ?? null;
   const strip = section.querySelector<HTMLElement>('[data-approach-strip]');
+  const bigBox = strip?.parentElement ?? null;
   const nums = Array.from(section.querySelectorAll<HTMLElement>('[data-approach-n]'));
   const splits = details.map((d) => {
     const text = d.querySelector<HTMLElement>('[data-approach-text]');
@@ -63,7 +64,13 @@ export function buildApproach(): () => void {
       const fill = i < k ? 1 : i === k ? Math.min(1, local / 0.8) : 0;
       el.style.setProperty('--fill', fill.toFixed(3));
     });
-    if (strip) strip.style.transform = `translate3d(0, ${((-(k + smooth(0.8, 1, local)) * 100) / n).toFixed(3)}%, 0)`;
+    if (strip) {
+      // Pas de glissement après la dernière étape (il n'y a pas de numéro suivant)
+      const slide = k < n - 1 ? smooth(0.8, 1, local) : 0;
+      strip.style.transform = `translate3d(0, ${((-(k + slide) * 100) / n).toFixed(3)}%, 0)`;
+      // À la dernière étape, le numéro s'efface avant que la page éclatée ne se referme (elle grandit à sa place)
+      if (bigBox) bigBox.style.opacity = (1 - smooth(n - 1.4, n - 0.9, pos)).toFixed(3);
+    }
     // Les mots de l'étape active s'allument au fil du scroll (tous allumés aux trois quarts de l'étape)
     splits.forEach((split, i) => {
       if (!split) return;
