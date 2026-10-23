@@ -6,6 +6,7 @@ import { buildHero } from './heroFx';
 import { buildScrollFx } from './scrollFx';
 import { buildApproach, showAllSteps } from './approachFx';
 import { buildFilm } from './filmFx';
+import { buildDeck } from './deckFx';
 import { inkFilter } from './inkFilter';
 import { stackState } from '@/gl/stackState';
 
@@ -19,7 +20,7 @@ import { stackState } from '@/gl/stackState';
  *   data-split="lines"   paragraphes : lignes qui montent depuis leur masque
  *   data-split="light"   déclaration : les mots s'allument un à un (opacité seule, le texte ne bouge pas)
  *   data-reveal="up"     blocs : montée + fondu
- *   data-timeline-line   ligne du temps : se trace au scroll, les étapes ([data-phase]) s'allument à son passage
+ *   data-deck-*          le déroulé : cartes empilées au scroll (voir deckFx.ts)
  *   data-reveal="label"  labels de section : le trait se trace, le texte apparaît
  *   data-hero-*          ouverture du site (voir heroFx.ts)
  *   data-approach-*      la méthode, épinglée (voir approachFx.ts)
@@ -204,34 +205,8 @@ function buildScrollReveals(): () => void {
     });
   });
 
-  // Ligne du temps du déroulé : elle se trace au scroll, et chaque étape s'allume quand la ligne l'atteint
-  gsap.utils.toArray<HTMLElement>('[data-timeline-line]').forEach((el) => {
-    const wrap = el.parentElement;
-    const phases = wrap ? [...wrap.querySelectorAll<HTMLElement>('[data-phase]')] : [];
-    const light = (progress: number) => {
-      const box = el.getBoundingClientRect();
-      phases.forEach((p) => {
-        const at = (p.getBoundingClientRect().left - box.left) / Math.max(box.width, 1);
-        p.toggleAttribute('data-on', progress >= at + 0.01);
-      });
-    };
-    gsap.fromTo(
-      el,
-      { scaleX: 0 },
-      {
-        scaleX: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: wrap,
-          start: 'top 85%',
-          end: 'top 35%',
-          scrub: true,
-          onUpdate: (self) => light(self.progress),
-          onRefresh: (self) => light(self.progress),
-        },
-      },
-    );
-  });
+  // Le déroulé : cartes empilées (voir deckFx.ts)
+  disposers.push(buildDeck());
 
   // Labels de section
   gsap.utils.toArray<HTMLElement>('[data-reveal="label"]').forEach((el) => {
@@ -248,7 +223,6 @@ function buildScrollReveals(): () => void {
 /* ── prefers-reduced-motion : un simple fondu d'entrée, puis tout reste visible (aucun contenu masqué) ── */
 function buildReduced(withIntro: boolean) {
   showAllSteps();
-  document.querySelectorAll('[data-phase]').forEach((p) => p.setAttribute('data-on', ''));
   if (withIntro) {
     gsap.from('[data-hero-hide], [data-nav]', { autoAlpha: 0, duration: 0.8, stagger: 0.06, ease: 'none' });
   }

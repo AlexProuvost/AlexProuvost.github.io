@@ -234,135 +234,141 @@
   max-width: 12ch;
 }
 
-.timelineWrap {
+/* Le paquet de cartes : chacune colle en haut de l'écran, un peu plus bas que la précédente,
+   et la suivante vient la recouvrir (motion/deckFx.ts ajoute le recul et l'ombre) */
+.deck {
   position: relative;
   margin-top: clamp(40px, 5vw, 80px);
-  padding-top: 34px;
+  padding-bottom: 6vh;
 }
 
-.timeline {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--col-gap);
+.card {
+  position: sticky;
+  top: calc(var(--nav-h) + 12px + var(--i) * 26px);
+  margin-bottom: 7vh;
 }
 
-/* La ligne du temps se trace au scroll (motion/textReveals.ts) */
-.timelineLine {
-  position: absolute;
-  top: 6px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--c-line-2);
-  transform-origin: 0 50%;
+.card:last-child {
+  margin-bottom: 0;
 }
 
-.phase {
+.cardInner {
+  --card-bg: #191816;
+  --fill: 1;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding-right: 12px;
+  justify-content: space-between;
+  gap: clamp(24px, 3vw, 48px);
+  min-height: min(68svh, 640px);
+  padding: clamp(24px, 3vw, 48px);
+  overflow: hidden;
+  border-radius: calc(var(--radius) * 1.5);
+  background: var(--card-bg);
+  box-shadow:
+    inset 0 0 0 1px var(--c-line),
+    0 -30px 60px -30px rgba(0, 0, 0, 0.7);
+  transform-origin: 50% 0%;
 }
 
-.phaseDot {
-  position: absolute;
-  top: -34px;
-  left: 0;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background: var(--c-accent);
-  box-shadow: 0 0 0 5px var(--bg);
-  transition:
-    background-color 0.4s var(--ease-out),
-    transform 0.7s var(--ease-out-expo);
+.card:nth-child(2) .cardInner {
+  --card-bg: #201e1b;
 }
 
-/* L'onde qui part du point quand la ligne du temps l'atteint */
-.phaseDot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  box-shadow: 0 0 0 2px var(--c-accent-2);
-  opacity: 0;
+.card:nth-child(3) .cardInner {
+  --card-bg: #282521;
 }
 
-.phaseN {
+/* Dernière étape : la carte bleue signature */
+.card[data-tone='accent'] .cardInner {
+  --card-bg: var(--c-accent);
+  --fg: var(--c-on-accent);
+  --c-fg-2: rgba(244, 241, 234, 0.86);
+  --c-muted: rgba(244, 241, 234, 0.72);
+  --c-line: rgba(244, 241, 234, 0.25);
+  --c-line-2: rgba(244, 241, 234, 0.4);
+  --c-accent-2: var(--c-on-accent);
+  color: var(--fg);
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.cardBody {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: end;
+  gap: var(--col-gap);
+}
+
+/* Le grand numéro : contour, puis rempli d'encre de gauche à droite (--fill, 0 → 1) */
+.bigN {
   font-family: var(--ff-serif);
   font-style: italic;
-  font-size: 2.25rem;
-  line-height: 1;
-  color: var(--c-accent-2);
-  transition:
-    color 0.5s var(--ease-out),
-    transform 0.8s var(--ease-out-expo);
+  font-size: clamp(7rem, 17vw, 17rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-line-2);
+  background: linear-gradient(90deg, var(--c-accent-2) 50%, transparent 50%) no-repeat;
+  background-size: 200% 100%;
+  background-position: calc((1 - var(--fill)) * 100%) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  padding-right: 0.08em;
 }
 
-/* Avant le passage de la ligne (motion/textReveals.ts) : point creux, numéro en retrait.
-   Sans JS ni animation, tout reste allumé. */
-:global(html.motion-ready) .phase:not([data-on]) .phaseDot {
-  background: var(--bg);
-  box-shadow:
-    0 0 0 5px var(--bg),
-    inset 0 0 0 1.5px var(--c-line-2);
-  transform: scale(0.75);
+.cardMain {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4vw, 36px);
 }
 
-:global(html.motion-ready) .phase:not([data-on]) .phaseN {
-  color: var(--c-muted);
-  transform: translateY(6px);
+.cardTitle {
+  font-size: clamp(2.5rem, 5.6vw, 6rem);
+  line-height: 0.95;
 }
 
-.phase[data-on] .phaseDot::after {
-  animation: phasePing 1.1s var(--ease-out) 1;
+.cardCols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--col-gap);
+  padding-top: 18px;
+  border-top: 1px solid var(--c-line-2);
 }
 
-@keyframes phasePing {
-  0% {
-    opacity: 0.9;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(3.2);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .phase[data-on] .phaseDot::after {
-    animation: none;
-  }
-}
-
-.phaseTitle {
-  font-size: var(--fs-h3);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+/* L'ombre qui tombe sur une carte quand la suivante la recouvre */
+.cardShade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .phaseDuration {
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
-  align-self: flex-start;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 999px;
   box-shadow: inset 0 0 0 1px var(--c-line-2);
   font-size: var(--fs-small);
 }
 
 .phaseK {
-  margin-top: 12px;
+  margin-bottom: 10px;
 }
 
 .phaseList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: var(--fs-small);
+  gap: 8px;
+  font-size: var(--fs-body);
   color: var(--c-fg-2);
 }
 
@@ -376,7 +382,7 @@
   flex: 0 0 auto;
   width: 12px;
   height: 1px;
-  margin-top: 0.75em;
+  margin-top: 0.8em;
   background: var(--c-accent-2);
 }
 
@@ -388,21 +394,28 @@
   margin-top: clamp(32px, 4vw, 56px);
 }
 
-@media (max-width: 1100px) {
-  .timeline {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 56px;
+@media (max-width: 900px) {
+  .cardBody {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
-  .timelineLine {
-    display: none;
-  }
-  .phaseDot {
-    top: -24px;
+  .bigN {
+    font-size: clamp(5rem, 26vw, 9rem);
   }
 }
 
-@media (max-width: 640px) {
-  .timeline {
+/* Petits écrans : une carte plus haute que l'écran ne peut pas coller ; elles se suivent simplement */
+@media (max-width: 700px) {
+  .card {
+    position: relative;
+    top: auto;
+    margin-bottom: 16px;
+  }
+  .cardInner {
+    min-height: 0;
+  }
+  .cardCols {
     grid-template-columns: 1fr;
+    row-gap: 22px;
   }
 }

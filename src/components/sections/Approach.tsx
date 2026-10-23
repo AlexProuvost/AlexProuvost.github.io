@@ -92,38 +92,64 @@ export function Approach() {
         </div>
       </div>
 
-      {/* Le déroulé concret : durée, ce que vous recevez, ce dont j'ai besoin */}
+      {/* Le déroulé concret, en cartes qui s'empilent au scroll (motion/deckFx.ts) :
+          chaque étape vient se poser sur la précédente, qui recule et s'assombrit ;
+          son grand numéro se remplit d'encre à l'arrivée. Sans animation : les cartes, simplement empilées. */}
       <div className={`container ${styles.process}`}>
         <h3 className={`headline ${styles.processTitle}`} data-split="title">
           {t('detailTitle')}
         </h3>
-        <div className={styles.timelineWrap}>
-          <span className={styles.timelineLine} aria-hidden="true" data-timeline-line />
-          <ol className={styles.timeline}>
-            {steps.map((step, i) => (
-              <li key={step.title} className={styles.phase} data-reveal="up" data-phase>
-                <span className={styles.phaseDot} aria-hidden="true" />
-                <p className={styles.phaseN}>0{i + 1}</p>
-                <h4 className={styles.phaseTitle}>{step.title}</h4>
-                <p className={styles.phaseDuration}>
-                  <span className="label">{t('duration')}</span> {step.duration}
-                </p>
-                <p className={`label ${styles.phaseK}`}>{t('receive')}</p>
-                <ul className={styles.phaseList}>
-                  {step.get.map((g) => (
-                    <li key={g}>{g}</li>
-                  ))}
-                </ul>
-                <p className={`label ${styles.phaseK}`}>{t('need')}</p>
-                <ul className={`${styles.phaseList} ${styles.phaseNeed}`}>
-                  {step.need.map((g) => (
-                    <li key={g}>{g}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ol>
-        </div>
+        <ol className={styles.deck} data-deck>
+          {steps.map((step, i) => (
+            <li
+              key={step.title}
+              className={styles.card}
+              style={{ '--i': i } as React.CSSProperties}
+              data-tone={i === steps.length - 1 ? 'accent' : undefined}
+              data-deck-card
+            >
+              <div className={styles.cardInner} data-deck-inner>
+                <div className={styles.cardTop} data-deck-item>
+                  <span className="label">
+                    0{i + 1} / 0{steps.length}
+                  </span>
+                  <p className={styles.phaseDuration}>
+                    <span className="label">{t('duration')}</span> {step.duration}
+                  </p>
+                </div>
+                <div className={styles.cardBody}>
+                  <p className={styles.bigN} aria-hidden="true" data-deck-n>
+                    0{i + 1}
+                  </p>
+                  <div className={styles.cardMain}>
+                    <h4 className={`headline ${styles.cardTitle}`} data-deck-item>
+                      {step.title}
+                    </h4>
+                    <div className={styles.cardCols}>
+                      <div data-deck-item>
+                        <p className={`label ${styles.phaseK}`}>{t('receive')}</p>
+                        <ul className={styles.phaseList}>
+                          {step.get.map((g) => (
+                            <li key={g}>{g}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div data-deck-item>
+                        <p className={`label ${styles.phaseK}`}>{t('need')}</p>
+                        <ul className={`${styles.phaseList} ${styles.phaseNeed}`}>
+                          {step.need.map((g) => (
+                            <li key={g}>{g}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span className={styles.cardShade} aria-hidden="true" data-deck-shade />
+              </div>
+            </li>
+          ))}
+        </ol>
         <p className={`label ${styles.processNote}`} data-reveal="up">
           {t('detailNote')}
         </p>
