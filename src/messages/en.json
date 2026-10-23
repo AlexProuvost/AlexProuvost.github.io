@@ -319,6 +319,8 @@
       }
     ],
     "toolsLabel": "My tools",
+    "toolsHint": "Grab one, throw it.",
+    "toolsHintTouch": "Tap one to make it jump.",
     "tools": [
       "React",
       "Next.js",

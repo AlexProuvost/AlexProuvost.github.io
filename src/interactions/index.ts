@@ -12,6 +12,7 @@ import { initPreloader } from './preloader';
 import { initTilt } from './tilt';
 import { initInkLines } from './inkLines';
 import { initReadProgress } from './readProgress';
+import { initToolsPit } from './toolsPit';
 
 /** Détails d'interface : curseur, menu, barre du bas, horloges, boutons magnétiques, bascule des visuels. */
 export function initInterface(): () => void {
@@ -30,6 +31,7 @@ export function initInterface(): () => void {
     initTilt(),
     initInkLines(),
     initReadProgress(),
+    initToolsPit(),
   ];
   return () => cleanups.forEach((fn) => fn());
 }

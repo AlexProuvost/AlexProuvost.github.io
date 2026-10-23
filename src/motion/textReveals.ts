@@ -19,7 +19,6 @@ import { stackState } from '@/gl/stackState';
  *   data-split="lines"   paragraphes : lignes qui montent depuis leur masque
  *   data-split="light"   déclaration : les mots s'allument un à un (opacité seule, le texte ne bouge pas)
  *   data-reveal="up"     blocs : montée + fondu
- *   data-reveal="stagger" listes : les éléments apparaissent un à un (petit rebond)
  *   data-timeline-line   ligne du temps : se trace au scroll, les étapes ([data-phase]) s'allument à son passage
  *   data-reveal="label"  labels de section : le trait se trace, le texte apparaît
  *   data-hero-*          ouverture du site (voir heroFx.ts)
@@ -202,19 +201,6 @@ function buildScrollReveals(): () => void {
       ease: 'power3.out',
       onUpdate: () => (el.textContent = String(Math.round(state.v))),
       scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' },
-    });
-  });
-
-  // Listes : les éléments apparaissent un à un
-  gsap.utils.toArray<HTMLElement>('[data-reveal="stagger"]').forEach((el) => {
-    gsap.from(el.children, {
-      y: 18,
-      scale: 0.92,
-      autoAlpha: 0,
-      duration: 0.8,
-      stagger: 0.06,
-      ease: 'back.out(1.6)',
-      scrollTrigger: trigger(el),
     });
   });
 

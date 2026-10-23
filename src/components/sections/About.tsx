@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { sectionIds } from '@/content/site';
+import { toolBadge } from '@/content/tools';
 import { rich } from '@/lib/rich';
 import { SectionLabel } from '../ui/SectionLabel';
 import styles from './About.module.css';
@@ -56,13 +57,35 @@ export function About() {
           </dl>
         </div>
 
+        {/* Les outils : des pastilles avec logo qui tombent et s'empilent, qu'on peut attraper et lancer
+            (interactions/toolsPit.ts). Sans JS ou sans animation : la même pile, posée. */}
         <div className={styles.tools}>
-          <p className="label" data-reveal="up">
-            {t('toolsLabel')}
-          </p>
-          <ul className={styles.toolList} data-reveal="stagger">
-            {tools.map((tool) => (
-              <li key={tool}>{tool}</li>
+          <div className={styles.toolsHead} data-reveal="up">
+            <p className="label">{t('toolsLabel')}</p>
+            <p className={`label ${styles.toolsHint}`} aria-hidden="true">
+              <span className={styles.hintMouse}>{t('toolsHint')}</span>
+              <span className={styles.hintTouch}>{t('toolsHintTouch')}</span>
+            </p>
+          </div>
+          <ul className={styles.pit} data-tools-pit>
+            {tools.map(toolBadge).map((b) => (
+              <li
+                key={b.name}
+                className={styles.tool}
+                style={{ '--brand': b.brand, '--on-brand': b.onBrand } as React.CSSProperties}
+                data-tool
+              >
+                {b.paths.length > 0 && (
+                  <span className={styles.toolIcons} aria-hidden="true">
+                    {b.paths.map((d) => (
+                      <svg key={d.slice(0, 24)} viewBox="0 0 24 24" width="24" height="24">
+                        <path d={d} />
+                      </svg>
+                    ))}
+                  </span>
+                )}
+                <span className={styles.toolName}>{b.name}</span>
+              </li>
             ))}
           </ul>
         </div>

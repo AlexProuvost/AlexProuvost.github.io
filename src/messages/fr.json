@@ -319,6 +319,8 @@
       }
     ],
     "toolsLabel": "Mes outils",
+    "toolsHint": "Attrapez-les, lancez-les.",
+    "toolsHintTouch": "Touchez-les pour les faire sauter.",
     "tools": [
       "React",
       "Next.js",
