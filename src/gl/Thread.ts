@@ -3,81 +3,69 @@ import { damp, motion } from '@/motion/store';
 import type { GLLayer, Viewport } from './types';
 
 /**
- * Le fil d'encre : un tube bleu en 3D qui serpente derrière le contenu et se dessine au fil du scroll.
+ * Le fil d'encre : un trait bleu épais et plat qui serpente derrière le contenu et se dessine au fil du scroll.
  * Chaque fil vit dans une zone de la page ([data-thread="<id>"]) : sa courbe est décrite en fractions
- * de la largeur et de la hauteur de la zone (on peut déborder), avec une profondeur en px.
+ * de la largeur de la zone (on peut déborder).
  *  - Le maillage est recalé sur la zone à chaque image : il défile exactement avec le texte.
  *  - Sa longueur visible suit l'avancement de la zone dans l'écran, lissée ; une tête arrondie le termine.
- *  - Matière : bleu signature, éclairage doux, reflet et liseré (shader maison, très léger).
+ *  - Aplat du bleu signature, sans relief ni profondeur.
  */
 
-type Point = [x: number, y: number, z: number];
+type Point = [x: number, y: number];
 
 /**
  * Tracés des fils, par zone. x et y en fractions de la LARGEUR de la zone (les formes gardent leurs proportions
- * quelle que soit la hauteur du texte), y vers le bas depuis le haut de la zone ; z : profondeur en px.
+ * quelle que soit la hauteur du texte), y vers le bas depuis le haut de la zone.
  */
 const PATHS: Record<string, Point[]> = {
   // Méthode, intro : arrive de la gauche au-dessus du titre, traverse, boucle à droite (le texte est à gauche),
   // puis plonge vers la suite
   approach: [
-    [-0.12, -0.2, 0],
-    [0.12, -0.12, 30],
-    [0.38, 0.02, 60],
-    [0.6, 0.075, 20],
-    [0.82, -0.008, -40],
-    [0.98, 0.11, 0],
-    [0.86, 0.27, 50],
-    [0.64, 0.19, 90],
-    [0.74, 0.08, 40],
-    [0.94, 0.23, -20],
-    [1.14, 0.39, 0],
+    [-0.12, -0.2],
+    [0.12, -0.12],
+    [0.38, 0.02],
+    [0.6, 0.075],
+    [0.82, -0.008],
+    [0.98, 0.11],
+    [0.86, 0.27],
+    [0.64, 0.19],
+    [0.74, 0.08],
+    [0.94, 0.23],
+    [1.14, 0.39],
   ],
   // À propos : arrive de la droite au-dessus de la phrase, s'enroule en grande boucle sur sa gauche,
   // puis file vers le bas à gauche, vers les chiffres
   about: [
-    [1.15, -0.32, 0],
-    [0.86, -0.16, 40],
-    [0.56, -0.06, 80],
-    [0.3, -0.04, 40],
-    [0.1, 0.06, -20],
-    [0.06, 0.26, 10],
-    [0.24, 0.36, 60],
-    [0.38, 0.22, 90],
-    [0.24, 0.1, 40],
-    [0.02, 0.36, 0],
-    [-0.16, 0.62, 0],
+    [1.15, -0.32],
+    [0.86, -0.16],
+    [0.56, -0.06],
+    [0.3, -0.04],
+    [0.1, 0.06],
+    [0.06, 0.26],
+    [0.24, 0.36],
+    [0.38, 0.22],
+    [0.24, 0.1],
+    [0.02, 0.36],
+    [-0.16, 0.62],
   ],
 };
 
 const vertex = /* glsl */ `
-  varying vec3 vNormal;
   varying float vU;
   void main() {
     vU = uv.x;
-    vNormal = normalize(normalMatrix * normal);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `;
 
+// Aplat de bleu, sans relief : le tube ne sert qu'à donner une épaisseur régulière et des bouts ronds
 const fragment = /* glsl */ `
   uniform float uProgress;
   uniform vec3 uColor;
-  uniform vec3 uDeep;
-  uniform vec3 uLight;
-  varying vec3 vNormal;
   varying float vU;
   void main() {
     if (vU > uProgress) discard;
-    vec3 n = normalize(vNormal);
-    vec3 l = normalize(vec3(-0.45, 0.65, 0.6));
-    float diff = max(dot(n, l), 0.0);
-    // Ombre douce côté opposé, reflet net, liseré sur les bords du tube
-    vec3 col = mix(uDeep, uColor, smoothstep(0.0, 0.9, diff));
-    float spec = pow(max(dot(reflect(-l, n), vec3(0.0, 0.0, 1.0)), 0.0), 28.0);
-    float rim = pow(1.0 - max(n.z, 0.0), 3.0);
-    col += uLight * (spec * 0.55 + rim * 0.18);
-    gl_FragColor = vec4(col, 1.0);
+    gl_FragColor = vec4(uColor, 1.0);
     #include <colorspace_fragment>
   }
 `;
@@ -114,9 +102,7 @@ export class InkThread implements GLLayer {
       depthWrite: false,
       uniforms: {
         uProgress: { value: progress },
-        uColor: { value: new THREE.Color('#3542ff') },
-        uDeep: { value: new THREE.Color('#141a8a') },
-        uLight: { value: new THREE.Color('#c9ceff') },
+        uColor: { value: new THREE.Color('#2e3bff') },
       },
     });
   }
@@ -159,7 +145,7 @@ export class InkThread implements GLLayer {
     // Repère local : origine en haut à gauche de la zone, y vers le haut (comme la scène)
     // Petits écrans : la zone est étroite, on étire le tracé en hauteur pour qu'il respire
     const ky = w < 700 ? 1.9 : 1;
-    const pts = s.points.map(([x, y, z]) => new THREE.Vector3(x * w, -y * w * ky, z));
+    const pts = s.points.map(([x, y]) => new THREE.Vector3(x * w, -y * w * ky, 0));
     s.curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
     const length = s.curve.getLength();
     const geometry = new THREE.TubeGeometry(s.curve, Math.max(120, Math.round(length / 6)), this.radius, 20, false);
