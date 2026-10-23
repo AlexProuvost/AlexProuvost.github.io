@@ -70,6 +70,13 @@ export function plateDefs(lang: string): { plates: PlateDef[]; contact: Draw } {
   const serif = siteFont('--font-serif');
   const r = TEX_H * CORNER;
   const m = 110;
+  // Grille commune à la plaque « grille » et au wireframe : 12 colonnes, gouttières de 36, sous l'étiquette.
+  // Chaque bloc du wireframe commence et finit sur une colonne (superposés, les deux calques tombent juste).
+  const GUTTER = 36;
+  const GRID_TOP = 210;
+  const colW = (w: number) => (w - m * 2 - GUTTER * 11) / 12;
+  const colX = (w: number, i: number) => m + i * (colW(w) + GUTTER);
+  const span = (w: number, a: number, b: number) => colX(w, b) + colW(w) - colX(w, a);
 
   const bar = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, color: string) => {
     ctx.fillStyle = color;
@@ -185,16 +192,14 @@ export function plateDefs(lang: string): { plates: PlateDef[]; contact: Draw } {
       opaque: false,
       draw(ctx, w, h) {
         panel(ctx, w, h, 'rgba(240, 235, 226, 0.06)');
-        const gutter = 36;
-        const top = 210;
-        const col = (w - m * 2 - gutter * 11) / 12;
+        const col = colW(w);
         for (let i = 0; i < 12; i++) {
-          const x = m + i * (col + gutter);
+          const x = colX(w, i);
           ctx.fillStyle = 'rgba(124, 134, 255, 0.16)';
-          ctx.fillRect(x, top, col, h - top - m);
+          ctx.fillRect(x, GRID_TOP, col, h - GRID_TOP - m);
           ctx.fillStyle = 'rgba(124, 134, 255, 0.75)';
-          ctx.fillRect(x, top, 3, h - top - m);
-          ctx.fillRect(x + col - 3, top, 3, h - top - m);
+          ctx.fillRect(x, GRID_TOP, 3, h - GRID_TOP - m);
+          ctx.fillRect(x + col - 3, GRID_TOP, 3, h - GRID_TOP - m);
         }
         text(ctx, t.grid, m, 150, `500 64px ${sans}`, C.amber, -1);
       },
@@ -223,17 +228,23 @@ export function plateDefs(lang: string): { plates: PlateDef[]; contact: Draw } {
           ctx.stroke();
           ctx.restore();
         };
-        box(m, 80, w - m * 2, 64, 32);
-        box(m, 300, 820, 120, 18);
-        box(m, 450, 640, 120, 18);
-        box(m, 660, 380, 110, 55);
-        box(1080, 220, w - m - 1080, 580, 22, true);
-        box(m, 890, (w - m * 2 - 40) / 2, 200, 18, true);
-        box(m + (w - m * 2 - 40) / 2 + 40, 890, (w - m * 2 - 40) / 2, 200, 18, true);
+        // Tout est calé sur la grille (colonnes a → b incluses), en rangées régulières sous la barre de navigation
+        const at = (a: number, b: number, y: number, bh: number, rr = 18, cross = false) =>
+          box(colX(w, a), y, span(w, a, b), bh, rr, cross);
+        const bottom = h - m;
+        // Rythme : 30 px entre les blocs d'une zone, 60 px entre les zones ; l'image finit au ras du bouton
+        at(0, 11, GRID_TOP + 20, 60, 30); // navigation
+        at(0, 6, 380, 120); // titre (380 → 500)
+        at(0, 4, 530, 84); // sous-titre (530 → 614)
+        at(0, 2, 644, 84, 42); // bouton (644 → 728)
+        at(7, 11, 380, 348, 22, true); // image (380 → 728)
+        at(0, 5, 788, bottom - 20 - 788, 18, true); // carte
+        at(6, 11, 788, bottom - 20 - 788, 18, true); // carte
+        // Étiquettes dans les espaces libres, jamais sur un trait
         const label = `500 52px ${mono}`;
-        text(ctx, t.wire[0], m, 270, label, C.amber);
-        text(ctx, t.wire[1], 1080, 196, label, C.amber);
-        text(ctx, t.wire[2], m + 410, 735, label, C.amber);
+        text(ctx, t.wire[0], colX(w, 0), 360, label, C.amber);
+        text(ctx, t.wire[1], colX(w, 7), 360, label, C.amber);
+        text(ctx, t.wire[2], colX(w, 3), 705, label, C.amber);
       },
     },
 
