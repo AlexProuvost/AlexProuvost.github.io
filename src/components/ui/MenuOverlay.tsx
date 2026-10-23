@@ -1,14 +1,20 @@
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { routing } from '@/i18n/routing';
 import { site, sectionIds } from '@/content/site';
+import { LangLink } from './LangLink';
 import styles from './MenuOverlay.module.css';
 
+const langNames = { fr: 'français', en: 'English' } as const;
+
 /**
- * Menu plein écran. Fermé : hors écran, `inert` (ni focus ni lecture). Ouvert par interactions/menu.ts.
+ * Menu plein écran : les sections, puis l'email, les liens, la langue et l'heure de Tournai.
+ * Fermé : hors écran, `inert` (ni focus ni lecture). Ouvert par interactions/menu.ts.
  */
 export function MenuOverlay() {
   const t = useTranslations('nav');
   const tb = useTranslations('bar');
   const tc = useTranslations('cursor');
+  const locale = useLocale();
 
   const items = [
     { id: sectionIds.top, label: t('home') },
@@ -59,6 +65,22 @@ export function MenuOverlay() {
               </ul>
             </div>
           )}
+          <div>
+            <p className="label">{t('lang')}</p>
+            <ul className={styles.langs}>
+              {routing.locales.map((l) => (
+                <li key={l}>
+                  {l === locale ? (
+                    <span aria-current="true" className={styles.langActive}>
+                      {l}
+                    </span>
+                  ) : (
+                    <LangLink lang={l} className={styles.langLink} title={t('switchTo', { lang: langNames[l] })} />
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
           <div>
             <p className="label">{tb('city')}</p>
             <p className={styles.clock} data-clock>

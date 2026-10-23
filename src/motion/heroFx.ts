@@ -1,18 +1,14 @@
 import { gsap, SplitText } from './gsap';
 import { params } from './params';
 import { stackState } from '@/gl/stackState';
-import { getLenis } from './loop';
-import { arrivalKind, arrivedByTransition, canUseGL } from './arrival';
+import { arrivalKind } from './arrival';
 
 /**
- * Séquence 01 — l'ouverture.
- *  0. Première arrivée (avec WebGL) : ouverture cinématique. Sur le noir, un pinceau d'encre traverse l'écran
- *     et ALEX se révèle dans le liquide (stackState.cine / reveal, lus par gl/HeroFluid.ts). Le scroll attend ;
- *     un clic, une touche ou la molette accélèrent la fin.
- *  1. la navigation et les repères apparaissent ;
- *  2. la phrase d'intro monte ligne par ligne depuis son masque ;
- *  3. le filet se trace, puis ALEX monte d'un seul bloc (jamais lettre par lettre) ;
- *  4. les plaques de la page éclatée tombent en place, de bas en haut (stackState.intro).
+ * Séquence 01 — l'ouverture, un élément à la fois (rien n'apparaît en même temps) :
+ *  1. ALEX monte d'un seul bloc (jamais lettre par lettre) ;
+ *  2. la ligne « Développeur web créatif à Tournai » monte depuis son masque ;
+ *  3. le menu apparaît.
+ * La page éclatée se met en place hors champ (stackState.intro) : elle n'apparaît qu'à la méthode.
  * Pas d'épinglage : la page défile librement.
  * À appeler dans un gsap.context() : retourne une fonction de nettoyage.
  */
@@ -47,78 +43,31 @@ export function buildHero(withIntro: boolean): () => void {
     };
   }
   if (!withIntro) {
-    gsap.set(stackState, { intro: 1, word: 1, reveal: 1, cine: 1 });
+    gsap.set(stackState, { intro: 1, word: 1 });
     return () => {};
   }
   const { hero } = params;
   const lead = document.querySelector<HTMLElement>('[data-hero-lead]');
   const split = lead ? SplitText.create(lead, { type: 'lines', mask: 'lines', linesClass: 'split-line' }) : null;
-  const ease = 'expo.out';
 
-  // Ouverture cinématique : seulement à la première arrivée, avec WebGL
-  const cinematic = canUseGL() && !arrivedByTransition();
-  const tl = gsap.timeline({ delay: hero.delay, defaults: { ease, duration: hero.duration } });
-  let skip: (() => void) | null = null;
-  if (cinematic) {
-    const lenis = getLenis();
-    lenis?.stop();
-    gsap.set(stackState, { word: 1, reveal: 0, cine: 0 });
-    tl.to(stackState, { cine: 1, duration: params.hero.cineDuration, ease: 'power2.inOut' }, 0)
-      .to(stackState, { reveal: 1, duration: 1.2, ease: 'power2.out' }, params.hero.cineDuration * 0.75)
-      .add(() => lenis?.start(), params.hero.cineDuration * 0.9)
-      .addLabel('ui', params.hero.cineDuration * 0.8);
-    // Passer : on accélère jusqu'à la fin de l'ouverture (écouté seulement une fois l'ouverture lancée)
-    skip = () => {
-      if (tl.progress() < 1) tl.timeScale(4);
-      ['wheel', 'keydown', 'pointerdown', 'touchstart'].forEach((ev) => window.removeEventListener(ev, skip!));
-    };
-  }
-  // Avant de lancer l'ouverture, on attend : la scène WebGL (au plus 2,5 s) et l'écran de chargement s'il est là
-  const gates: Promise<void>[] = [];
-  if (cinematic && !document.documentElement.classList.contains('gl-on')) {
-    gates.push(
-      new Promise<void>((res) => {
-        window.addEventListener('gl-ready', () => res(), { once: true });
-        gsap.delayedCall(2.5, res);
-      }),
-    );
-  }
+  const tl = gsap.timeline({ delay: hero.delay, defaults: { ease: 'expo.out', duration: hero.duration } });
+  // L'écran de chargement, s'il est là, passe d'abord
   if (document.documentElement.classList.contains('pl-on')) {
-    gates.push(new Promise<void>((res) => window.addEventListener('preloader-done', () => res(), { once: true })));
-  }
-  const listenSkip = () =>
-    skip &&
-    ['wheel', 'keydown', 'pointerdown', 'touchstart'].forEach((ev) =>
-      window.addEventListener(ev, skip!, { passive: true }),
-    );
-  if (gates.length) {
     tl.pause();
-    Promise.all(gates).then(() => {
-      if (tl.paused()) tl.play();
-      listenSkip();
-    });
-  } else listenSkip();
-  if (!cinematic) {
-    gsap.set(stackState, { reveal: 1, cine: 1 });
-    tl.addLabel('ui', 0);
+    window.addEventListener('preloader-done', () => tl.play(), { once: true });
   }
-  tl.from('[data-nav]', { autoAlpha: 0, y: -10, duration: 1 }, 'ui')
-    .from('[data-hero-meta] > *', { autoAlpha: 0, y: 12, stagger: hero.stagger, duration: 1 }, 'ui+=0.1')
-    .from(split?.lines ?? [], { yPercent: 105, stagger: hero.stagger }, 'ui+=0.15')
-    .fromTo('[data-hero-rule]', { scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: 'expo.inOut' }, 'ui+=0.2')
-    .from('[data-hero-row] > *', { autoAlpha: 0, y: 10, stagger: hero.stagger, duration: 1 }, 'ui+=0.6')
-    .from('[data-hero-word]', { yPercent: 102, duration: 1.6 }, 'ui+=0.55')
-    .fromTo(stackState, { intro: 0 }, { intro: 1, duration: 2.4, ease: 'power2.out' }, 'ui+=0.5')
-    .from('[data-hero-caption]', { autoAlpha: 0, duration: 1 }, 'ui+=1.4')
-    // Une fois en place, on rend le texte d'intro à son état normal (le découpage n'est plus utile)
+  // Un seul élément à la fois : ALEX, puis la ligne, puis le menu
+  tl.from('[data-hero-word]', { yPercent: 102, duration: 1.6 }, 0)
+    .fromTo(stackState, { word: 0 }, { word: 1, duration: 1.6 }, 0)
+    .from(split?.lines ?? [], { yPercent: 105, stagger: hero.stagger }, 0.9)
+    .from('[data-nav]', { autoAlpha: 0, y: -10, duration: 1 }, 1.5)
+    // Les plaques de la page éclatée se mettent en place, hors champ (elle n'apparaît qu'à la méthode)
+    .fromTo(stackState, { intro: 0 }, { intro: 1, duration: 2.4, ease: 'power2.out' }, 0.5)
+    // Une fois en place, on rend la ligne à son état normal (le découpage n'est plus utile)
     .add(() => split?.revert());
-  // Sans ouverture cinématique : le mot (WebGL) monte comme le <h1>
-  if (!cinematic) tl.fromTo(stackState, { word: 0 }, { word: 1, duration: 1.6 }, 'ui+=0.55');
 
   return () => {
     tl.kill();
     split?.revert();
-    skip?.();
-    getLenis()?.start();
   };
 }

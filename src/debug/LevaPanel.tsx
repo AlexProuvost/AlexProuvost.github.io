@@ -56,7 +56,6 @@ export default function LevaPanel() {
     delay: { value: params.hero.delay, min: 0, max: 1.5, step: 0.05, label: 'intro.delay' },
     duration: { value: params.hero.duration, min: 0.4, max: 3, step: 0.05, label: 'intro.duration' },
     stagger: { value: params.hero.stagger, min: 0, max: 0.3, step: 0.01, label: 'intro.stagger' },
-    cineDuration: { value: params.hero.cineDuration, min: 0.8, max: 5, step: 0.1, label: 'intro.cinematic' },
   });
 
   const approach = useControls('Méthode', {

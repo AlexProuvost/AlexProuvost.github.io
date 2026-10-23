@@ -21,63 +21,16 @@
   font-weight: 800;
   font-size: 1.125rem;
   letter-spacing: -0.03em;
-}
-
-.role {
-  flex: 1;
-  padding-left: clamp(24px, 8vw, 160px);
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  gap: clamp(12px, 2vw, 28px);
-}
-
-.lang {
-  display: flex;
-  gap: 10px;
-}
-
-.langActive {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.langLink {
-  opacity: 0.6;
-}
-
-.langLink:hover {
-  opacity: 1;
-}
-
-/* Pastille « Parlons-en » */
-.talk {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 40px;
-  padding: 0 18px;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  font-size: var(--fs-small);
-  font-weight: 500;
   transition:
-    background-color 0.4s var(--ease-out),
-    color 0.4s var(--ease-out);
+    opacity 0.5s var(--ease-out),
+    transform 0.6s var(--ease-out-expo);
 }
 
-.talkDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.talk:hover {
-  background: #f0ebe2;
-  color: #0f0e0d;
+/* Écran d'arrivée : le grand ALEX est déjà là, le petit logo s'efface */
+.nav[data-top] .logo {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
 }
 
 /* Bouton Menu : deux traits qui se croisent quand le menu est ouvert */
@@ -128,25 +81,4 @@
 
 .menuLabel {
   min-width: 5.5ch;
-}
-
-@media (max-width: 1100px) {
-  .role {
-    display: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .talk {
-    display: none;
-  }
-}
-
-/* Dans la nav (mode différence), les labels gardent la couleur de la barre */
-.nav :global(.label) {
-  color: inherit;
-}
-
-.role {
-  opacity: 0.6;
 }

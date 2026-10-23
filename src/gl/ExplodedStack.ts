@@ -285,7 +285,10 @@ export class ExplodedStack implements GLLayer {
       const dim = lerp(1, 0.14 + 0.86 * p.focus, highlight);
       // À l'assemblage, les calques transparents se fondent dans la page finie
       const merge = p.opaque ? 1 : 1 - assemble;
-      const alpha = e * dim * merge;
+      // Absente de l'écran d'arrivée (qui ne montre qu'ALEX) : elle apparaît pendant le trajet vers la méthode,
+      // chaque couche un peu après la précédente
+      const appear = inContact ? 1 : smooth(0.25 + i * 0.05, 0.7 + i * 0.05, l.travel);
+      const alpha = e * dim * merge * appear;
       p.face.opacity = alpha;
       if (p.side) p.side.opacity = alpha;
       p.line.opacity = alpha * (p.opaque ? 0.18 : 0.32) * (1 - assemble * 0.6);

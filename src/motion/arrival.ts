@@ -1,7 +1,7 @@
 /**
  * Arrivée sur une page :
  *  - « transition » : on vient d'une autre page du site (rideau, voir interactions/transitions.ts) ;
- *  - sinon, première arrivée : l'accueil joue son ouverture cinématique (motion/heroFx.ts).
+ *  - sinon, première arrivée sur la page.
  * Lu une seule fois par chargement ; stockage de session protégé (navigation privée, stockage bloqué…).
  */
 const KEY = 'alex-transition';
@@ -17,10 +17,6 @@ function read() {
     cached = '';
   }
   return cached;
-}
-
-export function arrivedByTransition(): boolean {
-  return read() !== '';
 }
 
 /** Comment est-on arrivé ? */
@@ -49,15 +45,4 @@ export function markCover() {
 /** Remet à zéro (aperçu autonome : plusieurs « pages » dans le même document) */
 export function resetArrival() {
   cached = null;
-}
-
-/** WebGL disponible et animations autorisées (mêmes conditions que gl/GLRoot.tsx) */
-export function canUseGL() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-  try {
-    const c = document.createElement('canvas');
-    return !!(c.getContext('webgl2') || c.getContext('webgl'));
-  } catch {
-    return false;
-  }
 }

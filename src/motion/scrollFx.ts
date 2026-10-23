@@ -83,12 +83,20 @@ export function buildScrollFx(): () => void {
       gsap.to(title, { yPercent: -60, autoAlpha: 0, ease: 'none', scrollTrigger: { ...st, end: 'bottom 30%' } });
   }
 
-  /* Navigation : cachée en descendant après le premier écran, visible en remontant */
+  /* Navigation : cachée en descendant après le premier écran, visible en remontant.
+     Sur l'écran d'arrivée de l'accueil (le grand ALEX), data-top efface le petit logo. */
   const nav = document.querySelector<HTMLElement>('[data-nav]');
   if (nav) {
     const navY = gsap.quickTo(nav, 'yPercent', { duration: 0.6, ease: 'power3.out' });
+    const hasHero = !!document.querySelector('[data-section="hero"]');
     let hidden = false;
+    let atTop: boolean | null = null;
     const tick = () => {
+      const top = hasHero && motion.scroll < window.innerHeight * 0.6;
+      if (top !== atTop) {
+        atTop = top;
+        nav.toggleAttribute('data-top', top);
+      }
       const v = motion.smoothVelocity;
       const hide = motion.direction === 1 && motion.scroll > window.innerHeight * 0.8 && Math.abs(v) > 0.5;
       const show = motion.direction === -1 || motion.scroll < window.innerHeight * 0.8;
@@ -101,7 +109,10 @@ export function buildScrollFx(): () => void {
       }
     };
     gsap.ticker.add(tick);
-    cleanups.push(() => gsap.ticker.remove(tick));
+    cleanups.push(() => {
+      gsap.ticker.remove(tick);
+      nav.removeAttribute('data-top');
+    });
   }
 
   return () => cleanups.forEach((fn) => fn());

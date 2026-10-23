@@ -66,7 +66,7 @@
 
 .foot {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
   padding-top: 20px;
   border-top: 1px solid rgba(15, 14, 13, 0.2);
@@ -86,6 +86,32 @@
 .clock {
   font-family: var(--ff-mono);
   font-variant-numeric: tabular-nums;
+}
+
+/* Langue (déplacée ici depuis la barre du haut) */
+.langs {
+  display: flex;
+  gap: 18px;
+}
+
+.langActive {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.langLink {
+  opacity: 0.6;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+.langLink:hover {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .foot {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 640px) {

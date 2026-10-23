@@ -8,78 +8,32 @@
   padding-bottom: 64px;
 }
 
-/* ── Haut : intro à gauche, figure 3D à droite ── */
+/* ── Haut : une seule ligne, posée juste au-dessus du logotype ── */
 .top {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--col-gap);
-  min-height: 0;
-}
-
-.intro {
   position: relative;
-  isolation: isolate;
-  grid-column: 1 / span 5;
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 48px;
-  padding-bottom: clamp(24px, 4vh, 56px);
+  align-items: flex-end;
+  min-height: 0;
+  padding-bottom: clamp(16px, 2.4vh, 32px);
 }
 
-/* Voile sombre sous le texte : l'encre du liquide (WebGL, derrière) ne gêne plus la lecture */
-.intro::before {
-  content: '';
-  position: absolute;
-  inset: -18% -22% -14% -30%;
-  z-index: -1;
-  background: radial-gradient(closest-side, rgba(15, 14, 13, 0.82), rgba(15, 14, 13, 0.5) 55%, rgba(15, 14, 13, 0));
-  pointer-events: none;
-}
-
-.meta {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.available {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+.line {
+  font-size: var(--fs-lead);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
   color: var(--fg);
 }
 
-.lead {
-  font-size: clamp(1.75rem, min(3.05vw, 5.2svh), 3.25rem);
-  line-height: 1.04;
-  letter-spacing: -0.04em;
-  max-width: 15em;
-}
-
-.lead em {
-  color: var(--c-fg);
-}
-
-.figure {
-  grid-column: 6 / span 7;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-/* L'emplacement de la pile 3D : le canvas WebGL (fixe, derrière) y cale la scène */
+/* Point de départ (invisible) de la page éclatée : à droite, comme si elle arrivait de là */
 .anchor {
-  position: relative;
-  flex: 1;
-  min-height: 320px;
-}
-
-.caption {
-  align-self: flex-end;
-  padding-bottom: 12px;
+  position: absolute;
+  right: var(--gutter);
+  top: 6%;
+  width: 46%;
+  height: 72%;
+  pointer-events: none;
 }
 
 /* ── Bas : le logotype ── */
@@ -88,23 +42,8 @@
   container-type: inline-size;
 }
 
-.row {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 12px;
-}
-
-.rule {
-  display: block;
-  height: 1px;
-  background: var(--c-line-2);
-  transform-origin: 0 50%;
-}
-
 .word {
   display: block;
-  margin-top: clamp(10px, 1.4vw, 20px);
   /* masque de l'ouverture : le mot monte d'un bloc */
   overflow: clip;
   overflow-clip-margin: 0.02em;
@@ -119,7 +58,7 @@
   text-transform: uppercase;
   /* L'encre de « ALEX » (graisse 800) mesure ≈ 3,42 em : 100cqw / 3,42 ≈ 29,2cqw → bord à bord */
   /* … et jamais plus haut que l'espace disponible (écrans peu hauts : 1280 × 720, 1366 × 768) */
-  font-size: min(29.2cqw, 34svh);
+  font-size: min(29.2cqw, 46svh);
   line-height: 0.74;
   letter-spacing: -0.055em;
   margin-left: -0.02em;
@@ -128,23 +67,9 @@
 }
 
 @media (max-width: 900px) {
-  .intro {
-    grid-column: 1 / -1;
-    gap: 28px;
-  }
-  .figure {
-    grid-column: 1 / -1;
-  }
   .anchor {
-    flex: 0 0 auto;
-    height: min(46svh, 82vw);
-    min-height: 0;
-  }
-  .row > :nth-child(2) {
-    display: none;
-  }
-  .row {
-    grid-template-columns: 1fr 1fr;
+    width: 80%;
+    height: 40%;
   }
 }
 

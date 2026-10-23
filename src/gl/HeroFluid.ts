@@ -10,7 +10,7 @@ import type { GLLayer, Viewport } from './types';
  *  - La souris (ou le doigt) laisse des traînées d'encre bleue — le bleu signature et ses nuances, jusqu'au blanc.
  *  - Le logotype ALEX est rendu ici (texture dessinée avec la vraie police) : le liquide le réfracte
  *    et décale ses couleurs là où il passe, puis il se repose net.
- *  - Sans interaction, de lentes vagues passent d'elles-mêmes, pour que la page vive dès l'arrivée.
+ *  - Sans interaction, rien ne bouge : l'écran d'arrivée reste calme, l'encre n'apparaît que sous la souris.
  * Le <h1> du DOM reste en place (référencement, lecteurs d'écran), masqué visuellement quand ce calque tourne.
  */
 
@@ -32,7 +32,7 @@ const fragment = /* glsl */ `
   uniform vec3 uBg;
   uniform vec3 uInk;
   uniform float uIntro;     // montée du mot à l'ouverture (0 → 1)
-  uniform float uReveal;    // ouverture cinématique : 0 = ALEX visible seulement dans l'encre, 1 = en entier
+  uniform float uReveal;    // 0 = ALEX visible seulement dans l'encre, 1 = en entier (toujours 1 aujourd'hui)
   uniform float uRefract;
   uniform float uGlow;
   uniform vec2 uRes;
@@ -95,8 +95,6 @@ export class HeroFluid implements GLLayer {
   private vp: Viewport = { w: 1, h: 1, cameraZ: 1000 };
   private rect = { x: 0, y: 0, w: 1, h: 1 };
   private last = { x: -1, y: -1, t: 0 };
-  private brush = { x: -1, y: -1 };
-  private idle = 0;
   private colorIndex = 0;
   private time = 0;
   private wordKey = '';
@@ -239,7 +237,6 @@ export class HeroFluid implements GLLayer {
         else dy /= this.fluid.aspect;
         if (Math.abs(dx) + Math.abs(dy) > 0.0004) {
           this.fluid.splat(mx, my, dx * P.force, dy * P.force, this.nextColor(P.ink));
-          this.idle = 0;
         }
       }
       this.last.x = mx;
@@ -248,45 +245,12 @@ export class HeroFluid implements GLLayer {
       this.last.x = -1;
     }
 
-    // Ouverture cinématique : un pinceau d'encre traverse le mot de gauche à droite, en ondulant
-    const cine = stackState.cine;
-    if (cine > 0 && cine < 1) {
-      const wr = this.mesh.material.uniforms.uWordRect.value as THREE.Vector4;
-      const t = cine;
-      const bx = wr.x - 0.06 + (wr.z + 0.12) * t;
-      const by = wr.y + wr.w * (0.5 + 0.32 * Math.sin(t * Math.PI * 3.2));
-      if (this.brush.x >= 0) {
-        const dx = (bx - this.brush.x) / Math.max(dt, 1e-3);
-        const dy = (by - this.brush.y) / Math.max(dt, 1e-3);
-        this.fluid.splat(bx, by, dx * 900, dy * 900, this.nextColor(P.ink * 3.2, Math.random() < 0.08), 1.6);
-      } else {
-        // Éclaboussure de départ, sous le mot
-        this.fluid.splat(bx + 0.04, wr.y, 1400, 2600, this.nextColor(P.ink * 6, true), 3);
-      }
-      this.brush.x = bx;
-      this.brush.y = by;
-      this.idle = 0;
-    } else {
-      this.brush.x = -1;
-    }
-
-    // Au repos : une vague lente traverse le mot de temps en temps
-    this.idle += dt;
-    if (this.idle > 4.5 && stackState.intro > 0.6) {
-      this.idle = 0;
-      const sx = 0.15 + Math.random() * 0.7;
-      const sy = 0.12 + Math.random() * 0.25;
-      const a = Math.random() * Math.PI * 2;
-      this.fluid.splat(sx, sy, Math.cos(a) * 900, Math.sin(a) * 500 + 300, this.nextColor(P.ink * 1.2, true), 2.2);
-    }
-
     this.fluid.step(Math.min(dt, 1 / 30));
 
     const u = this.mesh.material.uniforms;
     u.uDye.value = this.fluid.dyeTexture;
     u.uVel.value = this.fluid.velocityTexture;
     u.uIntro.value = stackState.word;
-    u.uReveal.value = stackState.reveal;
     u.uRefract.value = P.refract;
     u.uGlow.value = P.glow;
     this.mesh.scale.set(w, h, 1);

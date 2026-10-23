@@ -11,13 +11,7 @@ export function ScrollRail() {
   const t = useTranslations('rail');
 
   return (
-    <aside
-      className={styles.rail}
-      data-rail
-      data-hint=""
-      data-goto={t('goto')}
-      aria-label={t('label')}
-    >
+    <aside className={styles.rail} data-rail data-hint="" data-goto={t('goto')} aria-label={t('label')}>
       <p className={styles.pct} aria-hidden="true">
         <span data-rail-pct>000</span>
         <span className={styles.pctUnit}>%</span>

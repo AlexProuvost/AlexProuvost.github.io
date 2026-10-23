@@ -35,8 +35,6 @@ export const params = {
     duration: 1.4,
     /** Décalage entre les éléments de l'ouverture (s) */
     stagger: 0.08,
-    /** Durée de l'ouverture cinématique (pinceau d'encre), en secondes */
-    cineDuration: 2.2,
   },
   approach: {
     /** Longueur de l'épinglage de la méthode, en hauteurs d'écran de scroll (1 par étape ≈ 4) */
