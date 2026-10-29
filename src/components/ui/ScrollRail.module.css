@@ -233,6 +233,17 @@
   }
 }
 
+/* Téléphone : l'écran est étroit, le rail passerait sur le texte ; il ne sert qu'à l'indication de départ */
+@media (max-width: 700px) {
+  .rail {
+    transition: opacity 0.5s var(--ease-out);
+  }
+  .rail:not([data-hint]) {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rail[data-hint] .arrow {
     animation: none;

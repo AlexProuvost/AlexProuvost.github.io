@@ -146,8 +146,7 @@
   overflow: hidden;
   isolation: isolate;
   background:
-    radial-gradient(120% 90% at 78% 12%, color-mix(in srgb, var(--glow) 26%, transparent), transparent 62%),
-    var(--tint);
+    radial-gradient(120% 90% at 78% 12%, color-mix(in srgb, var(--glow) 26%, transparent), transparent 62%), var(--tint);
   box-shadow: inset 0 0 0 1px rgba(240, 235, 226, 0.06);
   will-change: clip-path;
 }

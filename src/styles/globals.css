@@ -12,6 +12,8 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   background: var(--bg);
+  /* Au doigt : pas de rectangle gris au toucher (chaque bouton a son propre retour visuel) */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {

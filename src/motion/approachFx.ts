@@ -106,6 +106,7 @@ export function buildApproach(): () => void {
       start: 'top top',
       end: () => `+=${window.innerHeight * approach.pinLength}`,
       pin: true,
+      anticipatePin: 1,
       scrub: approach.scrub,
       invalidateOnRefresh: true,
       onUpdate: (self) => {

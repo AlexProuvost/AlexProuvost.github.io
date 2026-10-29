@@ -95,6 +95,7 @@ export function buildFilm(): () => void {
         start: 'top top',
         end: () => `+=${distance() * params.film.speed}`,
         pin: true,
+        anticipatePin: 1,
         scrub: 1,
         invalidateOnRefresh: true,
       },

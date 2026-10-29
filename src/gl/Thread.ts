@@ -166,8 +166,8 @@ export class InkThread implements GLLayer {
 
   measure(vp: Viewport) {
     this.vp = vp;
-    // Épaisseur du fil : suit la largeur de l'écran
-    const r = Math.min(30, Math.max(12, vp.w * 0.017));
+    // Épaisseur du fil : suit la largeur de l'écran (plus fin sur téléphone, pour ne pas manger le texte)
+    const r = Math.min(30, Math.max(8, vp.w * 0.017));
     if (r !== this.radius) {
       this.radius = r;
       this.strands.forEach((s) => (s.size = { w: 0, h: 0 }));

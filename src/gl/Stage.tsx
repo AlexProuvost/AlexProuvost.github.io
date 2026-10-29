@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { mountGL } from './mount';
+import { mountGL, maxPixelRatio } from './mount';
 import styles from './Stage.module.css';
 
 /**
@@ -16,7 +16,7 @@ export default function Stage() {
     <Canvas
       className={styles.canvas}
       frameloop="never"
-      dpr={[1, 1.5]}
+      dpr={[1, maxPixelRatio()]}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       camera={{ fov: 35, near: 10, far: 10000, position: [0, 0, 1000] }}
       aria-hidden="true"

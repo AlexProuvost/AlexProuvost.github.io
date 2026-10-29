@@ -15,6 +15,8 @@ import type { GLLayer, Viewport } from './types';
  */
 
 const PALETTE = ['#2e3bff', '#5b66ff', '#8d96ff', '#e9e6ff'].map((c) => new THREE.Color(c));
+/** Après ce délai sans nouvelle encre (s), la traînée a disparu : la simulation peut s'endormir */
+const CALM = 4;
 
 const vertex = /* glsl */ `
   varying vec2 vUv;
@@ -98,17 +100,23 @@ export class HeroFluid implements GLLayer {
   private colorIndex = 0;
   private time = 0;
   private wordKey = '';
+  /** Secondes depuis la dernière touche d'encre : au-delà de CALM, l'encre a disparu et la simulation s'endort */
+  private calm = 0;
+  private seen = { mx: NaN, my: NaN, top: NaN };
+  private onScreen = false;
 
   constructor(renderer: THREE.WebGLRenderer) {
     this.section = document.querySelector('[data-section="hero"]');
     this.wordEl = document.querySelector('[data-hero-word]');
+    const small = window.innerWidth < 900;
     this.fluid = new Fluid(renderer, {
       simRes: 128,
-      dyeRes: window.innerWidth < 900 ? 320 : 512,
+      dyeRes: small ? 320 : 512,
       densityDissipation: 1.4,
       velocityDissipation: 0.9,
       pressure: 0.8,
-      pressureIterations: 12,
+      // Téléphone : un peu moins d'itérations de pression (invisible à l'œil, nettement plus léger pour le GPU)
+      pressureIterations: small ? 8 : 12,
       curl: 12,
       splatRadius: 0.22,
     });
@@ -139,6 +147,7 @@ export class HeroFluid implements GLLayer {
   }
 
   measure(vp: Viewport) {
+    this.calm = 0; // redimensionné : on redessine (le mot a pu changer de taille)
     this.vp = vp;
     if (!this.section) return;
     const w = this.section.offsetWidth;
@@ -199,11 +208,27 @@ export class HeroFluid implements GLLayer {
     u.uWord.value = this.wordTex;
   }
 
+  /**
+   * À l'écran, la couche ne travaille que si quelque chose bouge : la souris, le scroll (le mot suit la page)
+   * ou la montée d'ALEX, puis le temps que l'encre se dissipe. Sinon elle s'endort : plus de simulation ni
+   * de rendu, l'image reste telle quelle (isVisible la garde dans la scène si une autre couche redessine).
+   */
   isActive() {
     if (!this.section || this.vp.w < 1) return false;
     const r = this.section.getBoundingClientRect();
     this.rect = { x: r.left, y: r.top, w: r.width, h: r.height };
-    return r.bottom > 0 && r.top < this.vp.h;
+    this.onScreen = r.bottom > 0 && r.top < this.vp.h;
+    if (!this.onScreen) return false;
+    const m = motion.mouse;
+    const moved = m.active && (m.x !== this.seen.mx || m.y !== this.seen.my);
+    const scrolled = r.top !== this.seen.top;
+    this.seen = { mx: m.x, my: m.y, top: r.top };
+    if (moved) this.calm = 0;
+    return moved || scrolled || stackState.word < 1 || this.calm < CALM;
+  }
+
+  isVisible() {
+    return this.onScreen;
   }
 
   private colorClock = 0;
@@ -218,6 +243,7 @@ export class HeroFluid implements GLLayer {
 
   update(dt: number) {
     this.time += dt;
+    this.calm += dt;
     this.colorClock += dt;
     const { x, y, w, h } = this.rect;
     const P = params.fluid;
@@ -237,6 +263,7 @@ export class HeroFluid implements GLLayer {
         else dy /= this.fluid.aspect;
         if (Math.abs(dx) + Math.abs(dy) > 0.0004) {
           this.fluid.splat(mx, my, dx * P.force, dy * P.force, this.nextColor(P.ink));
+          this.calm = 0;
         }
       }
       this.last.x = mx;

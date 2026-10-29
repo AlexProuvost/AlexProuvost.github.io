@@ -69,8 +69,8 @@ export function mountGL({ renderer, scene, camera, render }: MountOptions): () =
   ScrollTrigger.addEventListener('refresh', fit);
   window.addEventListener('resize', fit);
 
-  // Résolution plafonnée à 1,5× (le grain et le flou de mouvement masquent la différence), puis adaptative
-  if (renderer.getPixelRatio() > 1.5) renderer.setPixelRatio(1.5);
+  // Résolution plafonnée (le grain et le flou de mouvement masquent la différence), puis adaptative
+  if (renderer.getPixelRatio() > maxPixelRatio()) renderer.setPixelRatio(maxPixelRatio());
   // Qualité adaptative : si les frames durent trop longtemps, on baisse la résolution (jusqu'à 1×)
   let frameAvg = 1 / 60;
   let frames = 0;
@@ -114,6 +114,14 @@ export function mountGL({ renderer, scene, camera, render }: MountOptions): () =
       l.dispose();
     });
   };
+}
+
+/**
+ * Densité de pixels maximale du canvas : 1,5× à la souris, 1,25× au doigt (téléphones et tablettes : écrans
+ * très denses mais GPU modestes ; la différence ne se voit pas, la fluidité oui).
+ */
+export function maxPixelRatio() {
+  return window.matchMedia('(pointer: coarse)').matches ? 1.25 : 1.5;
 }
 
 /** Le navigateur sait-il faire du WebGL ? */

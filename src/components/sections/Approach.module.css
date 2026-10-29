@@ -513,7 +513,7 @@
 
 @media (max-width: 900px) {
   .cardBody {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     align-items: start;
   }
   .deckN {
